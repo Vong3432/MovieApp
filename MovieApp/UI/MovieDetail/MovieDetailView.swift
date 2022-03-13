@@ -16,9 +16,9 @@ struct MovieDetailView: View {
     
     @State private var size: CGSize = .zero
     
-    private let linearGradient = LinearGradient(colors: [
-        Color.theme.background.opacity(0.2),
-        Color.theme.background
+    private let linearGradient = LinearGradient(stops: [
+        Gradient.Stop(color: Color.theme.background.opacity(0.1), location: 0),
+        Gradient.Stop(color: Color.theme.background, location: 0.6)
     ], startPoint: .top, endPoint: .bottom)
     
     init(movie: Movie) {
@@ -40,7 +40,6 @@ struct MovieDetailView: View {
                                 .frame(width: geometry.size.width, height: geometry.size.height / 3)
                                 .opacity(0.75)
                                 .blur(radius: 10)
-                                .clipped()
                             
                             linearGradient
                             
