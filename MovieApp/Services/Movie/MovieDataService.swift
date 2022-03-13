@@ -11,15 +11,10 @@ import Combine
 class MovieDataService: ObservableObject {
     
     @Published var page: Int? = nil
-    @Published var movies = [Movie]()
     
-    private var cancellables = Set<AnyCancellable>()
+//    private var cancellables = Set<AnyCancellable>()
     
-//    init(url: String) {
-//        downloadData(from: url)
-//    }
-    
-    func downloadData(from url: String) -> AnyPublisher<MovieList, Error> {
+    func downloadData<T>(from url: String) -> AnyPublisher<MovieDBResponse<T>, Error> where T: Codable {
         guard let url = URL(string: url) else { return Fail(error: NSError(domain: "Fail to download", code: 500, userInfo: nil)).eraseToAnyPublisher() }
 
         let decoder = JSONDecoder()
@@ -30,12 +25,7 @@ class MovieDataService: ObservableObject {
         
         return NetworkingManager
             .download(url: url)
-            .decode(type: MovieList.self, decoder: decoder)
+            .decode(type: MovieDBResponse.self, decoder: decoder)
             .eraseToAnyPublisher()
-//            .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedMovieList in
-//                self?.page = returnedMovieList.page
-//                self?.movies = returnedMovieList.results ?? []
-//            }
-//            .store(in: &cancellables)
     }
 }

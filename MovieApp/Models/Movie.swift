@@ -36,9 +36,9 @@
 import Foundation
 
 // MARK: - MovieList
-struct MovieList: Codable {
+struct MovieDBResponse<T>: Codable where T: Codable {
     let page: Int?
-    let results: [Movie]?
+    let results: [T]?
     
     let totalResults, totalPages: Int?
     

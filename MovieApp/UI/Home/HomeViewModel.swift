@@ -13,18 +13,15 @@ import Combine
 extension HomeView {
     class HomeViewModel: ObservableObject {
         
-        @Published var topRatedMovies = [Movie]()
-        @Published var upcomingMovies = [Movie]()
-        @Published var isLoading = false
+        @Published private(set) var topRatedMovies = [Movie]()
+        @Published private(set) var upcomingMovies = [Movie]()
+        @Published private(set) var isLoading = false
 
         private let topRatedUrl = .apiBaseUrl + "/movie/top_rated"
         private let upcomingUrl = .apiBaseUrl + "/movie/upcoming"
         
         private var cancellables = Set<AnyCancellable>()
         private let dataService = MovieDataService()
-//        private let topRatedDataService = MovieDataService(url: .apiBaseUrl + "/movie/top_rated")
-//        private let upComingDataService = MovieDataService(url: .apiBaseUrl + "/movie/upcoming")
-//        private let topRatedDataService = MovieDataService(url: .apiBaseUrl + "/movie/popular")
         
         init() {
             loadData()

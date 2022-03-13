@@ -37,10 +37,15 @@ extension HomeView {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 28) {
                 ForEach(vm.topRatedMovies, id: \.id) { movie in
-                    MovieCardView(movie: movie)
-                        .frame(height: 400)
-                        .frame(maxWidth: .infinity)
-                        .clipped()
+                    NavigationLink {
+                        MovieDetailView(movie: movie)
+                    } label: {
+                        MovieCardView(movie: movie)
+                            .frame(height: 400)
+                            .frame(maxWidth: .infinity)
+                            .clipped()
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding()
