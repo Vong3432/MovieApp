@@ -13,11 +13,13 @@ struct MovieCardView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            MovieImageView(url: movie.wrappedPosterPath)
+            ImageView(url: movie.wrappedPosterPath)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.wrappedTitle)
                     .font(.headline)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                 
                 HStack(alignment: .center, spacing: 8) {
                     Text(movie.wrappedVoteAverage.toOneDecimalString())

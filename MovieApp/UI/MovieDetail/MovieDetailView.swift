@@ -23,7 +23,7 @@ struct MovieDetailView: View {
     
     init(movie: Movie) {
         self.movie = movie
-        _vm = StateObject(wrappedValue: MovieDetailViewModel(movie: movie))
+        _vm = StateObject(wrappedValue: MovieDetailViewModel(movie: movie, dataService: MovieDataService()))
     }
     
     var body: some View {
@@ -35,7 +35,7 @@ struct MovieDetailView: View {
                 VStack {
                     ScrollView {
                         ZStack(alignment: .top) {
-                            MovieImageView(url: movie.wrappedBackdropPath)
+                            ImageView(url: movie.wrappedBackdropPath)
                                 .scaledToFill()
                                 .frame(width: geometry.size.width, height: geometry.size.height / 3)
                                 .opacity(0.75)
@@ -43,11 +43,12 @@ struct MovieDetailView: View {
                             
                             linearGradient
                             
-                            VStack(alignment: .leading, spacing: 20) {
+                            LazyVStack(alignment: .leading, spacing: 20) {
                                 movieHeader
                                 movieOverview
-                                //                                casts
                                 gallery
+                                cast
+                                reviews
                             }
                             .frame(maxHeight: .infinity)
                             .padding(.top, geometry.size.height * 0.15)
@@ -84,18 +85,17 @@ extension MovieDetailView {
     
     private var movieHeader: some View {
         HStack(spacing: 20) {
-            MovieImageView(url: movie.wrappedPosterPath)
+            ImageView(url: movie.wrappedPosterPath)
                 .scaledToFill()
                 .frame(width: size.width * 0.35, height: size.height / 3.5)
                 .cornerRadius(10)
                 .clipped()
             
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text(movie.wrappedTitle)
                     .font(.title2)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxHeight: .infinity)
                 
                 RatingView(rating: movie.wrappedVoteAverage)
                     .font(.caption)
@@ -119,43 +119,91 @@ extension MovieDetailView {
     }
     
     private var movieOverview: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 14) {
             Text("Storyline")
-                .font(.title2)
+                .font(.headline)
             
             Text(movie.wrappedOverview)
-                .font(.body)
-//                .lineLimit(nil)
-//                .fixedSize(horizontal: false, vertical: true)
-//                .frame(maxHeight: .infinity)
+                .font(.callout)
                 .opacity(0.65)
         }
         .padding(.horizontal)
         .foregroundColor(.white)
     }
     
-    private var casts: some View {
-        ScrollView(.horizontal) {
-            VStack(alignment: .leading) {
-                
+    private var reviews: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Reviews")
+                .font(.headline)
+            
+            ScrollView {
+                LazyVStack(spacing: 18) {
+                    if vm.reviews.isNotEmpty {
+                        ForEach(vm.reviews) { review in
+                            ReviewView(review: review)
+                        }
+                    } else {
+                        Text("No reviews yet")
+                            .opacity(0.65)
+                    }
+                }
             }
         }
+        .padding(.horizontal)
+        .foregroundColor(.white)
     }
     
     private var gallery: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 14) {
             Text("Galleries")
-                .font(.title2)
+                .font(.headline)
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(vm.videos, id: \.id) { video in
+                    ForEach(vm.videos) { video in
                         generateYoutubeVideo(
                             url: "https://youtube.com/watch?v=\(video.key ?? "")")
                     }
                 }
             }
-        }.padding()
+        }
+        .padding()
+    }
+    
+    private var cast: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            
+            HStack {
+                Text("Casts")
+                    .font(.headline)
+                Spacer()
+                
+                if let crew = vm.crew {
+                    NavigationLink {
+                        CrewListView(crew: crew)
+                    } label: {
+                        Text("View all")
+                            .font(.caption)
+                            .padding([.leading, .bottom])
+                    }
+                }
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 18) {
+                    if vm.top10Cast.isNotEmpty {
+                        ForEach(vm.top10Cast) { cast in
+                            CrewView(person: cast)
+                        }
+                    } else {
+                        Text("No result")
+                            .foregroundColor(.white)
+                            .opacity(0.65)
+                    }
+                }
+            }
+        }
+        .padding()
     }
     
     @ViewBuilder
@@ -168,10 +216,10 @@ extension MovieDetailView {
                 ProgressView()
             case .ready:
                 EmptyView()
-            case .error(let error):
+            case .error(_):
                 Text(verbatim: "YouTube player couldn't be loaded")
             }
         }
-        .frame(width: size.width / 1.25, height: size.height * 0.3)
+        .frame(width: size.width / 1.25, height: size.height * 0.2)
     }
 }

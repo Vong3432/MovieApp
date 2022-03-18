@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var vm = HomeViewModel()
+    @StateObject private var vm = HomeViewModel(dataService: MovieDataService())
+    @State private var size: CGSize = .zero
     
     var body: some View {
         ZStack {
-            Color.theme.background
-                .ignoresSafeArea()
-            
-            ScrollView {
-                topRatedMoviesList
-                upcomingMoviesList
-            }.padding(.bottom)
+            GeometryReader { geo in
+                Color.theme.background
+                    .ignoresSafeArea()
+                
+                ScrollView {
+                    topRatedMoviesList
+                    upcomingMoviesList
+                }
+                .padding(.bottom)
+                .onAppear {
+                    size = geo.size
+                }
+            }
         }
     }
 }
@@ -36,7 +43,7 @@ extension HomeView {
     private var topRatedMoviesList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 28) {
-                ForEach(vm.topRatedMovies, id: \.id) { movie in
+                ForEach(vm.topRatedMovies) { movie in
                     NavigationLink {
                         MovieDetailView(movie: movie)
                     } label: {
@@ -61,11 +68,15 @@ extension HomeView {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 28) {
-                    ForEach(vm.upcomingMovies, id: \.id) { movie in
-                        MovieCardView(movie: movie)
-                            .frame(height: 300)
-                            .frame(maxWidth: .infinity)
-                            .clipped()
+                    ForEach(vm.upcomingMovies) { movie in
+                        NavigationLink {
+                            MovieDetailView(movie: movie)
+                        } label: {
+                            MovieCardView(movie: movie)
+                                .frame(width: size.width * 0.4 , height: 300)
+                                .clipped()
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding()
