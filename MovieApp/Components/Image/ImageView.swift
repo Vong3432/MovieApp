@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct MovieImageView: View {
+struct ImageView: View {
     
-    @StateObject private var vm: MovieImageViewModel
+    @StateObject private var vm: ImageViewModel
     let url: String
     let height: Double
     
     init(url: String, height: Double = 300.0) {
         self.url = url
         self.height = height
-        _vm = StateObject(wrappedValue: MovieImageViewModel(url: url))
+        _vm = StateObject(wrappedValue: ImageViewModel(url: url))
     }
     
     var body: some View {
@@ -43,9 +43,9 @@ struct MovieImageView: View {
     }
 }
 
-struct MovieImageView_Previews: PreviewProvider {
+struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieImageView(url: DeveloperPreview.mockMovie.wrappedPosterPath)
+        ImageView(url: DeveloperPreview.mockMovie.wrappedPosterPath)
             .frame(width: 300, height: 300)
             .previewLayout(.sizeThatFits)
     }

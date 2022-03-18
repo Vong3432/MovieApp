@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import Combine
 
-extension MovieImageView {
-    class MovieImageViewModel: ObservableObject {
+extension ImageView {
+    class ImageViewModel: ObservableObject {
         
         @Published var image: Image? = nil
         @Published var isLoading = false

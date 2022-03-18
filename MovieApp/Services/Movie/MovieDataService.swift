@@ -14,7 +14,7 @@ class MovieDataService: ObservableObject {
     
 //    private var cancellables = Set<AnyCancellable>()
     
-    func downloadData<T>(from url: String) -> AnyPublisher<MovieDBResponse<T>, Error> where T: Codable {
+    func downloadData<T>(from url: String, as: T.Type) -> AnyPublisher<T, Error> where T: Codable {
         guard let url = URL(string: url) else { return Fail(error: NSError(domain: "Fail to download", code: 500, userInfo: nil)).eraseToAnyPublisher() }
 
         let decoder = JSONDecoder()
@@ -25,7 +25,7 @@ class MovieDataService: ObservableObject {
         
         return NetworkingManager
             .download(url: url)
-            .decode(type: MovieDBResponse.self, decoder: decoder)
+            .decode(type: T.self, decoder: decoder)
             .eraseToAnyPublisher()
     }
 }

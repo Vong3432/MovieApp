@@ -7,6 +7,20 @@
 
 import Foundation
 
+// MARK: - Success
+struct MovieDBResponse<T>: Codable where T: Codable {
+    let page: Int?
+    let results: [T]?
+    
+    let totalResults, totalPages: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case page, results
+        case totalResults = "total_results"
+        case totalPages = "total_pages"
+    }
+}
+
 // MARK: - Error
 struct APIError: Codable {
     let statusMessage: String?
