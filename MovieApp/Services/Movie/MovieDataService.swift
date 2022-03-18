@@ -8,12 +8,11 @@
 import Foundation
 import Combine
 
-class MovieDataService: ObservableObject {
-    
-    @Published var page: Int? = nil
-    
-//    private var cancellables = Set<AnyCancellable>()
-    
+protocol MovieDataServiceProtocol {
+    func downloadData<T>(from url: String, as: T.Type) -> AnyPublisher<T, Error> where T: Codable
+}
+
+class MovieDataService: MovieDataServiceProtocol {
     func downloadData<T>(from url: String, as: T.Type) -> AnyPublisher<T, Error> where T: Codable {
         guard let url = URL(string: url) else { return Fail(error: NSError(domain: "Fail to download", code: 500, userInfo: nil)).eraseToAnyPublisher() }
 

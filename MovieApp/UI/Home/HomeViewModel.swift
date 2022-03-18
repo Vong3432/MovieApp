@@ -15,15 +15,15 @@ extension HomeView {
         
         @Published private(set) var topRatedMovies = [Movie]()
         @Published private(set) var upcomingMovies = [Movie]()
-        @Published private(set) var isLoading = false
 
         private let topRatedUrl = .apiBaseUrl + "/movie/top_rated"
         private let upcomingUrl = .apiBaseUrl + "/movie/upcoming"
         
         private var cancellables = Set<AnyCancellable>()
-        private let dataService = MovieDataService()
+        private let dataService: MovieDataServiceProtocol
         
-        init() {
+        init(dataService: MovieDataServiceProtocol) {
+            self.dataService = dataService
             loadData()
         }
         
@@ -33,7 +33,7 @@ extension HomeView {
         }
         
         private func fetchTopRateMovies() {
-            dataService.downloadData(from: topRatedUrl)
+            dataService.downloadData(from: topRatedUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.topRatedMovies = returnedData.results ?? []
                 }
@@ -41,7 +41,7 @@ extension HomeView {
         }
         
         private func fetchUpcomingMovies() {
-            dataService.downloadData(from: upcomingUrl)
+            dataService.downloadData(from: upcomingUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.upcomingMovies = returnedData.results ?? []
                 }
