@@ -33,29 +33,36 @@ struct MovieDetailView: View {
             
             GeometryReader { geometry in
                 VStack {
-                    ScrollView {
-                        ZStack(alignment: .top) {
-                            ImageView(url: movie.wrappedBackdropPath)
-                                .scaledToFill()
-                                .frame(width: geometry.size.width, height: geometry.size.height / 3)
-                                .opacity(0.75)
-                                .blur(radius: 10)
-                            
-                            linearGradient
-                            
-                            LazyVStack(alignment: .leading, spacing: 20) {
-                                movieHeader
-                                movieOverview
-                                gallery
-                                cast
-                                reviews
+                    
+                    if vm.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        ScrollView {
+                            ZStack(alignment: .top) {
+                                ImageView(url: vm.currentMovie.wrappedBackdropPath)
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                                    .opacity(0.75)
+                                    .blur(radius: 10)
+                                
+                                linearGradient
+                                
+                                LazyVStack(alignment: .leading, spacing: 20) {
+                                    movieHeader
+                                    movieOverview
+                                    gallery
+                                    cast
+                                    similarMovies
+                                    reviews
+                                }
+                                .frame(maxHeight: .infinity)
+                                .padding(.top, geometry.size.height * 0.15)
+                                .padding(.bottom, geometry.size.height * 0.2)
                             }
-                            .frame(maxHeight: .infinity)
-                            .padding(.top, geometry.size.height * 0.15)
-                            .padding(.bottom, geometry.size.height * 0.2)
                         }
+                        .ignoresSafeArea()
                     }
-                    .ignoresSafeArea()
                 }
                 .onAppear {
                     size = geometry.size
@@ -85,22 +92,22 @@ extension MovieDetailView {
     
     private var movieHeader: some View {
         HStack(spacing: 20) {
-            ImageView(url: movie.wrappedPosterPath)
+            ImageView(url: vm.currentMovie.wrappedPosterPath)
                 .scaledToFill()
                 .frame(width: size.width * 0.35, height: size.height / 3.5)
                 .cornerRadius(10)
                 .clipped()
             
             VStack(alignment: .leading, spacing: 12) {
-                Text(movie.wrappedTitle)
+                Text(vm.currentMovie.wrappedTitle)
                     .font(.title2)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                RatingView(rating: movie.wrappedVoteAverage)
+                RatingView(rating: vm.currentMovie.wrappedVoteAverage)
                     .font(.caption)
                 
-                Text(movie.wrappedReleaseDate)
+                Text(vm.currentMovie.wrappedReleaseDate)
                     .padding(.bottom)
                     .opacity(0.65)
                 
@@ -123,7 +130,7 @@ extension MovieDetailView {
             Text("Storyline")
                 .font(.headline)
             
-            Text(movie.wrappedOverview)
+            Text(vm.currentMovie.wrappedOverview)
                 .font(.callout)
                 .opacity(0.65)
         }
@@ -204,6 +211,30 @@ extension MovieDetailView {
             }
         }
         .padding()
+    }
+    
+    private var similarMovies: some View {
+        VStack(alignment: .leading) {
+            Text("Similar")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 28) {
+                    ForEach(vm.similarMovies) { movie in
+                        Button {
+                            vm.changeMovie(movie)
+                        } label: {
+                            MovieCardView(movie: movie)
+                                .frame(height: 400)
+                                .frame(maxWidth: .infinity)
+                                .clipped()
+                        }.buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .padding()
+            }
+        }
     }
     
     @ViewBuilder
