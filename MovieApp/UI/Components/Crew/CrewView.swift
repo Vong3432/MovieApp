@@ -12,7 +12,7 @@ struct CrewView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
-            ImageView(url: .imageBaseUrl + person.wrappedProfilePath)
+            ImageView(url: APIEndpoints.imageBaseUrl + person.wrappedProfilePath)
                 .scaledToFill()
                 .frame(width: 42, height: 42)
                 .clipShape(Circle())

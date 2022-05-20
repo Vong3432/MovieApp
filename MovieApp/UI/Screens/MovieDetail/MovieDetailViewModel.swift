@@ -18,6 +18,13 @@ extension MovieDetailView {
         @Published private(set) var reviews = [Movie.Review]()
         @Published private(set) var similarMovies = [Movie]()
         
+        private var currentReviewPage = 1
+        private var totalReviewPages = 0
+        private(set) var videosUrl: String
+        private(set) var crewUrl: String
+        private(set) var reviewUrl: String
+        private(set) var similarMovieUrl: String
+        
         private var dataService: MovieDataServiceProtocol
         
         private var cancellables = Set<AnyCancellable>()
@@ -25,29 +32,37 @@ extension MovieDetailView {
         init(movie: Movie, dataService: MovieDataServiceProtocol) {
             self.currentMovie = movie
             self.dataService = dataService
+            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/videos"
+            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/credits"
+            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/reviews"
+            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/similar"
             
             fetchMovieInfo(movie)
         }
         
         func fetchMovieInfo(_ movie: Movie) {
-            let videosUrl = .apiBaseUrl + "/movie/\(movie.id!)/videos"
-            let crewUrl = .apiBaseUrl + "/movie/\(movie.id!)/credits"
-            let reviewUrl = .apiBaseUrl + "/movie/\(movie.id!)/reviews"
-            let similarMovieUrl = .apiBaseUrl + "/movie/\(movie.id!)/similar"
-            
             isLoading = true
             
-            loadVideos(videosUrl)
-            loadCrew(crewUrl)
-            loadReviews(reviewUrl)
-            loadSimilarMovies(similarMovieUrl)
+            // reset paginations
+            totalReviewPages = 0
+            currentReviewPage = 1
+            
+            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/videos"
+            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/credits"
+            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/reviews"
+            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/similar"
+            
+            loadVideos()
+            loadCrew()
+            loadReviews()
+            loadSimilarMovies()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.isLoading = false
             }
         }
         
-        func loadVideos(_ videosUrl: String) {
+        func loadVideos() {
             dataService.downloadData(from: videosUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.videos = returnedData.results ?? []
@@ -55,7 +70,7 @@ extension MovieDetailView {
                 .store(in: &cancellables)
         }
         
-        func loadCrew(_ crewUrl: String) {
+        func loadCrew() {
             dataService.downloadData(from: crewUrl, as: Crew.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
                     self?.crew = returnedData
@@ -66,15 +81,31 @@ extension MovieDetailView {
                 .store(in: &cancellables)
         }
         
-        func loadReviews(_ reviewUrl: String) {
-            dataService.downloadData(from: reviewUrl, as: MovieDBResponse.self)
+        func loadReviews(nextPage: Bool? = false) {
+            var url = reviewUrl
+            
+            // If we want to load more reviews
+            if nextPage == true {
+                // if there is more to fetch,
+                // then we will continue to fetch next page
+                if currentReviewPage < totalReviewPages {
+                    currentReviewPage = currentReviewPage + 1
+                    url += "?page=\(currentReviewPage)"
+                } else {
+                    // we reach the final page, do nothing.
+                    return
+                }
+            }
+            
+            dataService.downloadData(from: url, as: MovieDBResponse<Movie.Review>.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
                     self?.reviews = returnedData.results ?? []
+                    self?.totalReviewPages = returnedData.totalPages ?? 0
                 }
                 .store(in: &cancellables)
         }
         
-        func loadSimilarMovies(_ similarMovieUrl: String) {
+        func loadSimilarMovies() {
             dataService.downloadData(from: similarMovieUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
                     self?.similarMovies = returnedData.results ?? []

@@ -8,9 +8,11 @@
 import Foundation
 
 extension String {
-    /// URL: https://api.themoviedb.org/3
-    static let apiBaseUrl = "https://api.themoviedb.org/3"
-    static let imageBaseUrl = "https://image.tmdb.org/t/p/w154"
+    // UserDefault keys
+    static let authenticated = "authenticated"
+    
+    // FileManager
+    static let movieDBSessionID = "moviedbsessionid"
     
     /// Converting String date to Date
     var fromUTCtoDate: Date {

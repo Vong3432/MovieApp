@@ -9,10 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    init() {
+    @EnvironmentObject private var appState: AppState
 
-    }
-    
     var body: some View {
         TabView {
             NavigationView {
@@ -43,6 +41,14 @@ struct ContentView: View {
                 Text("Profile")
             }
         }
+        .fullScreenCover(isPresented: $appState.showingSignInScreen) {
+            AuthView(authService: appState.authService)
+        }
+        .onReceive(appState.authService.isAuthenticatedPublisher) { isAuthenticated in
+            if isAuthenticated == true && appState.showingSignInScreen {
+                appState.closeSignInScreen()
+            }
+        }
         .preferredColorScheme(.dark)
         .customTint(Color.theme.primary)
     }
@@ -51,5 +57,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(AppState())
     }
 }

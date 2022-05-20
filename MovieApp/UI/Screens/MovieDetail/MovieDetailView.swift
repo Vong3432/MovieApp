@@ -12,6 +12,7 @@ struct MovieDetailView: View {
     
     let movie: Movie
     
+    @EnvironmentObject private var appState: AppState
     @StateObject private var vm: MovieDetailViewModel
     
     @State private var size: CGSize = .zero
@@ -71,8 +72,17 @@ struct MovieDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(.white)
+                Button {
+                    if !appState.authService.isAuthenticated {
+                        appState.showSignInScreen()
+                    } else {
+                        // save
+                    }
+                } label: {
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.white)
+                }
+
             }
         }
     }
@@ -82,9 +92,9 @@ struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             MovieDetailView(movie: DeveloperPreview.mockMovie)
-                .navigationBarHidden(true)
+//                .navigationBarHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
-        }
+        }.environmentObject(AppState())
     }
 }
 
@@ -148,6 +158,12 @@ extension MovieDetailView {
                     if vm.reviews.isNotEmpty {
                         ForEach(vm.reviews) { review in
                             ReviewView(review: review)
+                                .onAppear {
+                                    // Continue fetch next pages after reaching to bottom.
+                                    if review == vm.reviews.last {
+                                        vm.loadReviews(nextPage: true)
+                                    }
+                                }
                         }
                     } else {
                         Text("No reviews yet")

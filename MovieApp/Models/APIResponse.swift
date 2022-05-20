@@ -21,8 +21,8 @@ struct MovieDBResponse<T>: Codable where T: Codable {
     }
 }
 
-// MARK: - Error
-struct APIError: Codable {
+/// - Tag: APIError
+struct APIError: Codable, Error {
     let statusMessage: String?
     let success: Bool
     let statusCode: Int?

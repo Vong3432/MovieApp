@@ -16,8 +16,8 @@ extension HomeView {
         @Published private(set) var topRatedMovies = [Movie]()
         @Published private(set) var upcomingMovies = [Movie]()
 
-        private let topRatedUrl = .apiBaseUrl + "/movie/top_rated"
-        private let upcomingUrl = .apiBaseUrl + "/movie/upcoming"
+        private let topRatedUrl = APIEndpoints.apiBaseUrl + "/movie/top_rated"
+        private let upcomingUrl = APIEndpoints.apiBaseUrl + "/movie/upcoming"
         
         private var cancellables = Set<AnyCancellable>()
         private let dataService: MovieDataServiceProtocol

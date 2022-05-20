@@ -21,7 +21,6 @@ class MovieImageService: ObservableObject {
     
     private func loadFromCache(url: String) {
         if let cachedImage = imageCache.get(forKey: url) {
-            print("Load from cache")
             image = cachedImage
         } else {
             downloadImage(from: url)
@@ -30,9 +29,7 @@ class MovieImageService: ObservableObject {
     
     private func downloadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }
-        
-        print("Download image")
-        
+
         NetworkingManager
             .download(url: url)
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedImageData in
@@ -40,8 +37,6 @@ class MovieImageService: ObservableObject {
                 
                 self?.image = uiImage
                 self?.imageCache.set(forKey: urlString, image: uiImage)
-                
-                print("Saved to cache")
             }
             .store(in: &cancellables)
     }

@@ -66,7 +66,7 @@ struct Movie: Codable, Identifiable {
     
     
     // MARK: - Movie.Review
-    struct Review: Codable, Identifiable {
+    struct Review: Codable, Identifiable, Equatable {
         let author: String
         let authorDetails: AuthorDetail
         let content, createdAt, id, updatedAt: String
@@ -80,6 +80,10 @@ struct Movie: Codable, Identifiable {
             case id
             case updatedAt = "updated_at"
             case url
+        }
+        
+        static func == (lhs: Movie.Review, rhs: Movie.Review) -> Bool {
+            lhs.id == rhs.id
         }
         
         var formattedCreatedAt: String {
@@ -128,11 +132,11 @@ struct Movie: Codable, Identifiable {
     }
     
     var wrappedPosterPath: String {
-        .imageBaseUrl + (posterPath ?? "")
+        APIEndpoints.imageBaseUrl + (posterPath ?? "")
     }
     
     var wrappedBackdropPath: String {
-        .imageBaseUrl + (backdropPath ?? "")
+        APIEndpoints.imageBaseUrl + (backdropPath ?? "")
     }
     
 }
