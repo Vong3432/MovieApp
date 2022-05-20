@@ -184,8 +184,9 @@ extension MovieDetailView {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(vm.videos) { video in
-                        generateYoutubeVideo(
-                            url: "https://youtube.com/watch?v=\(video.key ?? "")")
+                        // TODO: Leaks detected from this Plugin
+                        YoutubeView(videoID: video.key ?? "")
+                            .frame(width: size.width / 1.25, height: size.height * 0.2)
                     }
                 }
             }
@@ -251,22 +252,5 @@ extension MovieDetailView {
                 .padding()
             }
         }
-    }
-    
-    @ViewBuilder
-    private func generateYoutubeVideo(url: String) -> some View {
-        let url: YouTubePlayer = YouTubePlayer(stringLiteral: url)
-        
-        YouTubePlayerView(url) { state in
-            switch state {
-            case .idle:
-                ProgressView()
-            case .ready:
-                EmptyView()
-            case .error(_):
-                Text(verbatim: "YouTube player couldn't be loaded")
-            }
-        }
-        .frame(width: size.width / 1.25, height: size.height * 0.2)
     }
 }
