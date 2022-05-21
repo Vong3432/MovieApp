@@ -30,32 +30,41 @@ extension MovieDetailView {
         private(set) var similarMovieUrl: String
         
         private var dataService: MovieDataServiceProtocol
+        let authService: MovieDBAuthProtocol
         
         private var cancellables = Set<AnyCancellable>()
         
-        init(movie: Movie, dataService: MovieDataServiceProtocol) {
+        init(movie: Movie, dataService: MovieDataServiceProtocol, authService: MovieDBAuthProtocol) {
             self.currentMovie = movie
             self.dataService = dataService
-            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/videos"
-            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/credits"
-            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/reviews"
-            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/similar"
+            self.authService = authService
+            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/videos"
+            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/credits"
+            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/reviews"
+            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/similar"
             
+            clearToast()
             fetchMovieInfo(movie)
+        }
+        
+        deinit {
+            print("DEINIT")
         }
         
         func fetchMovieInfo(_ movie: Movie) {
             isLoading = true
+            isFavorited = false
             
             // reset paginations
             totalReviewPages = 0
             currentReviewPage = 1
             
-            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/videos"
-            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/credits"
-            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/reviews"
-            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id!)/similar"
+            videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/videos"
+            crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/credits"
+            reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/reviews"
+            similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/similar"
             
+            getFavoriteStatus()
             loadVideos()
             loadCrew()
             loadReviews()
@@ -120,6 +129,52 @@ extension MovieDetailView {
         func changeMovie(_ movie: Movie) {
             currentMovie = movie
             fetchMovieInfo(movie)
+        }
+        
+        private func getFavoriteStatus() {
+            guard let account = authService.account, let sessionId = authService.getSessionId() else { return }
+            
+            Task {
+                do {
+                    // TODO: Quite slow here
+                    let response = try await dataService.getFavoriteStatus(for: currentMovie, from: account.id, sessionId: sessionId)
+                    let decoded: MovieDBResponse<Movie> = try MovieDBAPIResponseParser.decode(response)
+                    let favoriteMovies = decoded.results ?? []
+                    let idx = favoriteMovies.firstIndex(where: { $0.id == currentMovie.id })
+                    
+                    if idx == nil {
+                        isFavorited = false
+                    } else {
+                        isFavorited = true
+                    }
+                } catch {
+                    toastMsg = error.localizedDescription
+                }
+            }
+        }
+        
+        func favorite() {
+            guard let account = authService.account, let sessionId = authService.getSessionId() else { return }
+            
+            Task {
+                do {
+                    // if currentMovie is favorited
+                    // then, we will assume user want to "unfavourite"
+                    // else, we assume user want to "favorite" currentMovie.
+                    clearToast()
+                    let favoriteText = isFavorited ? "Remove this from your favorite list successfully" : "Mark as favorite successfully."
+                    try await dataService.markFavorite(for: currentMovie, as: !isFavorited, from: account.id, sessionId: sessionId)
+                    toastMsg = favoriteText
+                    getFavoriteStatus()
+                } catch {
+                    toastMsg = error.localizedDescription
+                }
+            }
+            showToast = true
+        }
+        
+        private func clearToast() {
+            toastMsg = nil
         }
     }
 }

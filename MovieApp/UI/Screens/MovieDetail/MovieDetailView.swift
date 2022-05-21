@@ -14,7 +14,6 @@ struct MovieDetailView: View {
     
     @EnvironmentObject private var appState: AppState
     @StateObject private var vm: MovieDetailViewModel
-    
     @State private var size: CGSize = .zero
     
     private let linearGradient = LinearGradient(stops: [
@@ -22,9 +21,13 @@ struct MovieDetailView: View {
         Gradient.Stop(color: Color.theme.background, location: 0.6)
     ], startPoint: .top, endPoint: .bottom)
     
-    init(movie: Movie) {
+    init(movie: Movie, authService: MovieDBAuthProtocol) {
         self.movie = movie
-        _vm = StateObject(wrappedValue: MovieDetailViewModel(movie: movie, dataService: MovieDataService()))
+        _vm = StateObject(wrappedValue: MovieDetailViewModel(
+            movie: movie,
+            dataService: MovieDataService(),
+            authService: authService
+        ))
     }
     
     var body: some View {
@@ -34,7 +37,6 @@ struct MovieDetailView: View {
             
             GeometryReader { geometry in
                 VStack {
-                    
                     if vm.isLoading {
                         ProgressView()
                             .frame(maxWidth: .infinity)
@@ -61,8 +63,7 @@ struct MovieDetailView: View {
                                 .padding(.top, geometry.size.height * 0.15)
                                 .padding(.bottom, geometry.size.height * 0.2)
                             }
-                        }
-                        .ignoresSafeArea()
+                        }.ignoresSafeArea()
                     }
                 }
                 .onAppear {
@@ -70,20 +71,28 @@ struct MovieDetailView: View {
                 }
             }
         }
+        // TODO: Another leaks again
+        .toast(isPresenting: $vm.showToast, tapToDismiss: true) {
+            AlertToast(displayMode: .banner(.pop), type: .regular, title: vm.toastMsg)
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    if !appState.authService.isAuthenticated {
-                        appState.showSignInScreen()
-                    } else {
-                        // save
-                    }
+                    markFavorite()
                 } label: {
                     Image(systemName: "heart.fill")
-                        .foregroundColor(.white)
+                        .foregroundColor(vm.isFavorited ? Color.theme.primary : .white )
                 }
-
             }
+        }
+    }
+    
+    private func markFavorite() {
+        if vm.authService.isAuthenticated {
+            vm.favorite()
+        } else {
+            // else show guest
+            appState.showSignInScreen()
         }
     }
 }
@@ -91,8 +100,8 @@ struct MovieDetailView: View {
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MovieDetailView(movie: DeveloperPreview.mockMovie)
-//                .navigationBarHidden(true)
+            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService())
+            //                .navigationBarHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
         }.environmentObject(AppState())
     }
@@ -184,7 +193,6 @@ extension MovieDetailView {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(vm.videos) { video in
-                        // TODO: Leaks detected from this Plugin
                         YoutubeView(videoID: video.key ?? "")
                             .frame(width: size.width / 1.25, height: size.height * 0.2)
                     }

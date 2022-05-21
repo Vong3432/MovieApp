@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 final class AppState: ObservableObject {
-    
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
     

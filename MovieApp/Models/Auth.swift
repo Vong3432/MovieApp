@@ -27,3 +27,22 @@ struct CreateSessionResponse: Decodable {
     let expiresAt: String
     let requestToken: String
 }
+
+// MARK: - Account
+struct Account: Codable {
+    let avatar: Avatar?
+    let id: Int
+    let iso639_1, iso3166_1, name: String?
+    let includeAdult: Bool?
+    let username: String?
+}
+
+// MARK: - Avatar
+struct Avatar: Codable {
+    let gravatar: Gravatar?
+}
+
+// MARK: - Gravatar
+struct Gravatar: Codable {
+    let hash: String?
+}

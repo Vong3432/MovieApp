@@ -32,7 +32,7 @@ class NetworkingManager {
         // TODO: Remove Data() if found a way to handle optional Data in request.
         let (data, response) = try await URLSession.shared.upload(for: request, from: body ?? Data())
         
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
         }
         
@@ -48,7 +48,7 @@ class NetworkingManager {
         let request = getRequestAfterConfig(url: newUrl)
         let (data, response) = try await URLSession.shared.upload(for: request, from: body)
         
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
         }
         
@@ -63,7 +63,7 @@ class NetworkingManager {
         let newUrl = try getURLAfterConfig(url: url, query: query)
         let (data, response) = try await URLSession.shared.data(from: newUrl)
         
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
         }
         
@@ -112,6 +112,11 @@ class NetworkingManager {
     static func handleURLResposne(output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
         guard let response = output.response as? HTTPURLResponse,
               response.statusCode >= 200 && response.statusCode < 300 else {
+                  
+                  if let errorResponse = MovieDBAPIResponseParser.getErrorResponse(output.data) {
+                      throw errorResponse
+                  }
+                  
                   throw NetworkingError.badUrlResponse(url: url)
               }
         return output.data
@@ -122,8 +127,7 @@ class NetworkingManager {
         case .finished:
             break
         case .failure(let error):
-            print(String(describing: error))
-            //            print(error.localizedDescription) // human readable error
+            print(error.localizedDescription) // human readable error
             break
         }
     }

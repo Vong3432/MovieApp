@@ -36,17 +36,21 @@
 import Foundation
 
 // MARK: - Movie
-struct Movie: Codable, Identifiable {
+struct Movie: Codable, Identifiable, Equatable {
     let posterPath: String?
     let adult: Bool?
     let overview, releaseDate: String?
     let genreIDS: [Int]?
-    let id: Int?
+    let id: Int
     let originalTitle, originalLanguage , title, backdropPath: String?
     let popularity: Double?
     let voteCount: Int?
     let video: Bool?
     let voteAverage: Double?
+    
+    static func == (lhs: Movie, rhs: Movie) -> Bool {
+        lhs.id == rhs.id
+    }
     
     enum CodingKeys: String, CodingKey {
         case posterPath = "poster_path"

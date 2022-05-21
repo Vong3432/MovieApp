@@ -25,21 +25,45 @@ enum MovieDBAuthLoginError: LocalizedError {
 }
 
 final class MovieDBAuthService: MovieDBAuthProtocol {
+   
     @Published var isAuthenticated: Bool = false
     var isAuthenticatedPublisher: Published<Bool>.Publisher { $isAuthenticated }
     var isAuthenticatedPublished: Published<Bool> { _isAuthenticated }
+    
+    @Published var account: Account? = nil
+    var accountPublisher: Published<Account?>.Publisher { $account }
+    var accountPublished: Published<Account?> { _account }
     
     private var sessionId: String? = nil
     
     init() {
         isAuthenticated = UserDefaults.standard.bool(forKey: .authenticated)
         sessionId = try? FileManager.decode(String.self, from: .movieDBSessionID)
+        
+        if let sessionId = sessionId {
+            Task {
+                try? await getAccount(sessionId)
+            }
+        }
+    }
+    
+    func getSessionId() -> String? {
+        return sessionId
     }
     
     private func createRequestToken() async throws -> CreateSessionResponse {
-        guard let url = URL(string: APIEndpoints.createRequestTokenUrl) else { fatalError() }
+        guard let url = URL(string: APIEndpoints.createRequestTokenUrl.url) else { fatalError() }
         let responseData = try await NetworkingManager.download(url: url)
         return try MovieDBAPIResponseParser.decode(responseData)
+    }
+    
+    private func getAccount(_ sessionId: String) async throws {
+        guard let getAccountUrl = URL(string: APIEndpoints.getAccount.url) else { return }
+        let queryItems: [URLQueryItem] = [URLQueryItem(name: "session_id", value: sessionId)]
+        
+        let accountResponse = try await NetworkingManager.download(url: getAccountUrl, query: queryItems)
+        let decodedAccount: Account = try MovieDBAPIResponseParser.decode(accountResponse)
+        account = decodedAccount
     }
     
     func login(username: String, password: String) async throws {
@@ -50,19 +74,18 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
         
         if let encodedAuth = try? MovieDBAPIResponseParser.encode(auth),
            let encodedSessionID = try? MovieDBAPIResponseParser.encode(createSessionID),
-           let loginUrl = URL(string: APIEndpoints.createSessionWithLoginUrl),
-           let createSessionIdUrl = URL(string: APIEndpoints.createSessionIDUrl)
+           let loginUrl = URL(string: APIEndpoints.createSessionWithLoginUrl.url),
+           let createSessionIdUrl = URL(string: APIEndpoints.createSessionIDUrl.url)
         {
             // If no error after requesting token, then
             // we call login API to proceed
             let _ = try await NetworkingManager.post(url: loginUrl, body: encodedAuth)
             let createSessionResponse = try await NetworkingManager.post(url: createSessionIdUrl, body: encodedSessionID)
-            
             let createSessionIDResponseDecoded: CreateSessionIDResponse = try MovieDBAPIResponseParser.decode(createSessionResponse)
             
-            try FileManager.encode(createSessionIDResponseDecoded.sessionId, to: .movieDBSessionID)
-
             // login successfully.
+            try FileManager.encode(createSessionIDResponseDecoded.sessionId, to: .movieDBSessionID)
+            try await getAccount(createSessionIDResponseDecoded.sessionId)
             sessionId = createSessionIDResponseDecoded.sessionId
             isAuthenticated = true
         } else {
@@ -78,7 +101,7 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
         isAuthenticated = false
         self.sessionId = nil
         
-        guard let url = URL(string: APIEndpoints.logoutUrl),
+        guard let url = URL(string: APIEndpoints.logoutUrl.url),
               let encoded = try? MovieDBAPIResponseParser.encode(sessionId)
         else { return }
         

@@ -52,6 +52,9 @@
 		3B9149292834CFDE0001C191 /* CornerRadiusViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */; };
 		3B9149302834D5D10001C191 /* CloseFullScreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B91492F2834D5D10001C191 /* CloseFullScreenButton.swift */; };
 		3BAA0D4928379FE800981FC7 /* YoutubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4828379FE800981FC7 /* YoutubeVideo.swift */; };
+		3BAA0D4B2837A7BC00981FC7 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */; };
+		3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAA0D4D2837AC8900981FC7 /* AlertToast */; };
+		3BAA0D502837F43E00981FC7 /* ButtonViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */; };
 		3BE9C7D527E4BC1D007B2F5B /* Crew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7D427E4BC1D007B2F5B /* Crew.swift */; };
 		3BE9C7D927E4C2EC007B2F5B /* CrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7D827E4C2EC007B2F5B /* CrewView.swift */; };
 		3BE9C7DB27E4C8F1007B2F5B /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7DA27E4C8F1007B2F5B /* Collection.swift */; };
@@ -129,6 +132,8 @@
 		3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusViewModifier.swift; sourceTree = "<group>"; };
 		3B91492F2834D5D10001C191 /* CloseFullScreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseFullScreenButton.swift; sourceTree = "<group>"; };
 		3BAA0D4828379FE800981FC7 /* YoutubeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideo.swift; sourceTree = "<group>"; };
+		3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
+		3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModifier.swift; sourceTree = "<group>"; };
 		3BE9C7D427E4BC1D007B2F5B /* Crew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crew.swift; sourceTree = "<group>"; };
 		3BE9C7D827E4C2EC007B2F5B /* CrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewView.swift; sourceTree = "<group>"; };
 		3BE9C7DA27E4C8F1007B2F5B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -321,6 +326,7 @@
 			children = (
 				3B2EBFBA27DC7EDA009848C5 /* TintViewModifier.swift */,
 				3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */,
+				3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -360,6 +366,7 @@
 				3BE9C7E227E4CD9F007B2F5B /* Author.swift */,
 				3B2CD30E2833956D00F61696 /* Walkthrough.swift */,
 				3B2CD31228339FBB00F61696 /* Auth.swift */,
+				3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -653,11 +660,13 @@
 				3BE9C7E127E4CCC5007B2F5B /* ReviewView.swift in Sources */,
 				3B2EBFB227DC7B30009848C5 /* FavoriteView.swift in Sources */,
 				3B2CD30B28338CEC00F61696 /* PageViewController.swift in Sources */,
+				3BAA0D502837F43E00981FC7 /* ButtonViewModifier.swift in Sources */,
 				3B85B4C32836A246000FE043 /* FileManager.swift in Sources */,
 				3B2EBFD827DCAB80009848C5 /* URL.swift in Sources */,
 				3B2EBFB427DC7B3E009848C5 /* ProfileView.swift in Sources */,
 				3B2EBFC227DC927A009848C5 /* Movie.swift in Sources */,
 				3B2EBFDA27DCAC6B009848C5 /* String.swift in Sources */,
+				3BAA0D4B2837A7BC00981FC7 /* Favorite.swift in Sources */,
 				3B9149272834C8DF0001C191 /* AuthViewModel.swift in Sources */,
 				3B2EBFA827DC78D8009848C5 /* Color.swift in Sources */,
 				3B2CD30D2833929300F61696 /* WalkthroughDetailView.swift in Sources */,

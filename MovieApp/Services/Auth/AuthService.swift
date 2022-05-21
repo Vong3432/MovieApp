@@ -11,6 +11,10 @@ protocol AuthServiceProtocol {
     var isAuthenticated: Bool { get }
     var isAuthenticatedPublisher: Published<Bool>.Publisher { get }
     var isAuthenticatedPublished: Published<Bool> { get }
+    
+    var account: Account? { get }
+    var accountPublisher: Published<Account?>.Publisher { get }
+    var accountPublished: Published<Account?> { get }
 }
 
 protocol AuthWithUsernamePassProtocol: AuthServiceProtocol {
@@ -18,5 +22,7 @@ protocol AuthWithUsernamePassProtocol: AuthServiceProtocol {
 }
 
 protocol MovieDBAuthProtocol: AuthWithUsernamePassProtocol {
-    func logout(_ sessionId: String) async throws  -> Void
+    func logout(_ sessionId: String) async throws -> Void
+    func getSessionId() -> String?
 }
+

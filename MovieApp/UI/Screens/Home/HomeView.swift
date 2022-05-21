@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var appState: AppState
     @StateObject private var vm = HomeViewModel(dataService: MovieDataService())
     @State private var size: CGSize = .zero
     
@@ -45,7 +46,7 @@ extension HomeView {
             LazyHStack(spacing: 28) {
                 ForEach(vm.topRatedMovies) { movie in
                     NavigationLink {
-                        MovieDetailView(movie: movie)
+                        MovieDetailView(movie: movie, authService: appState.authService)
                     } label: {
                         MovieCardView(movie: movie)
                             .frame(height: 400)
@@ -70,7 +71,7 @@ extension HomeView {
                 LazyHStack(spacing: 28) {
                     ForEach(vm.upcomingMovies) { movie in
                         NavigationLink {
-                            MovieDetailView(movie: movie)
+                            MovieDetailView(movie: movie, authService: appState.authService)
                         } label: {
                             MovieCardView(movie: movie)
                                 .frame(width: size.width * 0.4 , height: 300)
