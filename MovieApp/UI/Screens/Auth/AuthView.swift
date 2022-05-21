@@ -132,14 +132,11 @@ extension AuthView {
         } label: {
             if vm.isLoading {
                 ProgressView()
+                    .frame(maxWidth: .infinity)
             } else {
                 Text("Sign In")
-                    .fontWeight(.bold)
-                    .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.theme.primary)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                    .buttonFilled()
             }
         }
         .disabled(vm.isLoading)

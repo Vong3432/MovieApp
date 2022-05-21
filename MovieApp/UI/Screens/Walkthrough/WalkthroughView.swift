@@ -31,10 +31,8 @@ struct WalkthroughView: View {
             } label: {
                 Text("Continue")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.theme.primary)
+                    .buttonFilled()
                     .clipShape(Capsule())
             }
             .padding()
