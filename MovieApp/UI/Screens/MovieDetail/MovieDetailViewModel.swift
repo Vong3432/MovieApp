@@ -131,7 +131,7 @@ extension MovieDetailView {
             fetchMovieInfo(movie)
         }
         
-        private func getFavoriteStatus() {
+        func getFavoriteStatus() {
             guard let account = authService.account, let sessionId = authService.getSessionId() else { return }
             
             Task {

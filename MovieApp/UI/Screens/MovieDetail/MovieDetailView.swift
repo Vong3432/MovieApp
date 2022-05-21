@@ -71,9 +71,14 @@ struct MovieDetailView: View {
                 }
             }
         }
+        .onReceive(appState.authService.isAuthenticatedPublisher, perform: { isAuthenticated in
+            if isAuthenticated {
+                vm.getFavoriteStatus()
+            }
+        })
         // TODO: Another leaks again
         .toast(isPresenting: $vm.showToast, tapToDismiss: true) {
-            AlertToast(displayMode: .banner(.pop), type: .regular, title: vm.toastMsg)
+            AlertToast(displayMode: .banner(.slide), type: .regular, title: vm.toastMsg)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
