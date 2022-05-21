@@ -145,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +494,7 @@
 			);
 			name = MovieApp;
 			packageProductDependencies = (
+				3BAA0D4D2837AC8900981FC7 /* AlertToast */,
 			);
 			productName = MovieApp;
 			productReference = 3B2EBF7927DC76AA009848C5 /* MovieApp.app */;
@@ -567,6 +569,7 @@
 			);
 			mainGroup = 3B2EBF7027DC76AA009848C5;
 			packageReferences = (
+				3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = 3B2EBF7A27DC76AA009848C5 /* Products */;
 			projectDirPath = "";
@@ -987,6 +990,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3BAA0D4D2837AC8900981FC7 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3B2EBF7127DC76AA009848C5 /* Project object */;
 }

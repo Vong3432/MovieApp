@@ -17,6 +17,10 @@ extension MovieDetailView {
         @Published private(set) var top10Cast = [Cast]()
         @Published private(set) var reviews = [Movie.Review]()
         @Published private(set) var similarMovies = [Movie]()
+        @Published private(set) var isFavorited = false
+        
+        @Published private(set) var toastMsg: String? = nil
+        @Published var showToast: Bool = false
         
         private var currentReviewPage = 1
         private var totalReviewPages = 0

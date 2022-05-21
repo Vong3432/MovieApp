@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import YouTubePlayerKit
+import AlertToast
 
 struct MovieDetailView: View {
     
