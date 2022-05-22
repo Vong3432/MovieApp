@@ -29,14 +29,12 @@ struct ImageView: View {
                     .resizable()
                     .scaledToFit()
                     .background(Color.gray)
-                    .cornerRadius(18)
             } else {
                 Image(systemName: "xmark.octagon.fill")
                     .resizable()
                     .scaledToFit()
                     .aspectRatio(16 / 9, contentMode: .fit)
                     .background(Color.gray)
-                    .cornerRadius(18)
             }
         }
         

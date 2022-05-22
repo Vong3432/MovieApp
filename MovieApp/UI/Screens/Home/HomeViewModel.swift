@@ -27,7 +27,7 @@ extension HomeView {
             loadData()
         }
         
-        private func loadData() {
+        func loadData() {
             fetchTopRateMovies()
             fetchUpcomingMovies()
         }

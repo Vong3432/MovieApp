@@ -18,9 +18,13 @@ struct HomeView: View {
                 Color.theme.background
                     .ignoresSafeArea()
                 
-                ScrollView {
+                List {
                     topRatedMoviesList
                     upcomingMoviesList
+                }
+                .listStyle(.sidebar)
+                .refreshable {
+                    vm.loadData()
                 }
                 .padding(.bottom)
                 .onAppear {
@@ -56,7 +60,7 @@ extension HomeView {
                     .buttonStyle(.plain)
                 }
             }
-            .padding()
+            .padding(.vertical)
         }
     }
     
@@ -65,7 +69,6 @@ extension HomeView {
             Text("Upcoming")
                 .font(.title2)
                 .fontWeight(.bold)
-                .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 28) {
@@ -80,7 +83,7 @@ extension HomeView {
                         .buttonStyle(.plain)
                     }
                 }
-                .padding()
+                .padding(.vertical)
             }
         }
     }

@@ -14,6 +14,7 @@ struct MovieCardView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ImageView(url: movie.wrappedPosterPath)
+                .cornerRadius(18)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.wrappedTitle)
