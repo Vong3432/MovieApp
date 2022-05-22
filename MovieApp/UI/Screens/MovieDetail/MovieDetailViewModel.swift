@@ -30,14 +30,16 @@ extension MovieDetailView {
         private(set) var similarMovieUrl: String
         
         private var dataService: MovieDataServiceProtocol
+        private var favoriteService: FavoritedDataServiceProtocol
         let authService: MovieDBAuthProtocol
         
         private var cancellables = Set<AnyCancellable>()
         
-        init(movie: Movie, dataService: MovieDataServiceProtocol, authService: MovieDBAuthProtocol) {
+        init(movie: Movie, dataService: MovieDataServiceProtocol, authService: MovieDBAuthProtocol, favoriteService: FavoritedDataServiceProtocol) {
             self.currentMovie = movie
             self.dataService = dataService
             self.authService = authService
+            self.favoriteService = favoriteService
             videosUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/videos"
             crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/credits"
             reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/reviews"
@@ -137,16 +139,7 @@ extension MovieDetailView {
             Task {
                 do {
                     // TODO: Quite slow here
-                    let response = try await dataService.getFavoriteStatus(for: currentMovie, from: account.id, sessionId: sessionId)
-                    let decoded: MovieDBResponse<Movie> = try MovieDBAPIResponseParser.decode(response)
-                    let favoriteMovies = decoded.results ?? []
-                    let idx = favoriteMovies.firstIndex(where: { $0.id == currentMovie.id })
-                    
-                    if idx == nil {
-                        isFavorited = false
-                    } else {
-                        isFavorited = true
-                    }
+                    isFavorited = try await favoriteService.getFavoriteStatus(for: currentMovie, from: account.id, sessionId: sessionId)
                 } catch {
                     toastMsg = error.localizedDescription
                 }
@@ -163,7 +156,7 @@ extension MovieDetailView {
                     // else, we assume user want to "favorite" currentMovie.
                     clearToast()
                     let favoriteText = isFavorited ? "Remove this from your favorite list successfully" : "Mark as favorite successfully."
-                    try await dataService.markFavorite(for: currentMovie, as: !isFavorited, from: account.id, sessionId: sessionId)
+                    try await favoriteService.markFavorite(for: currentMovie, as: !isFavorited, from: account.id, sessionId: sessionId)
                     toastMsg = favoriteText
                     getFavoriteStatus()
                 } catch {

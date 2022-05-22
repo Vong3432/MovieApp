@@ -45,6 +45,7 @@ final class MovieDBAPIResponseParser {
         return try self.jsonDecoder.decode(T.self, from: data)
     }
     
+    
     /// Decode returned response from TheMovieDB API and return APIError if have.
     ///
     /// Because sometimes even though the request is valid, the API would still return [APIError](x-source-tag://APIError) back.

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 final class AppState: ObservableObject {
+    @Published var favoriteService: FavoritedDataServiceProtocol = FavoritedDataService()
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
     

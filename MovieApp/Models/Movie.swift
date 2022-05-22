@@ -52,21 +52,21 @@ struct Movie: Codable, Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
-    enum CodingKeys: String, CodingKey {
-        case posterPath = "poster_path"
-        case adult, overview
-        case releaseDate = "release_date"
-        case genreIDS = "genre_ids"
-        case id
-        case originalTitle = "original_title"
-        case originalLanguage = "original_language"
-        case title
-        case backdropPath = "backdrop_path"
-        case popularity
-        case voteCount = "vote_count"
-        case video
-        case voteAverage = "vote_average"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case posterPath = "poster_path"
+//        case adult, overview
+//        case releaseDate = "release_date"
+//        case genreIDS = "genre_ids"
+//        case id
+//        case originalTitle = "original_title"
+//        case originalLanguage = "original_language"
+//        case title
+//        case backdropPath = "backdrop_path"
+//        case popularity
+//        case voteCount = "vote_count"
+//        case video
+//        case voteAverage = "vote_average"
+//    }
     
     
     // MARK: - Movie.Review
@@ -76,15 +76,15 @@ struct Movie: Codable, Identifiable, Equatable {
         let content, createdAt, id, updatedAt: String
         let url: String
 
-        enum CodingKeys: String, CodingKey {
-            case author
-            case authorDetails = "author_details"
-            case content
-            case createdAt = "created_at"
-            case id
-            case updatedAt = "updated_at"
-            case url
-        }
+//        enum CodingKeys: String, CodingKey {
+//            case author
+//            case authorDetails = "author_details"
+//            case content
+//            case createdAt = "created_at"
+//            case id
+//            case updatedAt = "updated_at"
+//            case url
+//        }
         
         static func == (lhs: Movie.Review, rhs: Movie.Review) -> Bool {
             lhs.id == rhs.id

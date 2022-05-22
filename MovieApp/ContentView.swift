@@ -24,7 +24,10 @@ struct ContentView: View {
             }
             
             NavigationView {
-                FavoriteView()
+                FavoriteView(
+                    authService: appState.authService,
+                    favoriteService: appState.favoriteService
+                ).navigationTitle("Favorites")
             }
             .navigationViewStyle(.stack)
             .tabItem {

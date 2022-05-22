@@ -50,7 +50,11 @@ extension HomeView {
             LazyHStack(spacing: 28) {
                 ForEach(vm.topRatedMovies) { movie in
                     NavigationLink {
-                        MovieDetailView(movie: movie, authService: appState.authService)
+                        MovieDetailView(
+                            movie: movie,
+                            authService: appState.authService,
+                            favoriteService: appState.favoriteService
+                        )
                     } label: {
                         MovieCardView(movie: movie)
                             .frame(height: 400)
@@ -74,7 +78,11 @@ extension HomeView {
                 LazyHStack(spacing: 28) {
                     ForEach(vm.upcomingMovies) { movie in
                         NavigationLink {
-                            MovieDetailView(movie: movie, authService: appState.authService)
+                            MovieDetailView(
+                                movie: movie,
+                                authService: appState.authService,
+                                favoriteService: appState.favoriteService
+                            )
                         } label: {
                             MovieCardView(movie: movie)
                                 .frame(width: size.width * 0.4 , height: 300)

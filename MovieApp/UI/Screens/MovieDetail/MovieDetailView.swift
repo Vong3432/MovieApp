@@ -21,12 +21,13 @@ struct MovieDetailView: View {
         Gradient.Stop(color: Color.theme.background, location: 0.6)
     ], startPoint: .top, endPoint: .bottom)
     
-    init(movie: Movie, authService: MovieDBAuthProtocol) {
+    init(movie: Movie, authService: MovieDBAuthProtocol, favoriteService: FavoritedDataServiceProtocol) {
         self.movie = movie
         _vm = StateObject(wrappedValue: MovieDetailViewModel(
             movie: movie,
             dataService: MovieDataService(),
-            authService: authService
+            authService: authService,
+            favoriteService: favoriteService
         ))
     }
     
@@ -105,7 +106,9 @@ struct MovieDetailView: View {
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService())
+            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService(),            
+                favoriteService: FavoritedDataService()
+            )
             //                .navigationBarHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
         }.environmentObject(AppState())
