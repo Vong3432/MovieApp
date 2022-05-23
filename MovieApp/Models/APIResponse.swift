@@ -14,11 +14,11 @@ struct MovieDBResponse<T>: Codable where T: Codable {
     
     let totalResults, totalPages: Int?
     
-    enum CodingKeys: String, CodingKey {
-        case page, results
-        case totalResults = "total_results"
-        case totalPages = "total_pages"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case page, results
+//        case totalResults = "total_results"
+//        case totalPages = "total_pages"
+//    }
 }
 
 /// - Tag: APIError
