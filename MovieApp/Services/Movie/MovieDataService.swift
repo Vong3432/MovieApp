@@ -25,6 +25,13 @@ enum MovieDataServiceError: LocalizedError {
 }
 
 class MovieDataService: MovieDataServiceProtocol {
+    /// This method fetches list from API and returns result as AnyPublisher.
+    ///
+    /// The reasons that we don't create and store the results into a variable is because there are many APIEndPoints will return same ``T`` result.
+    ///
+    /// For instance: Fetching favorited movie list, popular or latest movie list will all returns ``T``. It would be weird to create  variables for every category of movies.
+    ///
+    /// Hence, instead of storing into variables, we just shift that responsibilities to the ViewModels that use this service, returning the results/error, and let them handle accordingly.
     func downloadData<T>(from url: String, as: T.Type) -> AnyPublisher<T, Error> where T: Codable {
         guard let url = URL(string: url) else { return Fail(error: NSError(domain: "Fail to download", code: 500, userInfo: nil)).eraseToAnyPublisher() }
         return NetworkingManager

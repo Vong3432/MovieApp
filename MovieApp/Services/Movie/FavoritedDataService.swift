@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol FavoritedDataServiceProtocol {
+protocol FavoritedDataServiceProtocol: Paginable {
     var favoritedMovies: [Movie] { get }
     var favoritedMoviesPublisher: Published<[Movie]>.Publisher { get }
     var favoritedMoviesPublished: Published<[Movie]> { get }
     
     func markFavorite(for movie: Movie, as: Bool, from: Int, sessionId: String) async throws -> Void
-    func getFavoritedMovies(from: Int, sessionId: String) async throws -> [Movie]
+    func getFavoritedMovies(from: Int, sessionId: String, nextPage: Bool?) async throws -> [Movie]
     func getFavoriteStatus(for movie: Movie, from: Int, sessionId: String) async throws -> Bool
 }
 
@@ -29,7 +29,10 @@ enum FavoritedDataServiceError: LocalizedError {
     }
 }
 
-class FavoritedDataService: FavoritedDataServiceProtocol {
+class FavoritedDataService: FavoritedDataServiceProtocol, Paginable {
+    var currentPage: Int = PaginableValues.defaultCurrentPage
+    var totalPages: Int = PaginableValues.defaultTotalPages
+    
     @Published var favoritedMovies = [Movie]()
     var favoritedMoviesPublished: Published<[Movie]> { _favoritedMovies }
     var favoritedMoviesPublisher: Published<[Movie]>.Publisher { $favoritedMovies }
@@ -45,15 +48,30 @@ class FavoritedDataService: FavoritedDataServiceProtocol {
         }
     }
     
-    func getFavoritedMovies(from accountId: Int, sessionId: String) async throws -> [Movie] {
-        guard let url = URL(string: APIEndpoints.getFavoriteMovies(accountId: "\(accountId)").url) else {
+    func getFavoritedMovies(from accountId: Int, sessionId: String, nextPage: Bool? = false) async throws -> [Movie] {
+        var apiUrl = APIEndpoints.getFavoriteMovies(accountId: "\(accountId)").url
+        
+        // If we want to load more reviews
+        if nextPage == true {
+            if shouldFetchNextPageUrl(url: &apiUrl) == false {
+                return favoritedMovies
+            }
+        }
+        
+        guard let url = URL(string: apiUrl) else {
             throw MovieDataServiceError.apiError("URL Error")
         }
-        let queryItems = [URLQueryItem(name: "session_id", value: sessionId)]
+        let queryItems = [
+            URLQueryItem(name: "session_id", value: sessionId),
+            URLQueryItem(name: "sort_by", value: "created_at.desc")
+        ]
     
         let data = try await NetworkingManager.download(url: url, query: queryItems)
         let response: MovieDBResponse<Movie> = try MovieDBAPIResponseParser.decode(data)
         let movies = response.results ?? []
+        
+        currentPage = response.page ?? PaginableValues.defaultCurrentPage
+        totalPages = response.totalPages ?? PaginableValues.defaultTotalPages
         favoritedMovies = movies
         
         return movies

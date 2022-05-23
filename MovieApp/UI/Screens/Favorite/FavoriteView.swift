@@ -21,24 +21,31 @@ struct FavoriteView: View {
             if vm.isLoading {
                 ProgressView()
             } else {
-                List {
-                    ForEach(vm.favoriteList) { favoritedMovie in
-                        NavigationLink {
-                            MovieDetailView(movie: favoritedMovie, authService: vm.authService, favoriteService: vm.dataService)
-                        } label: {
-                            MovieRowView(movie: favoritedMovie)
-                                .padding(.vertical)
-                        }
-                    }
-                    
+                favoritedList
+                if vm.favoriteList.isEmpty {
+                    Text("You have not mark any movie/tv as favorite currently.")
+                        .multilineTextAlignment(.center)
                 }
-                .refreshable {
-                    vm.loadFavorites()
-                }
-                .listStyle(.plain)
             }
         }
-        .onAppear(perform: vm.loadFavorites)
+        .onAppear {
+            vm.clear()
+            vm.loadFavorites()
+        }
+    }
+    
+    private func shouldFetchMore(_ favoritedMovie: Movie) {
+        if favoritedMovie == vm.favoriteList.last {
+            vm.loadMore()
+        }
+    }
+    
+    private func delete(for index: IndexSet) {
+        guard let idx = index.first else { return }
+        let movie = vm.favoriteList[idx]
+        vm.favoriteList.remove(atOffsets: index)
+        
+        vm.remove(movie)
     }
 }
 
@@ -51,5 +58,34 @@ struct FavoriteView_Previews: PreviewProvider {
             )
                 .navigationTitle("Favorites")
         }.preferredColorScheme(.dark)
+    }
+}
+
+extension FavoriteView {
+    private var favoritedList: some View {
+        List {
+            ForEach(vm.favoriteList) { favoritedMovie in
+                MovieRowView(
+                    movie: favoritedMovie,
+                    authService: vm.authService,
+                    dataService: vm.dataService
+                )
+                    .padding(.vertical)
+                    .onAppear {
+                        shouldFetchMore(favoritedMovie)
+                    }
+            }
+            .onDelete(perform: delete(for:))
+            
+            if vm.isFetchingMore {
+                Text("Loading...")
+                    .opacity(0.75)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .refreshable {
+            vm.refresh()
+        }
+        .listStyle(.plain)
     }
 }

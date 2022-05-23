@@ -11,6 +11,7 @@ import Algorithms
 
 extension FavoriteView {
     class FavoriteViewModel: ObservableObject {
+        @Published var isFetchingMore = false
         @Published var isLoading = false
         @Published var favoriteList = [Movie]()
         
@@ -35,12 +36,49 @@ extension FavoriteView {
                 .store(in: &cancellables)
         }
         
-        func loadFavorites() {
-            guard let account = authService.account, let sessionId = authService.getSessionId() else { return }
-            Task {
-                isLoading = true
-                let _ = try? await dataService.getFavoritedMovies(from: account.id, sessionId: sessionId)
+        func loadFavorites(nextPage: Bool? = false) {
+            guard let account = authService.account,
+                let sessionId = authService.getSessionId(),
+                isLoading == false else { return }
+            
+            Task { @MainActor in
+                // Don't show spinner for infinite pagination
+                if nextPage == false {
+                    isLoading = true
+                }
+                let _ = try? await dataService.getFavoritedMovies(from: account.id, sessionId: sessionId, nextPage: nextPage)
                 isLoading = false
+                isFetchingMore = false
+            }
+        }
+        
+        func refresh() {
+            clear()
+            isLoading = false
+            loadFavorites()
+        }
+        
+        func loadMore() {
+            isFetchingMore = true
+            
+            // Wait for 1s to let users know we are loading more data
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.loadFavorites(nextPage: true)
+            }
+        }
+        
+        func clear() {
+            favoriteList = []
+            isFetchingMore = false
+            dataService.reset()
+        }
+        
+        func remove(_ movie: Movie) {
+            guard let account = authService.account,
+                let sessionId = authService.getSessionId() else { return }
+            
+            Task {
+                try? await dataService.markFavorite(for: movie, as: false, from: account.id, sessionId: sessionId)
             }
         }
     }
