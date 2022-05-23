@@ -86,9 +86,16 @@ struct MovieDetailView: View {
                 Button {
                     markFavorite()
                 } label: {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(vm.isFavorited ? Color.theme.primary : .white )
+                    if vm.isFavorited {
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(Color.theme.primary)
+                    } else {
+                        Image(systemName: "heart")
+                            .foregroundColor(.white)
+                    }
                 }
+                .opacity(vm.isLoading || vm.isFavorited ? 0.5 : 1.0)
+                .disabled(vm.isLoading || vm.isFavorited)
             }
         }
     }
