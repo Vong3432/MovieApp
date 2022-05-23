@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Algorithms
 
 extension FavoriteView {
     class FavoriteViewModel: ObservableObject {
@@ -27,7 +28,9 @@ extension FavoriteView {
         private func subscribe() {
             dataService.favoritedMoviesPublisher
                 .sink { [weak self] favoriteList in
-                    self?.favoriteList = favoriteList
+                    guard let self = self else { return }
+                    let combined = chain(self.favoriteList, favoriteList)
+                    self.favoriteList = combined.uniqued(on: { $0.id })
                 }
                 .store(in: &cancellables)
         }

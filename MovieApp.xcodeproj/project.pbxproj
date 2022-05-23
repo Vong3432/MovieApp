@@ -54,6 +54,7 @@
 		3B9149272834C8DF0001C191 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9149262834C8DF0001C191 /* AuthViewModel.swift */; };
 		3B9149292834CFDE0001C191 /* CornerRadiusViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */; };
 		3B9149302834D5D10001C191 /* CloseFullScreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B91492F2834D5D10001C191 /* CloseFullScreenButton.swift */; };
+		3B9F9640283BB802002C8F70 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9F963F283BB802002C8F70 /* Algorithms */; };
 		3BAA0D4928379FE800981FC7 /* YoutubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4828379FE800981FC7 /* YoutubeVideo.swift */; };
 		3BAA0D4B2837A7BC00981FC7 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */; };
 		3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAA0D4D2837AC8900981FC7 /* AlertToast */; };
@@ -156,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B9F9640283BB802002C8F70 /* Algorithms in Frameworks */,
 				3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +513,7 @@
 			name = MovieApp;
 			packageProductDependencies = (
 				3BAA0D4D2837AC8900981FC7 /* AlertToast */,
+				3B9F963F283BB802002C8F70 /* Algorithms */,
 			);
 			productName = MovieApp;
 			productReference = 3B2EBF7927DC76AA009848C5 /* MovieApp.app */;
@@ -586,6 +589,7 @@
 			mainGroup = 3B2EBF7027DC76AA009848C5;
 			packageReferences = (
 				3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = 3B2EBF7A27DC76AA009848C5 /* Products */;
 			projectDirPath = "";
@@ -1013,6 +1017,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1024,6 +1036,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B9F963F283BB802002C8F70 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
 		3BAA0D4D2837AC8900981FC7 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */;
