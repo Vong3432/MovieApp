@@ -15,6 +15,7 @@ protocol FavoritedDataServiceProtocol: Paginable {
     func markFavorite(for movie: Movie, as: Bool, from: Int, sessionId: String) async throws -> Void
     func getFavoritedMovies(from: Int, sessionId: String, nextPage: Bool?) async throws -> [Movie]
     func getFavoriteStatus(for movie: Movie, from: Int, sessionId: String) async throws -> Bool
+    func clear() -> Void
 }
 
 
@@ -84,5 +85,9 @@ class FavoritedDataService: FavoritedDataServiceProtocol, Paginable {
         
         let encoded = try MovieDBAPIResponseParser.encode(body)
         let _ = try await NetworkingManager.post(url: url, body: encoded, query: queryItems)
+    }
+    
+    func clear() {
+        favoritedMovies = []
     }
 }

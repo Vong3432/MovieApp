@@ -28,15 +28,15 @@ struct FavoriteView: View {
                 }
             }
         }
-        .onAppear {
+        .task {
             vm.clear()
-            vm.loadFavorites()
+            await vm.loadFavorites()
         }
     }
     
-    private func shouldFetchMore(_ favoritedMovie: Movie) {
+    private func shouldFetchMore(_ favoritedMovie: Movie) async {
         if favoritedMovie == vm.favoriteList.last {
-            vm.loadMore()
+            await vm.loadMore()
         }
     }
     
@@ -72,7 +72,9 @@ extension FavoriteView {
                 )
                     .padding(.vertical)
                     .onAppear {
-                        shouldFetchMore(favoritedMovie)
+                        Task {
+                            await shouldFetchMore(favoritedMovie)
+                        }
                     }
             }
             .onDelete(perform: delete(for:))
@@ -84,7 +86,9 @@ extension FavoriteView {
             }
         }
         .refreshable {
-            vm.refresh()
+            Task {
+                await vm.refresh()
+            }
         }
         .listStyle(.plain)
     }

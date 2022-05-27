@@ -36,41 +36,40 @@ extension FavoriteView {
                 .store(in: &cancellables)
         }
         
-        func loadFavorites(nextPage: Bool? = false) {
+        func loadFavorites(nextPage: Bool? = false) async {
             guard let account = authService.account,
                 let sessionId = authService.getSessionId(),
                 isLoading == false else { return }
             
-            Task { @MainActor in
-                // Don't show spinner for infinite pagination
-                if nextPage == false {
-                    isLoading = true
-                }
-                let _ = try? await dataService.getFavoritedMovies(from: account.id, sessionId: sessionId, nextPage: nextPage)
-                isLoading = false
-                isFetchingMore = false
+            // Don't show spinner for infinite pagination
+            if nextPage == false {
+                isLoading = true
             }
+            let _ = try? await dataService.getFavoritedMovies(from: account.id, sessionId: sessionId, nextPage: nextPage)
+            isLoading = false
+            isFetchingMore = false
         }
         
-        func refresh() {
+        func refresh() async {
             clear()
             isLoading = false
-            loadFavorites()
+            await loadFavorites()
         }
         
-        func loadMore() {
+        func loadMore() async {
             isFetchingMore = true
             
             // Wait for 1s to let users know we are loading more data
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.loadFavorites(nextPage: true)
-            }
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            await loadFavorites(nextPage: true)
         }
         
         func clear() {
+            /// clear local favoriteList so that we can "completely" clear favoriteList because there is a ``chain()`` in ``self.subscribe()``.
             favoriteList = []
             isFetchingMore = false
             dataService.reset()
+            dataService.clear()
         }
         
         func remove(_ movie: Movie) {
