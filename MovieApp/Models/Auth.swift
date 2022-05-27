@@ -46,3 +46,9 @@ struct Avatar: Codable {
 struct Gravatar: Codable {
     let hash: String?
 }
+
+#if DEBUG
+extension Account {
+    static let mockedAccount = Account(avatar: Avatar(gravatar: Gravatar(hash: UUID().uuidString)), id: 1, iso639_1: nil, iso3166_1: nil, name: "John", includeAdult: nil, username: "john")
+}
+#endif
