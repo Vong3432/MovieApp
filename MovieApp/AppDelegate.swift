@@ -15,6 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         let env = ProcessInfo.processInfo.environment
         if let uiTests = env["UITESTS"], uiTests == "1" {
             // reset auth status
+            try? FileManager().removeItem(at: FileManager.getDocumentsDirectory().appendingPathComponent(.movieDBSessionID))
             UserDefaults.standard.set(false, forKey: .authenticated) //logout
         }
         

@@ -105,8 +105,9 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
               let encoded = try? MovieDBAPIResponseParser.encode(sessionId)
         else { return }
         
-        let _ = try await NetworkingManager.delete(url: url, body: encoded)
+        let _ = try? await NetworkingManager.delete(url: url, body: encoded)
         
+        try? FileManager().removeItem(at: FileManager.getDocumentsDirectory().appendingPathComponent(.movieDBSessionID))
         UserDefaults.standard.set(false, forKey: .authenticated)
     }
 }
