@@ -8,5 +8,4 @@ Movie app built with SwiftUI
 
 ## Demo
  
-https://user-images.githubusercontent.com/36991424/169664562-29b370b2-cb31-4a2b-a1f7-e7d4e8448ba7.mp4
-
+![Simulator Screen Recording - iPhone 12 Pro - 2022-05-28 at 21 42 35-min](https://user-images.githubusercontent.com/36991424/170828822-4bb06ae6-da84-4895-bc35-b9a385bff828.gif)
