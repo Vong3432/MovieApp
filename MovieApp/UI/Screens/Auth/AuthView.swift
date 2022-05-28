@@ -20,6 +20,10 @@ struct AuthView: View {
         _vm = StateObject(wrappedValue: AuthViewModel(authService: authService))
     }
     
+    private var disabledBtn: Bool {
+        vm.username.trimmingCharacters(in: .whitespaces).isEmpty || vm.password.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+    
     var body: some View {
         ZStack {
             Color.theme.background.ignoresSafeArea()
@@ -99,6 +103,7 @@ extension AuthView {
             Text("Sign In")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .accessibilityIdentifier("SignInPageTitle")
             
             VStack(spacing: 20) {
                 TextField("Username", text: $vm.username)
@@ -107,6 +112,7 @@ extension AuthView {
                     .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(12)
+                    .accessibilityIdentifier("UsernameField")
                 
                 SecureField("Password", text: $vm.password)
                     .focused($focusedField, equals: .password)
@@ -114,6 +120,7 @@ extension AuthView {
                     .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(12)
+                    .accessibilityIdentifier("PasswordField")
                 
                 if let errorMsg = vm.errorMsg {
                     Text(errorMsg)
@@ -121,6 +128,7 @@ extension AuthView {
                         .fontWeight(.bold)
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(nil)
+                        .accessibilityIdentifier("FormErrorLabel")
                 }
             }
         }
@@ -139,6 +147,7 @@ extension AuthView {
                     .buttonFilled()
             }
         }
-        .disabled(vm.isLoading)
+        .accessibilityIdentifier("SignInBtn")
+        .disabled(vm.isLoading || disabledBtn)
     }
 }

@@ -94,6 +94,7 @@ struct MovieDetailView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .accessibilityIdentifier("FavoriteBtn")
                 .opacity(vm.isLoading || vm.isFavorited ? 0.5 : 1.0)
                 .disabled(vm.isLoading || vm.isFavorited)
             }
@@ -137,6 +138,7 @@ extension MovieDetailView {
                     .font(.title2)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("MovieTitle")
                 
                 RatingView(rating: vm.currentMovie.wrappedVoteAverage)
                     .font(.caption)
@@ -232,6 +234,7 @@ extension MovieDetailView {
                         Text("View all")
                             .font(.caption)
                             .padding([.leading, .bottom])
+                            .accessibilityIdentifier("ViewMoreCasts")
                     }
                 }
             }

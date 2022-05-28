@@ -18,18 +18,28 @@ struct HomeView: View {
                 Color.theme.background
                     .ignoresSafeArea()
                 
-                List {
-                    topRatedMoviesList
-                    upcomingMoviesList
-                }
-                .listStyle(.sidebar)
-                .refreshable {
-                    vm.loadData()
-                }
-                .padding(.bottom)
-                .onAppear {
+                VStack {
+                    if vm.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .accessibilityIdentifier("HomeProgressView")
+                    } else {
+                        List {
+                            topRatedMoviesList
+                            upcomingMoviesList
+                        }
+                        .accessibilityIdentifier("HomeList")
+                        .listStyle(.sidebar)
+                        .refreshable {
+                            vm.loadData()
+                        }
+                        .padding(.bottom)
+                        
+                    }
+                }.onAppear {
                     size = geo.size
                 }
+                
             }
         }
     }
@@ -61,6 +71,7 @@ extension HomeView {
                             .frame(maxWidth: .infinity)
                             .clipped()
                     }
+                    .accessibilityIdentifier(movie.wrappedTitle)
                     .buttonStyle(.plain)
                 }
             }

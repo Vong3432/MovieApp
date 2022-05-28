@@ -34,7 +34,7 @@ struct MovieCardView: View {
             .padding(.vertical)
             
             Spacer()
-        }
+        }.accessibilityIdentifier("MovieCard")
     }
     
 }

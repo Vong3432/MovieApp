@@ -13,6 +13,7 @@ import Combine
 extension HomeView {
     class HomeViewModel: ObservableObject {
         
+        @Published private(set) var isLoading = false
         @Published private(set) var topRatedMovies = [Movie]()
         @Published private(set) var upcomingMovies = [Movie]()
 
@@ -28,6 +29,7 @@ extension HomeView {
         }
         
         func loadData() {
+            isLoading = true
             fetchTopRateMovies()
             fetchUpcomingMovies()
         }
@@ -41,9 +43,12 @@ extension HomeView {
         }
         
         private func fetchUpcomingMovies() {
-            dataService.downloadData(from: upcomingUrl, as: MovieDBResponse.self)
+            dataService.downloadData(from: upcomingUrl, as: MovieDBResponse<Movie>.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.upcomingMovies = returnedData.results ?? []
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self?.isLoading = false
+                    }
                 }
                 .store(in: &cancellables)
         }

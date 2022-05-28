@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct MovieApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var appState = AppState()
     @AppStorage("firstLaunch") var firstLaunched: Bool = true
     

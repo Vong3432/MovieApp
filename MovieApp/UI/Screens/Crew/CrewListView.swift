@@ -23,6 +23,7 @@ struct CrewListView: View {
                 }
             }
         }
+        .accessibilityIdentifier("CrewList")
         .padding([.horizontal, .bottom])
         .navigationTitle("All Cast")
     }

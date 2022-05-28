@@ -30,6 +30,7 @@ struct FavoriteView: View {
         }
         .task {
             vm.clear()
+            try? await Task.sleep(nanoseconds: 1_000_000)
             await vm.loadFavorites()
         }
     }
@@ -85,6 +86,7 @@ extension FavoriteView {
                     .multilineTextAlignment(.center)
             }
         }
+        .accessibilityIdentifier("FavoriteList")
         .refreshable {
             Task {
                 await vm.refresh()

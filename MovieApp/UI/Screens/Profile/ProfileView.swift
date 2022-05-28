@@ -21,6 +21,10 @@ struct ProfileView: View {
                     Button("Logout") {
                         logout()
                     }
+                } else {
+                    Button("Login") {
+                        login()
+                    }
                 }
             }
         }
@@ -28,6 +32,12 @@ struct ProfileView: View {
             self.isAuthenticated = isAuthenticated
         })
         .preferredColorScheme(.dark)
+    }
+    
+    private func login() {
+        Task {
+            appState.showSignInScreen()
+        }
     }
     
     private func logout() {
