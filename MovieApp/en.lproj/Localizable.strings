@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  MovieApp
+
+  Created by Vong Nyuksoon on 30/05/2022.
+  
+*/
+
+"preference_success" = "Preference language is set successfully!";
+
+"walkthrough_title" = "What's about the Movie APP";
+"walkthrough_feat1" = "Explore the latest movies";
+"walkthrough_feat2" = "Bookmark movies anytime";
+"walkthrough_feat3" = "Enjoy online movie streaming services";
+
+"walkthrough_feat1_desc" = "A variety of movies are waiting for you to explore";
+"walkthrough_feat2_desc" = "Bookmark movies anytime, anywhere you want";
+"walkthrough_feat3_desc" = "Watch movies via streaming service is no longer a problem";
+
+"home_tab_title" = "Home";
+"favorite_tab_title" = "Favorites";
+"profile_tab_title" = "Profile";
+"all_casts_title" = "All casts";
+
+"profile_preference_label" = "Preferences";
+"language" = "Languages";
+
+"upcoming" = "Upcoming";
+
+"movie_storyline" = "Storyline";
+"movie_casts" = "Casts";
+"movie_galleries" = "Galleries";
+"movie_reviews" = "Reviews";
+"movie_reviews_empty" = "No reviews yet";
+"movie_similar" = "Similar movies";
+
+"favorite_no_result" = "You have not mark any movie/tv as favorite currently.";
+"no_result" = "No result";
+"view_all" = "View all";
+"continue" = "Continue";
+
+"sign_out" = "Sign out";
+"sign_in" = "Sign in";
