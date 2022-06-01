@@ -23,7 +23,7 @@ struct FavoriteView: View {
             } else {
                 favoritedList
                 if vm.favoriteList.isEmpty {
-                    Text("You have not mark any movie/tv as favorite currently.")
+                    Text("favorite_no_result")
                         .multilineTextAlignment(.center)
                 }
             }
@@ -52,13 +52,27 @@ struct FavoriteView: View {
 
 struct FavoriteView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            FavoriteView(
-                authService: MovieDBAuthService(),
-                favoriteService: FavoritedDataService()
-            )
-                .navigationTitle("Favorites")
-        }.preferredColorScheme(.dark)
+        Group {
+            NavigationView {
+                FavoriteView(
+                    authService: MovieDBAuthService(),
+                    favoriteService: FavoritedDataService()
+                )
+                    .navigationTitle("favorite_tab_title")
+            }
+            .environment(\.locale, .init(identifier: "en"))
+            .preferredColorScheme(.dark)
+            
+            NavigationView {
+                FavoriteView(
+                    authService: MovieDBAuthService(),
+                    favoriteService: FavoritedDataService()
+                )
+                    .navigationTitle("favorite_tab_title")
+            }
+            .environment(\.locale, .init(identifier: "zh-Hans"))
+            .preferredColorScheme(.dark)
+        }
     }
 }
 

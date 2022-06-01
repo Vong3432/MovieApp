@@ -118,8 +118,10 @@ struct MovieDetailView_Previews: PreviewProvider {
                 favoriteService: FavoritedDataService()
             )
             //                .navigationBarHidden(true)
+                .preferredColorScheme(.dark)
                 .navigationBarTitleDisplayMode(.inline)
         }.environmentObject(AppState())
+            .foregroundColor(.white)
     }
 }
 
@@ -163,7 +165,7 @@ extension MovieDetailView {
     
     private var movieOverview: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Storyline")
+            Text("movie_storyline")
                 .font(.headline)
             
             Text(vm.currentMovie.wrappedOverview)
@@ -176,7 +178,7 @@ extension MovieDetailView {
     
     private var reviews: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Reviews")
+            Text("movie_reviews")
                 .font(.headline)
             
             ScrollView {
@@ -192,7 +194,7 @@ extension MovieDetailView {
                                 }
                         }
                     } else {
-                        Text("No reviews yet")
+                        Text("movie_reviews_empty")
                             .opacity(0.65)
                     }
                 }
@@ -204,7 +206,7 @@ extension MovieDetailView {
     
     private var gallery: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Galleries")
+            Text("movie_galleries")
                 .font(.headline)
             
             ScrollView(.horizontal, showsIndicators: false) {
@@ -223,7 +225,7 @@ extension MovieDetailView {
         VStack(alignment: .leading, spacing: 14) {
             
             HStack {
-                Text("Casts")
+                Text("movie_casts")
                     .font(.headline)
                 Spacer()
                 
@@ -231,7 +233,7 @@ extension MovieDetailView {
                     NavigationLink {
                         CrewListView(crew: crew)
                     } label: {
-                        Text("View all")
+                        Text("view_all")
                             .font(.caption)
                             .padding([.leading, .bottom])
                             .accessibilityIdentifier("ViewMoreCasts")
@@ -246,7 +248,7 @@ extension MovieDetailView {
                             CrewView(person: cast)
                         }
                     } else {
-                        Text("No result")
+                        Text("no_result")
                             .foregroundColor(.white)
                             .opacity(0.65)
                     }
@@ -258,7 +260,7 @@ extension MovieDetailView {
     
     private var similarMovies: some View {
         VStack(alignment: .leading) {
-            Text("Similar")
+            Text("movie_similar")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.horizontal)

@@ -10,6 +10,7 @@ import Foundation
 extension String {
     // UserDefault keys
     static let authenticated = "authenticated"
+    static let localePreference = "locale_preference"
     
     // FileManager
     static let movieDBSessionID = "moviedbsessionid"

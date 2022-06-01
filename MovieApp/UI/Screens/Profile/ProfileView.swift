@@ -10,23 +10,40 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var appState: AppState
     @State private var isAuthenticated: Bool = false
+    @Environment(\.locale) private var locale
     
     var body: some View {
         ZStack {
             Color.theme.background
             
-            VStack {
-                Text("Profile")
+            List {
+                Section(content: {
+                    Picker("language", selection: $appState.currentLocale) {
+                        
+                        ForEach(appState.availableIdentifiers, id: \.self) { identifier in
+                            Text(identifier)
+                                .tag(identifier)
+                        }
+                    }.pickerStyle(.automatic)
+                }, header: {
+                    Text("profile_preference_label")
+                })
+                
                 if isAuthenticated {
-                    Button("Logout") {
+                    Button("sign_out") {
                         logout()
                     }
+                    .accessibilityIdentifier("SignOutBtn")
                 } else {
-                    Button("Login") {
+                    Button("sign_in") {
                         login()
                     }
+                    .accessibilityIdentifier("SignInBtn")
                 }
+
             }
+            .listStyle(.grouped)
+            
         }
         .onReceive(appState.authService.isAuthenticatedPublisher, perform: { isAuthenticated in
             self.isAuthenticated = isAuthenticated
@@ -49,9 +66,20 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            ProfileView()
-                .environmentObject(AppState())
+        Group {
+            NavigationView {
+                ProfileView()
+                    .environmentObject(AppState())
+                    .navigationTitle("profile_tab_title")
+                    .environment(\.locale, .init(identifier: "en"))
+            }.previewDisplayName("ENG")
+            
+            NavigationView {
+                ProfileView()
+                    .environmentObject(AppState())
+                    .navigationTitle("profile_tab_title")
+                    .environment(\.locale, .init(identifier: "zh-Hans"))
+            }.previewDisplayName("ZH-hans")
         }
     }
 }

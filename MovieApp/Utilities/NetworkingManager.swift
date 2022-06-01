@@ -96,9 +96,15 @@ class NetworkingManager {
     }
     
     static func getURLAfterConfig(url: URL, query: [URLQueryItem]? = nil) throws -> URL {
-        let defaultQueryItems = [
+        
+        var defaultQueryItems = [
             URLQueryItem(name: "api_key", value: Keys.apiToken)
         ]
+        
+        // access user locale setting
+        if let locale = UserDefaults.standard.string(forKey: .localePreference) {
+            defaultQueryItems.append(URLQueryItem(name: "language", value: locale.toMovieDBLocaleString()))
+        }
         
         let queryItems = (query ?? []) + defaultQueryItems
         

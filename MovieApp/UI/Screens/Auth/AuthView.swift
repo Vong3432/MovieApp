@@ -100,7 +100,7 @@ extension AuthView {
     
     private var formContent: some View {
         VStack(alignment: .leading) {
-            Text("Sign In")
+            Text("sign_in")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .accessibilityIdentifier("SignInPageTitle")
@@ -142,7 +142,7 @@ extension AuthView {
                 ProgressView()
                     .frame(maxWidth: .infinity)
             } else {
-                Text("Sign In")
+                Text("sign_in")
                     .frame(maxWidth: .infinity)
                     .buttonFilled()
             }

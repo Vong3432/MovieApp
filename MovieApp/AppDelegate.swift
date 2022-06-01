@@ -17,6 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             // reset auth status
             try? FileManager().removeItem(at: FileManager.getDocumentsDirectory().appendingPathComponent(.movieDBSessionID))
             UserDefaults.standard.set(false, forKey: .authenticated) //logout
+            UserDefaults.standard.set("en", forKey: .localePreference) //reset to eng for testing
         }
         
         return true

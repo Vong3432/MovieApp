@@ -7,50 +7,51 @@
 
 import SwiftUI
 
+enum WalkThroughPage {
+    case configLang
+    case featureInfo
+}
+
 struct WalkthroughView: View {
     
     @Binding var firstLaunched: Bool
+    @State private var currentPage: WalkThroughPage = .configLang
+    
+    private var isShowingLang: Bool { currentPage == .configLang }
+    private var isShowingInfo: Bool { currentPage == .featureInfo }
     
     var body: some View {
-        VStack {
-            Spacer()
-            Spacer()
-            Text("What's about the Movie APP")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-            Spacer()
-            ForEach(Walkthrough.walkthroughs) { WalkthroughDetailView(walkthrough: $0)
-                    .padding(.horizontal)
+        ZStack {
+            ConfigLanguageView { selectedLang in
+                onDoneConfigLang(lang: selectedLang)
             }
-            Spacer()
-            Spacer()
             
-            Button {
-                finishWalkthrough()
-            } label: {
-                Text("Continue")
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity)
-                    .buttonFilled()
-                    .clipShape(Capsule())
-            }
-            .padding()
-            
-            Spacer()
-
+            AppFeatureInfoView(firstLaunched: $firstLaunched)
+                .opacity(isShowingInfo ? 1 : 0)
+                .offset(x: 0, y: isShowingInfo ? 0 : 300)
+                
         }
         .preferredColorScheme(.dark)
-        .customTint(Color.theme.primary)
     }
     
-    private func finishWalkthrough() {
-        firstLaunched = false
+    private func onDoneConfigLang(lang: String) {
+        // show next
+        withAnimation(.spring().delay(0.85)) {
+            self.currentPage = .featureInfo
+        }
     }
 }
 
 struct WalkthroughView_Previews: PreviewProvider {
     static var previews: some View {
-        WalkthroughView(firstLaunched: .constant(true))
+        Group {
+            WalkthroughView(firstLaunched: .constant(true))
+                .environment(\.locale, .init(identifier: "en"))
+                .previewDisplayName("EN")
+//            WalkthroughView(firstLaunched: .constant(true))
+//                .environment(\.locale, .init(identifier: "zh-Hans"))
+//                .previewDisplayName("CN")
+        }
     }
 }
+

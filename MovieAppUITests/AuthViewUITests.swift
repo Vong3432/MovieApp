@@ -38,7 +38,7 @@ class AuthViewUITests: XCTestCase {
     func test_AuthView_SignInButton_shouldDisabled_whenPwOrEmailIsEmpty() {
         // Given
         app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app.buttons["Login"].tap()
+        app.buttons["SignInBtn"].tap()
         
         XCTAssertTrue(app.staticTexts["SignInPageTitle"].exists)
         
@@ -63,7 +63,7 @@ class AuthViewUITests: XCTestCase {
     func test_AuthView_SignInButton_shouldEnable_whenPwAndEmailIsFilled() {
         // Given
         app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app.buttons["Login"].tap()
+        app.buttons["SignInBtn"].tap()
         
         XCTAssertTrue(app.staticTexts["SignInPageTitle"].exists)
         
@@ -90,7 +90,7 @@ class AuthViewUITests: XCTestCase {
     func test_AuthView_SignInButton_shouldEnable_whenPwAndEmailIsFilled_butIncorrectCredential() {
         // Given
         app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app.buttons["Login"].tap()
+        app.buttons["SignInBtn"].tap()
         
         XCTAssertTrue(app.staticTexts["SignInPageTitle"].exists)
         
@@ -129,7 +129,7 @@ class AuthViewUITests: XCTestCase {
     func test_AuthView_SignInButton_shouldEnable_whenPwAndEmailIsFilled_withCorrectCredential() {
         // Given
         app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app.buttons["Login"].tap()
+        app.buttons["SignInBtn"].tap()
         
         XCTAssertTrue(app.staticTexts["SignInPageTitle"].exists)
         

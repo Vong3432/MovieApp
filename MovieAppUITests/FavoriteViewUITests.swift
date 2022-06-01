@@ -32,7 +32,7 @@ class FavoriteViewUITests: XCTestCase {
         
         // pre-signin
         app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app.buttons["Login"].tap()
+        app.buttons["SignInBtn"].tap()
         
         XCTAssertTrue(app.staticTexts["SignInPageTitle"].exists)
         

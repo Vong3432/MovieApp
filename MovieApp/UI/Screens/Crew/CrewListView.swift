@@ -25,12 +25,16 @@ struct CrewListView: View {
         }
         .accessibilityIdentifier("CrewList")
         .padding([.horizontal, .bottom])
-        .navigationTitle("All Cast")
+        .navigationTitle("all_casts_title")
     }
 }
 
 struct CrewListView_Previews: PreviewProvider {
     static var previews: some View {
-        CrewListView(crew: Crew.mockCrew)
+        NavigationView {
+            CrewListView(crew: Crew.mockCrew)
+                .previewLayout(.sizeThatFits)
+                .preferredColorScheme(.dark)
+        }
     }
 }

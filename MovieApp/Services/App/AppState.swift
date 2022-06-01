@@ -9,12 +9,21 @@ import Foundation
 import SwiftUI
 
 final class AppState: ObservableObject {
+    let availableIdentifiers = ["en", "zh-Hans"]
+    
     @Published var favoriteService: FavoritedDataServiceProtocol = FavoritedDataService()
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
+    @Published var currentLocale: String = "en"
     
     init() {
-        
+        if let locale = UserDefaults.standard.string(forKey: .localePreference) {
+            // if user has set their preferenced languages
+            self.currentLocale = locale
+        } else  {
+            // otherwise, use "en"
+            self.currentLocale = availableIdentifiers[0]
+        }
     }
     
     func showSignInScreen() {
@@ -23,5 +32,10 @@ final class AppState: ObservableObject {
     
     func closeSignInScreen() {
         showingSignInScreen = false
+    }
+    
+    /// This function should be called in "MovieApp.swift" only.
+    func saveLocaleSetting(_ locale: String) {
+        UserDefaults.standard.set(locale, forKey: .localePreference)
     }
 }

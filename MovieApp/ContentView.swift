@@ -10,38 +10,42 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject private var appState: AppState
-
+    
     var body: some View {
         TabView {
             NavigationView {
                 HomeView()
-                    .navigationTitle("Movies")
+                    .navigationTitle("home_tab_title")
             }
             .navigationViewStyle(.stack)
             .tabItem {
                 Image(systemName: "house.fill")
-                Text("Home")
+                Text("home_tab_title")
+                    .accessibilityIdentifier("Home")
             }
             
             NavigationView {
                 FavoriteView(
                     authService: appState.authService,
                     favoriteService: appState.favoriteService
-                ).navigationTitle("Favorites")
+                ).navigationTitle("favorite_tab_title")
             }
             .navigationViewStyle(.stack)
             .tabItem {
                 Image(systemName: "heart.fill")
-                Text("Favorite")
+                Text("favorite_tab_title")
+                    .accessibilityIdentifier("Favorite")
             }
             
             NavigationView {
                 ProfileView()
+                    .navigationTitle("profile_tab_title")
             }
             .navigationViewStyle(.stack)
             .tabItem {
                 Image(systemName: "person.fill")
-                Text("Profile")
+                Text("profile_tab_title")
+                    .accessibilityIdentifier("Profile")
             }
         }
         .fullScreenCover(isPresented: $appState.showingSignInScreen) {
@@ -59,7 +63,15 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(AppState())
+        Group {
+            ContentView()
+                .environmentObject(AppState())
+                .previewDisplayName("ENG")
+                .environment(\.locale, .init(identifier: "en"))
+            ContentView()
+                .environmentObject(AppState())
+                .previewDisplayName("zh-CN")
+                .environment(\.locale, .init(identifier: "zh-Hans"))
+        }
     }
 }

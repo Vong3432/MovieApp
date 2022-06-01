@@ -38,6 +38,7 @@ struct HomeView: View {
                     }
                 }.onAppear {
                     size = geo.size
+                    vm.loadData()
                 }
                 
             }
@@ -49,7 +50,8 @@ struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             HomeView()
-                .navigationTitle("Movies")
+                .environmentObject(AppState())
+                .navigationTitle("home_tab_title")
         }.preferredColorScheme(.dark)
     }
 }
@@ -81,7 +83,7 @@ extension HomeView {
     
     private var upcomingMoviesList: some View {
         VStack(alignment: .leading) {
-            Text("Upcoming")
+            Text("upcoming")
                 .font(.title2)
                 .fontWeight(.bold)
             

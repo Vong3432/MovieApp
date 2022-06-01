@@ -9,17 +9,19 @@ import Foundation
 import SwiftUI
 
 struct ButtonViewModifier: ViewModifier {
+    let color: Color
+    
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(Color.theme.primary)
+            .background(color)
             .foregroundColor(.white)
             .cornerRadius(12)
     }
 }
 
 extension View {
-    func buttonFilled() -> some View {
-        return modifier(ButtonViewModifier())
+    func buttonFilled(with color: Color = Color.theme.primary) -> some View {
+        return modifier(ButtonViewModifier(color: color))
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WalkthroughDetailView: View {
+struct WalkthroughFeatureView: View {
     
     let walkthrough: Walkthrough
     
@@ -20,10 +20,10 @@ struct WalkthroughDetailView: View {
                 .frame(width: 72, height: 72)
             
             VStack(alignment: .leading, spacing: 12) {
-                Text(walkthrough.title)
+                Text(LocalizedStringKey(walkthrough.title))
                     .font(.headline)
                     .fontWeight(.medium)
-                Text(walkthrough.description)
+                Text(LocalizedStringKey(walkthrough.description))
                     .font(.subheadline)
                     .opacity(0.7)
             }
@@ -36,10 +36,18 @@ struct WalkthroughDetailView: View {
     }
 }
 
-struct WalkthroughDetailView_Previews: PreviewProvider {
+struct WalkthroughFeatureView_Previews: PreviewProvider {
     static var previews: some View {
-        WalkthroughDetailView(
-            walkthrough: .walkthroughs[3]
-        )
+        Group {
+            WalkthroughFeatureView(
+                walkthrough: .walkthroughs[1]
+            ).environment(\.locale, .init(identifier: "en"))
+                .previewDisplayName("EN")
+            
+            WalkthroughFeatureView(
+                walkthrough: .walkthroughs[1]
+            ).environment(\.locale, .init(identifier: "zh-Hans"))
+                .previewDisplayName("zhCN")
+        }
     }
 }
