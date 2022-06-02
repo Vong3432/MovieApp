@@ -61,6 +61,7 @@
 		3B9149272834C8DF0001C191 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9149262834C8DF0001C191 /* AuthViewModel.swift */; };
 		3B9149292834CFDE0001C191 /* CornerRadiusViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */; };
 		3B9149302834D5D10001C191 /* CloseFullScreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B91492F2834D5D10001C191 /* CloseFullScreenButton.swift */; };
+		3B9308CF2848A68C00A42D35 /* TextFieldViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9308CE2848A68C00A42D35 /* TextFieldViewModifier.swift */; };
 		3B9CF8AB28476E0B00C2A3AA /* APILocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9CF8AA28476E0B00C2A3AA /* APILocalization.swift */; };
 		3B9CF8AD2847777E00C2A3AA /* ConfigLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9CF8AC2847777E00C2A3AA /* ConfigLanguageView.swift */; };
 		3B9CF8AF284777AA00C2A3AA /* AppFeatureInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9CF8AE284777AA00C2A3AA /* AppFeatureInfoView.swift */; };
@@ -162,6 +163,7 @@
 		3B9149262834C8DF0001C191 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusViewModifier.swift; sourceTree = "<group>"; };
 		3B91492F2834D5D10001C191 /* CloseFullScreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseFullScreenButton.swift; sourceTree = "<group>"; };
+		3B9308CE2848A68C00A42D35 /* TextFieldViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldViewModifier.swift; sourceTree = "<group>"; };
 		3B9CF8AA28476E0B00C2A3AA /* APILocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILocalization.swift; sourceTree = "<group>"; };
 		3B9CF8AC2847777E00C2A3AA /* ConfigLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLanguageView.swift; sourceTree = "<group>"; };
 		3B9CF8AE284777AA00C2A3AA /* AppFeatureInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureInfoView.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				3B2EBFBA27DC7EDA009848C5 /* TintViewModifier.swift */,
 				3B9149282834CFDE0001C191 /* CornerRadiusViewModifier.swift */,
 				3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */,
+				3B9308CE2848A68C00A42D35 /* TextFieldViewModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -701,6 +704,7 @@
 				3B2EBFC627DC9A14009848C5 /* ImageView.swift in Sources */,
 				3BEC59D327DE4655005FA58A /* Video.swift in Sources */,
 				3B2CD31128339F6500F61696 /* AuthService.swift in Sources */,
+				3B9308CF2848A68C00A42D35 /* TextFieldViewModifier.swift in Sources */,
 				3B2EBFD227DCA27E009848C5 /* ImageCache.swift in Sources */,
 				3B2EBFBF27DC8986009848C5 /* MovieCardView.swift in Sources */,
 				3B857061283A203A00F1A93C /* MovieRowView.swift in Sources */,

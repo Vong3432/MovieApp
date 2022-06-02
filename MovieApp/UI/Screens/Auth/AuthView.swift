@@ -108,18 +108,12 @@ extension AuthView {
             VStack(spacing: 20) {
                 TextField("Username", text: $vm.username)
                     .focused($focusedField, equals: .username)
-                    .textFieldStyle(.plain)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
+                    .filledTextFieldStyle()
                     .accessibilityIdentifier("UsernameField")
                 
                 SecureField("Password", text: $vm.password)
                     .focused($focusedField, equals: .password)
-                    .textFieldStyle(.plain)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
+                    .filledTextFieldStyle()
                     .accessibilityIdentifier("PasswordField")
                 
                 if let errorMsg = vm.errorMsg {
