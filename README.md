@@ -15,7 +15,7 @@ Movie app built with SwiftUI
  <img src="https://user-images.githubusercontent.com/36991424/171419202-ea1dadc5-f8e2-4f1f-b452-ab51cbc8c888.gif" width="300" />
 </p>
 
- <video src="https://user-images.githubusercontent.com/36991424/172018145-afa1d94b-3284-44d2-a899-579abb28b382.mp4" width="300" alt="SearchFiltering" />
+<video src="https://user-images.githubusercontent.com/36991424/172018145-afa1d94b-3284-44d2-a899-579abb28b382.mp4" width="300" alt="SearchFiltering"></video>
 
 
 ## Tech details
