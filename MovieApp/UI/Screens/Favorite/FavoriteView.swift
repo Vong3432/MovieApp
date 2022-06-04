@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct FavoriteView: View {
+    @Environment(\.editMode) var mode
     @StateObject private var vm: FavoriteViewModel
     
     init(authService: MovieDBAuthProtocol, favoriteService: FavoritedDataServiceProtocol) {
         _vm = StateObject(wrappedValue: FavoriteViewModel(authService: authService, dataService: favoriteService))
     }
+    @State private var showDetail = false
+    @State private var selection: Movie? = nil
     
     var body: some View {
         ZStack {
@@ -28,6 +31,15 @@ struct FavoriteView: View {
                 }
             }
         }
+        .background(
+            NavigationLink(isActive: $showDetail, destination: {
+                if let selection = selection {
+                    MovieDetailView(movie: selection, authService: vm.authService, favoriteService: vm.dataService)
+                }
+            }, label: {
+                EmptyView()
+            }).isDetailLink(false)
+        )
         .task {
             vm.clear()
             try? await Task.sleep(nanoseconds: 1_000_000)
@@ -80,22 +92,23 @@ extension FavoriteView {
     private var favoritedList: some View {
         List {
             ForEach(vm.favoriteList) { favoritedMovie in
-                MovieRowView(
-                    movie: favoritedMovie,
-                    authService: vm.authService,
-                    dataService: vm.dataService
-                )
-                    .padding(.vertical)
-                    .onAppear {
-                        Task {
-                            await shouldFetchMore(favoritedMovie)
+                Button {
+                    selection = favoritedMovie
+                    showDetail = true
+                } label: {
+                    FavoriteMovieRowView(movie: favoritedMovie)
+                        .padding(.vertical)
+                        .onAppear {
+                            Task {
+                                await shouldFetchMore(favoritedMovie)
+                            }
                         }
-                    }
+                }
+                
             }
             .onDelete(perform: delete(for:))
-            
             if vm.isFetchingMore {
-                Text("Loading...")
+                Text("loading")
                     .opacity(0.75)
                     .multilineTextAlignment(.center)
             }

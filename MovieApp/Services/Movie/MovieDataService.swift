@@ -10,6 +10,7 @@ import Combine
 
 protocol MovieDataServiceProtocol {
     func downloadData<T>(from url: String, as: T.Type) -> AnyPublisher<T, Error> where T: Codable
+    func downloadData<T>(from url: String, as: T.Type, queries: [URLQueryItem]?) async throws -> T where T : Codable
 }
 
 
@@ -38,5 +39,14 @@ class MovieDataService: MovieDataServiceProtocol {
             .download(url: url)
             .decode(type: T.self, decoder: MovieDBAPIResponseParser.jsonDecoder)
             .eraseToAnyPublisher()
+    }
+    
+    func downloadData<T>(from url: String, as: T.Type, queries: [URLQueryItem]? = nil) async throws -> T where T: Codable {
+        guard let url = URL(string: url) else { throw MovieDataServiceError.apiError("URL incorrect") }
+        
+        guard let data = try? await NetworkingManager.download(url: url, query: queries),
+              let decoded: T = try? MovieDBAPIResponseParser.decode(data)
+        else { throw MovieDataServiceError.apiError("Unable to decode") }
+        return decoded
     }
 }

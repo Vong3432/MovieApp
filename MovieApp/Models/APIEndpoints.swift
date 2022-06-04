@@ -12,6 +12,11 @@ enum APIEndpoints {
     static let apiBaseUrl = "https://api.themoviedb.org/3"
     static let imageBaseUrl = "https://image.tmdb.org/t/p/w154"
     
+    case getAvailableRegions
+    case searchMovies
+    case topRatedMoviesUrl
+    case upcomingMoviesUrl
+    case latestMoviesUrl
     case createRequestTokenUrl
     case createSessionWithLoginUrl
     case createSessionIDUrl
@@ -36,6 +41,16 @@ enum APIEndpoints {
             return "\(APIEndpoints.apiBaseUrl)/account/\(accountId)/favorite"
         case .getAccount:
             return "\(APIEndpoints.apiBaseUrl)/account"
+        case .topRatedMoviesUrl:
+            return "\(APIEndpoints.apiBaseUrl)/movie/top_rated"
+        case .upcomingMoviesUrl:
+            return "\(APIEndpoints.apiBaseUrl)/movie/upcoming"
+        case .latestMoviesUrl:
+            return "\(APIEndpoints.apiBaseUrl)/movie/latest"
+        case .getAvailableRegions:
+            return "\(APIEndpoints.apiBaseUrl)/watch/providers/regions"
+        case .searchMovies:
+            return "\(APIEndpoints.apiBaseUrl)/search/movie"
         }
     }
 }

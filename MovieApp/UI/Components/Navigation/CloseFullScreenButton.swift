@@ -13,6 +13,7 @@ struct CloseFullScreenButton: View {
     var body: some View {
         Button {
             appState.closeSignInScreen()
+            appState.closeSearchScreen()
         } label: {
             Image(systemName: "arrow.backward")
                 .padding()

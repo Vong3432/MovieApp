@@ -17,6 +17,7 @@
 "walkthrough_feat2_desc" = "随时随地把喜欢的电影给收藏起来";
 "walkthrough_feat3_desc" = "在线播放电影不再是个难题";
 
+"explore_tab_title" = "探索";
 "home_tab_title" = "首页";
 "favorite_tab_title" = "收藏";
 "profile_tab_title" = "个人";
@@ -36,8 +37,18 @@
 
 "favorite_no_result" = "你目前暂时还未收藏任何电影/电视剧.";
 "no_result" = "未找到相关信息";
+
+"filter" = "过滤";
+"loading" = "加载中...";
 "view_all" = "查看";
 "continue" = "继续";
+"done" = "确认";
+
+"explore_no_result" = "未有搜索到任何电影";
+"explore_result_label" = "结果";
+"select_region" = "选择地区";
+
+"search_movie" = "输入电影名字...";
 
 "sign_out" = "登出";
 "sign_in" = "登入";

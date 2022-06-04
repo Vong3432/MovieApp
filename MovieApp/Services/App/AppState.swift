@@ -14,6 +14,7 @@ final class AppState: ObservableObject {
     @Published var favoriteService: FavoritedDataServiceProtocol = FavoritedDataService()
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
+    @Published var showingSearchScreen: Bool = false
     @Published var currentLocale: String = "en"
     
     init() {
@@ -32,6 +33,14 @@ final class AppState: ObservableObject {
     
     func closeSignInScreen() {
         showingSignInScreen = false
+    }
+    
+    func showSearchScreen() {
+        showingSearchScreen = true
+    }
+    
+    func closeSearchScreen() {
+        showingSearchScreen = false
     }
     
     /// This function should be called in "MovieApp.swift" only.

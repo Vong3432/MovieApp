@@ -17,6 +17,7 @@
 "walkthrough_feat2_desc" = "Bookmark movies anytime, anywhere you want";
 "walkthrough_feat3_desc" = "Watch movies via streaming service is no longer a problem";
 
+"explore_tab_title" = "Explore";
 "home_tab_title" = "Home";
 "favorite_tab_title" = "Favorites";
 "profile_tab_title" = "Profile";
@@ -36,8 +37,18 @@
 
 "favorite_no_result" = "You have not mark any movie/tv as favorite currently.";
 "no_result" = "No result";
+
+"filter" = "Filter";
+"loading" = "Loading...";
 "view_all" = "View all";
 "continue" = "Continue";
+"done" = "Done";
+
+"explore_no_result" = "No matched movies are found.";
+"explore_result_label" = "Results";
+"select_region" = "Select region";
+
+"search_movie" = "Enter movie title ...";
 
 "sign_out" = "Sign out";
 "sign_in" = "Sign in";

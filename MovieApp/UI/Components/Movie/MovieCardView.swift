@@ -10,12 +10,19 @@ import SwiftUI
 struct MovieCardView: View {
     
     let movie: Movie
+    let isHighlighted: Bool
+    
+    init(movie: Movie, isHighlighted: Bool = false) {
+        self.movie = movie
+        self.isHighlighted = isHighlighted
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
             ImageView(url: movie.wrappedPosterPath)
                 .cornerRadius(18)
             
+            if isHighlighted == false {
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.wrappedTitle)
                     .font(.headline)
@@ -32,6 +39,7 @@ struct MovieCardView: View {
                 }
             }
             .padding(.vertical)
+            }
             
             Spacer()
         }.accessibilityIdentifier("MovieCard")
@@ -42,7 +50,7 @@ struct MovieCardView: View {
 
 struct MovieCardView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieCardView(movie: DeveloperPreview.mockMovie)
+        MovieCardView(movie: DeveloperPreview.mockMovie, isHighlighted: false)
         //            .frame(width: 200, height: 400)
 //                    .previewLayout(.sizeThatFits)
     }

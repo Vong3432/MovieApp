@@ -12,35 +12,18 @@ struct HomeView: View {
     @StateObject private var vm = HomeViewModel(dataService: MovieDataService())
     @State private var size: CGSize = .zero
     
+    init() {
+        UITableView.appearance().backgroundColor = UIColor(Color.theme.background)
+    }
+    
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                Color.theme.background
-                    .ignoresSafeArea()
-                
-                VStack {
-                    if vm.isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .accessibilityIdentifier("HomeProgressView")
-                    } else {
-                        List {
-                            topRatedMoviesList
-                            upcomingMoviesList
-                        }
-                        .accessibilityIdentifier("HomeList")
-                        .listStyle(.sidebar)
-                        .refreshable {
-                            vm.loadData()
-                        }
-                        .padding(.bottom)
-                        
+                initial
+                    .onAppear {
+                        size = geo.size
+                        vm.loadData()
                     }
-                }.onAppear {
-                    size = geo.size
-                    vm.loadData()
-                }
-                
             }
         }
     }
@@ -48,15 +31,39 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            HomeView()
-                .environmentObject(AppState())
-                .navigationTitle("home_tab_title")
+        TabView {
+            NavigationView {
+                HomeView()
+                    .environmentObject(AppState())
+                    .navigationTitle("home_tab_title")
+            }
+            .navigationViewStyle(.stack)
         }.preferredColorScheme(.dark)
     }
 }
 
 extension HomeView {
+    
+    private var initial: some View {
+        VStack {
+            if vm.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .accessibilityIdentifier("HomeProgressView")
+            } else {
+                List {
+                    topRatedMoviesList
+                    upcomingMoviesList
+                }
+                .accessibilityIdentifier("HomeList")
+                .listStyle(.sidebar)
+                .refreshable {
+                    vm.loadData()
+                }
+            }
+        }
+    }
+    
     private var topRatedMoviesList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 28) {
@@ -68,7 +75,7 @@ extension HomeView {
                             favoriteService: appState.favoriteService
                         )
                     } label: {
-                        MovieCardView(movie: movie)
+                        MovieCardView(movie: movie, isHighlighted: true)
                             .frame(height: 400)
                             .frame(maxWidth: .infinity)
                             .clipped()

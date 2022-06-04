@@ -19,7 +19,6 @@ struct ProfileView: View {
             List {
                 Section(content: {
                     Picker("language", selection: $appState.currentLocale) {
-                        
                         ForEach(appState.availableIdentifiers, id: \.self) { identifier in
                             Text(identifier)
                                 .tag(identifier)

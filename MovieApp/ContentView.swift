@@ -25,6 +25,17 @@ struct ContentView: View {
             }
             
             NavigationView {
+                ExploreView()
+                    .navigationTitle("explore_tab_title")
+            }
+            .navigationViewStyle(.stack)
+            .tabItem {
+                Image(systemName: "magnifyingglass")
+                Text("explore_tab_title")
+                    .accessibilityIdentifier("Explore")
+            }
+            
+            NavigationView {
                 FavoriteView(
                     authService: appState.authService,
                     favoriteService: appState.favoriteService
