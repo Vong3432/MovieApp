@@ -136,7 +136,7 @@ struct Movie: Codable, Identifiable, Equatable {
     }
     
     var wrappedPosterPath: String {
-        APIEndpoints.imageBaseUrl + (posterPath ?? "")
+        APIEndpoints.imageBaseUrl + (posterPath ?? backdropPath ?? "")
     }
     
     var wrappedBackdropPath: String {

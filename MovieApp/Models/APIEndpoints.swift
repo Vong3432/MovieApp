@@ -24,6 +24,7 @@ enum APIEndpoints {
     case getFavoriteMovies(accountId: String)
     case markFavorite(id: String)
     case getAccount
+    case popularMoviesUrl
     
     var url: String {
         switch self {
@@ -41,6 +42,8 @@ enum APIEndpoints {
             return "\(APIEndpoints.apiBaseUrl)/account/\(accountId)/favorite"
         case .getAccount:
             return "\(APIEndpoints.apiBaseUrl)/account"
+        case .popularMoviesUrl:
+            return "\(APIEndpoints.apiBaseUrl)/movie/popular"
         case .topRatedMoviesUrl:
             return "\(APIEndpoints.apiBaseUrl)/movie/top_rated"
         case .upcomingMoviesUrl:

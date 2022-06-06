@@ -27,9 +27,22 @@ class MovieImageService: ObservableObject {
         }
     }
     
+    static func loadImage(from urlString: String, completion: @escaping (Result<UIImage?, Error>) -> ()) {
+        guard let url = URL(string: urlString) else { return }
+        
+        NetworkingManager.download(url: url, query: nil) { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let downloadedImage):
+                completion(.success(UIImage(data: downloadedImage)))
+            }
+        }
+    }
+    
     private func downloadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }
-
+        
         NetworkingManager
             .download(url: url)
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedImageData in

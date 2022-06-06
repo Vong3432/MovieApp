@@ -74,6 +74,23 @@ class NetworkingManager {
         return data
     }
     
+    static func download(url: URL, query: [URLQueryItem]? = nil, completion: @escaping (Result<Data, Error>) -> ()) {
+        do {
+            let newUrl = try getURLAfterConfig(url: url, query: query)
+            
+            URLSession.shared.dataTask(with: newUrl) { data, response, error in
+                
+                if let error = error {
+                    completion(.failure(error))
+                }
+                
+                completion(.success(data!))
+            }
+        } catch {
+            completion(.failure(NetworkingError.badUrlResponse(url: url)))
+        }
+    }
+    
     static func download(url: URL, query: [URLQueryItem]? = nil) -> AnyPublisher<Data, Error> {
         do {
             let newUrl = try getURLAfterConfig(url: url, query: query)
