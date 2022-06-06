@@ -120,16 +120,16 @@ extension ExploreView {
                 ProgressView()
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
-                ForEach(vm.movies) { movie in
+                ForEach(0..<vm.movies.count, id: \.self) { idx in
                     Button {
-                        selection = movie
+                        selection = vm.movies[idx]
                         showDetail = true
                     } label: {
-                        MovieRowView(movie: movie)
+                        MovieRowView(idx: idx,movie: vm.movies[idx])
                             .padding(.bottom)
                             .padding(.bottom)
                             .onAppear {
-                                shouldFetchMore(movie)
+                                shouldFetchMore(vm.movies[idx])
                             }
                     }
                     

@@ -8,6 +8,7 @@
 import Foundation
 import Algorithms
 import Combine
+import SwiftUI
 
 extension ExploreView {
     class ExploreViewModel: ObservableObject, Paginable {
@@ -42,12 +43,15 @@ extension ExploreView {
         }
         
         func loadRegions() async {
-            let response = try? await dataService.downloadData(from: APIEndpoints.getAvailableRegions.url, as: Region.self, queries: nil)
-            
-            regions = response?.results ?? []
-            
-            if regions.isNotEmpty {
-                region = regions[0]
+            // only fetch regions for once when needed
+            if regions.isEmpty {
+                let response = try? await dataService.downloadData(from: APIEndpoints.getAvailableRegions.url, as: Region.self, queries: nil)
+                
+                regions = response?.results ?? []
+                
+                if regions.isNotEmpty {
+                    region = regions[0]
+                }
             }
         }
         
