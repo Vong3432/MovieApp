@@ -139,7 +139,10 @@ extension MovieDetailView {
             Task {
                 do {
                     // TODO: Quite slow here
-                    isFavorited = try await favoriteService.getFavoriteStatus(for: currentMovie, from: account.id, sessionId: sessionId)
+                    let favorited = try await favoriteService.getFavoriteStatus(for: currentMovie, from: account.id, sessionId: sessionId)
+                    DispatchQueue.main.async {
+                        self.isFavorited = favorited
+                    }
                 } catch {
                     toastMsg = error.localizedDescription
                 }

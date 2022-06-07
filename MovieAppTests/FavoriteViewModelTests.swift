@@ -31,6 +31,8 @@ class FavoriteViewModelTests: XCTestCase {
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
         
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
         // Then
         XCTAssertTrue(vm.favoriteList.isNotEmpty)
         XCTAssertFalse(vm.isLoading)
@@ -49,6 +51,8 @@ class FavoriteViewModelTests: XCTestCase {
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
         
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
         // Then
         XCTAssertTrue(vm.favoriteList.isEmpty)
         XCTAssertFalse(vm.isLoading)
@@ -64,6 +68,8 @@ class FavoriteViewModelTests: XCTestCase {
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
         XCTAssertTrue(vm.favoriteList.isNotEmpty)
         XCTAssertFalse(vm.isLoading)
         XCTAssertFalse(vm.isFetchingMore)
@@ -86,6 +92,8 @@ class FavoriteViewModelTests: XCTestCase {
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
         XCTAssertTrue(vm.favoriteList.isEmpty)
         XCTAssertFalse(vm.isLoading)
         XCTAssertFalse(vm.isFetchingMore)
@@ -108,6 +116,7 @@ class FavoriteViewModelTests: XCTestCase {
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         let firstLoadFavoriteListCount = vm.favoriteList.count
         
         XCTAssertTrue(vm.favoriteList.isNotEmpty)
@@ -115,10 +124,14 @@ class FavoriteViewModelTests: XCTestCase {
         XCTAssertFalse(vm.isFetchingMore)
         
         await vm.loadMore()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
         let afterLoadFavoriteListCount = vm.favoriteList.count
         
         // When
         await vm.refresh()
+        
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         
         // Then
         XCTAssertEqual(vm.favoriteList.count, firstLoadFavoriteListCount) // 21 == 21
@@ -134,6 +147,7 @@ class FavoriteViewModelTests: XCTestCase {
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
         await vm.loadFavorites()
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         
         XCTAssertTrue(vm.favoriteList.isEmpty)
         XCTAssertFalse(vm.isLoading)

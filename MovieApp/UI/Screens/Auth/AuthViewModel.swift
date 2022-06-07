@@ -20,15 +20,22 @@ extension AuthView {
         }
         
         func handleSignIn() async {
-            isLoading = true
-            errorMsg = nil 
+            DispatchQueue.main.async {
+                self.isLoading = true
+                self.errorMsg = nil
+            }
+             
             do {
                 try await authService.login(username: username, password: password)
             }
             catch let error {
-                errorMsg = error.localizedDescription
+                DispatchQueue.main.async {
+                    self.errorMsg = error.localizedDescription
+                }
             }
-            isLoading = false
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
         }
     }
 }

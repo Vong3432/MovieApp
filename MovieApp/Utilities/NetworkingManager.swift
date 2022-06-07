@@ -10,6 +10,28 @@ import Combine
 
 class NetworkingManager {
     
+    static var urlSessionConfig: URLSessionConfiguration = {
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        config.timeoutIntervalForRequest = 30
+        
+        let cacheDirectoryUrl = FileManager.getCachesDirectory()
+        let cacheUrl = cacheDirectoryUrl.appendingPathComponent("NetworkingCache")
+        var diskPath = cacheUrl.path
+        
+        let cache = URLCache(
+            memoryCapacity: 16384, // 0.015625 mb
+            diskCapacity: 268435456, // 256 mb
+            diskPath: diskPath)
+        
+        config.urlCache = cache
+        config.requestCachePolicy = .useProtocolCachePolicy
+        
+        return config
+    }()
+    
+    static var session = URLSession(configuration: urlSessionConfig)
+    
     enum NetworkingError: LocalizedError {
         case badUrlResponse(url: URL)
         case unknown
@@ -30,7 +52,7 @@ class NetworkingManager {
         request.httpMethod = "DELETE"
         
         // TODO: Remove Data() if found a way to handle optional Data in request.
-        let (data, response) = try await URLSession.shared.upload(for: request, from: body ?? Data())
+        let (data, response) = try await session.upload(for: request, from: body ?? Data())
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
@@ -46,7 +68,7 @@ class NetworkingManager {
     static func post(url:URL, body: Data, query: [URLQueryItem]? = nil) async throws -> Data {
         let newUrl = try getURLAfterConfig(url: url, query: query)
         let request = getRequestAfterConfig(url: newUrl)
-        let (data, response) = try await URLSession.shared.upload(for: request, from: body)
+        let (data, response) = try await session.upload(for: request, from: body)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
@@ -61,7 +83,9 @@ class NetworkingManager {
     
     static func download(url: URL, query: [URLQueryItem]? = nil) async throws -> Data {
         let newUrl = try getURLAfterConfig(url: url, query: query)
-        let (data, response) = try await URLSession.shared.data(from: newUrl)
+        let request = getRequestAfterConfig(url: newUrl, httpMethod: "GET")
+        
+        let (data, response) = try await session.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
             throw NetworkingError.badUrlResponse(url: url)
@@ -77,8 +101,9 @@ class NetworkingManager {
     static func download(url: URL, query: [URLQueryItem]? = nil, completion: @escaping (Result<Data, Error>) -> ()) {
         do {
             let newUrl = try getURLAfterConfig(url: url, query: query)
+            let request = getRequestAfterConfig(url: newUrl, httpMethod: "GET")
             
-            URLSession.shared.dataTask(with: newUrl) { data, response, error in
+            session.dataTask(with: request) { data, response, error in
                 
                 if let error = error {
                     completion(.failure(error))
@@ -94,13 +119,16 @@ class NetworkingManager {
     static func download(url: URL, query: [URLQueryItem]? = nil) -> AnyPublisher<Data, Error> {
         do {
             let newUrl = try getURLAfterConfig(url: url, query: query)
-            return URLSession.shared.dataTaskPublisher(for: newUrl)
+            let request = getRequestAfterConfig(url: newUrl, httpMethod: "GET")
+            
+            return session.dataTaskPublisher(for: request)
                 .subscribe(on: DispatchQueue.global(qos: .default)) // run in bg thread (?)
                 .tryMap { try handleURLResposne(output: $0, url: newUrl) }
                 .receive(on: DispatchQueue.main) // pass it to UI thread
                 .eraseToAnyPublisher() // makes return type more readable (the AnyPublisher<Data, Error>) instead of the real type from the original publisher.
         } catch {
-            return Fail(error: NSError(domain: NetworkingError.badUrlResponse(url: url).localizedDescription, code: 500, userInfo: nil)).eraseToAnyPublisher()
+            return Fail(error: NSError(domain: NetworkingError.badUrlResponse(url: url).localizedDescription, code: 500, userInfo: nil))
+                .eraseToAnyPublisher()
         }
     }
     
@@ -115,7 +143,7 @@ class NetworkingManager {
     static func getURLAfterConfig(url: URL, query: [URLQueryItem]? = nil) throws -> URL {
         
         var defaultQueryItems = [
-            URLQueryItem(name: "api_key", value: Keys.apiToken)
+            URLQueryItem(name: "api_key", value: Keys.apiToken),
         ]
         
         // access user locale setting

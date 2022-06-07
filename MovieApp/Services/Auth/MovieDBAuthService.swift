@@ -87,7 +87,10 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
             try FileManager.encode(createSessionIDResponseDecoded.sessionId, to: .movieDBSessionID)
             try await getAccount(createSessionIDResponseDecoded.sessionId)
             sessionId = createSessionIDResponseDecoded.sessionId
-            isAuthenticated = true
+            
+            DispatchQueue.main.async {
+                self.isAuthenticated = true
+            }
         } else {
             // If something went wrong when requesting token
             isAuthenticated = false

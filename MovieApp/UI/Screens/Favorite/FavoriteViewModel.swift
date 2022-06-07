@@ -31,7 +31,9 @@ extension FavoriteView {
                 .sink { [weak self] favoriteList in
                     guard let self = self else { return }
                     let combined = chain(self.favoriteList, favoriteList)
-                    self.favoriteList = combined.uniqued(on: { $0.id })
+                    DispatchQueue.main.async {
+                        self.favoriteList = combined.uniqued(on: { $0.id })
+                    }
                 }
                 .store(in: &cancellables)
         }
@@ -43,11 +45,16 @@ extension FavoriteView {
             
             // Don't show spinner for infinite pagination
             if nextPage == false {
-                isLoading = true
+                DispatchQueue.main.async {
+                    self.isLoading = true
+                }
             }
             let _ = try? await dataService.getFavoritedMovies(from: account.id, sessionId: sessionId, nextPage: nextPage)
-            isLoading = false
-            isFetchingMore = false
+            
+            DispatchQueue.main.async {
+                self.isLoading = false
+                self.isFetchingMore = false
+            }
         }
         
         func refresh() async {
@@ -57,7 +64,9 @@ extension FavoriteView {
         }
         
         func loadMore() async {
-            isFetchingMore = true
+            DispatchQueue.main.async {
+                self.isFetchingMore = true
+            }
             
             // Wait for 1s to let users know we are loading more data
             try? await Task.sleep(nanoseconds: 1_000_000_000)

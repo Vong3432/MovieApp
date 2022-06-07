@@ -33,7 +33,6 @@ extension HomeView {
         
         private func fetchTopRateMovies() {
             dataService.downloadData(from: APIEndpoints.topRatedMoviesUrl.url, as: MovieDBResponse<Movie>.self)
-                .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.topRatedMovies = returnedData.results ?? []
                     self?.isLoading = false
@@ -43,7 +42,6 @@ extension HomeView {
         
         private func fetchUpcomingMovies() {
             dataService.downloadData(from: APIEndpoints.upcomingMoviesUrl.url, as: MovieDBResponse<Movie>.self)
-                .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     self?.upcomingMovies = returnedData.results ?? []
                 }
