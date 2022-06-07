@@ -63,7 +63,10 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
         
         let accountResponse = try await NetworkingManager.download(url: getAccountUrl, query: queryItems)
         let decodedAccount: Account = try MovieDBAPIResponseParser.decode(accountResponse)
-        account = decodedAccount
+        DispatchQueue.main.async {
+            self.account = decodedAccount
+            self.isAuthenticated = true
+        }
     }
     
     func login(username: String, password: String) async throws {
@@ -87,13 +90,11 @@ final class MovieDBAuthService: MovieDBAuthProtocol {
             try FileManager.encode(createSessionIDResponseDecoded.sessionId, to: .movieDBSessionID)
             try await getAccount(createSessionIDResponseDecoded.sessionId)
             sessionId = createSessionIDResponseDecoded.sessionId
-            
-            DispatchQueue.main.async {
-                self.isAuthenticated = true
-            }
         } else {
             // If something went wrong when requesting token
-            isAuthenticated = false
+            DispatchQueue.main.async {
+                self.isAuthenticated = false
+            }
             throw MovieDBAuthLoginError.cannotCreateRequestToken
         }
         
