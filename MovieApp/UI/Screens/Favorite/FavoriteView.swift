@@ -20,16 +20,7 @@ struct FavoriteView: View {
     var body: some View {
         ZStack {
             Color.theme.background.ignoresSafeArea()
-            
-            if vm.isLoading {
-                ProgressView()
-            } else {
-                favoritedList
-                if vm.favoriteList.isEmpty {
-                    Text("favorite_no_result")
-                        .multilineTextAlignment(.center)
-                }
-            }
+            favoritedList
         }
         .background(
             NavigationLink(isActive: $showDetail, destination: {
@@ -91,6 +82,24 @@ struct FavoriteView_Previews: PreviewProvider {
 extension FavoriteView {
     private var favoritedList: some View {
         List {
+            
+            if vm.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.theme.background)
+            } else {
+                if vm.favoriteList.isEmpty {
+                    Text("favorite_no_result")
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                        .padding(.vertical)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.theme.background)
+                }
+            }
+
             ForEach(vm.favoriteList) { favoritedMovie in
                 Button {
                     selection = favoritedMovie
@@ -107,6 +116,7 @@ extension FavoriteView {
                 
             }
             .onDelete(perform: delete(for:))
+            
             if vm.isFetchingMore {
                 Text("loading")
                     .opacity(0.75)

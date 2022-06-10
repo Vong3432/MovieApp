@@ -15,6 +15,7 @@ final class AppState: ObservableObject {
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
     @Published var showingSearchScreen: Bool = false
+    @Published var showingToast: Bool = false
     @Published var currentLocale: String = "en"
     
     init() {
@@ -41,6 +42,10 @@ final class AppState: ObservableObject {
     
     func closeSearchScreen() {
         showingSearchScreen = false
+    }
+    
+    func showToast() {
+        showingToast = true
     }
     
     /// This function should be called in "MovieApp.swift" only.

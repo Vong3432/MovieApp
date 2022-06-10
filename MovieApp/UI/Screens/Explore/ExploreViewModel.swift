@@ -34,7 +34,7 @@ extension ExploreView {
         
         private func subscribe() {
             $searchText
-                .debounce(for: 0.8, scheduler: RunLoop.main)
+                .debounce(for: 1.0, scheduler: RunLoop.main)
                 .sink { text in
                     self.clear()
                     self.fetchMovies()
@@ -96,12 +96,16 @@ extension ExploreView {
         }
         
         func clearText() {
-            searchText = ""
+            DispatchQueue.main.async {
+                self.searchText = ""
+            }
         }
         
         func clear() {
-            reset()
-            movies = []
+            DispatchQueue.main.async {
+                self.reset()
+                self.movies = []
+            }
         }
         
         func refresh() {

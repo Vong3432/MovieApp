@@ -29,9 +29,7 @@ extension AuthView {
                 try await authService.login(username: username, password: password)
             }
             catch let error {
-                DispatchQueue.main.async {
-                    self.errorMsg = error.localizedDescription
-                }
+                errorMsg = error.localizedDescription
             }
             DispatchQueue.main.async {
                 self.isLoading = false

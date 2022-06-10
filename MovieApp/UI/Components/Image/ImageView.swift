@@ -21,23 +21,20 @@ struct ImageView: View {
     
     var body: some View {
         
-        if vm.isLoading {
-            ProgressView()
+        if vm.isLoading || vm.image == nil {
+            Image("placeholder")
+                .resizable()
+                .scaledToFit()
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .background(Color.gray)
         } else {
             if let image = vm.image {
                 image
                     .resizable()
                     .scaledToFit()
                     .background(Color.gray)
-            } else {
-                Image(systemName: "xmark.octagon.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .aspectRatio(16 / 9, contentMode: .fit)
-                    .background(Color.gray)
             }
         }
-        
     }
 }
 

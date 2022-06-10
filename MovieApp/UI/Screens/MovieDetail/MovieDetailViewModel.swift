@@ -29,7 +29,7 @@ extension MovieDetailView {
         private(set) var reviewUrl: String
         private(set) var similarMovieUrl: String
         
-        private var dataService: MovieDataServiceProtocol
+        private var dataService: MovieDataServiceProtocol? = nil
         private var favoriteService: FavoritedDataServiceProtocol
         let authService: MovieDBAuthProtocol
         
@@ -72,26 +72,29 @@ extension MovieDetailView {
             loadReviews()
             loadSimilarMovies()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.isLoading = false
             }
         }
         
         func loadVideos() {
-            dataService.downloadData(from: videosUrl, as: MovieDBResponse.self)
+            dataService?.downloadData(from: videosUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
-                    self?.videos = returnedData.results ?? []
+                    DispatchQueue.main.async {
+                        self?.videos = returnedData.results ?? []
+                    }
                 }
                 .store(in: &cancellables)
         }
         
         func loadCrew() {
-            dataService.downloadData(from: crewUrl, as: Crew.self)
+            dataService?.downloadData(from: crewUrl, as: Crew.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
-                    self?.crew = returnedData
-                    
-                    guard let wrappedCast = returnedData.cast else { return }
-                    self?.top10Cast = Array(wrappedCast.prefix(10))
+                    DispatchQueue.main.async {
+                        self?.crew = returnedData
+                        guard let wrappedCast = returnedData.cast else { return }
+                        self?.top10Cast = Array(wrappedCast.prefix(10))
+                    }
                 }
                 .store(in: &cancellables)
         }
@@ -112,18 +115,22 @@ extension MovieDetailView {
                 }
             }
             
-            dataService.downloadData(from: url, as: MovieDBResponse<Movie.Review>.self)
+            dataService?.downloadData(from: url, as: MovieDBResponse<Movie.Review>.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
-                    self?.reviews = returnedData.results ?? []
-                    self?.totalReviewPages = returnedData.totalPages ?? 0
+                    DispatchQueue.main.async {
+                        self?.reviews = returnedData.results ?? []
+                        self?.totalReviewPages = returnedData.totalPages ?? 0
+                    }
                 }
                 .store(in: &cancellables)
         }
         
         func loadSimilarMovies() {
-            dataService.downloadData(from: similarMovieUrl, as: MovieDBResponse.self)
+            dataService?.downloadData(from: similarMovieUrl, as: MovieDBResponse.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] (returnedData) in
-                    self?.similarMovies = returnedData.results ?? []
+                    DispatchQueue.main.async {
+                        self?.similarMovies = returnedData.results ?? []
+                    }
                 }
                 .store(in: &cancellables)
         }
@@ -144,12 +151,12 @@ extension MovieDetailView {
                         self.isFavorited = favorited
                     }
                 } catch {
-                    toastMsg = error.localizedDescription
+                    setToastMsg(error.localizedDescription)
                 }
             }
         }
         
-        func favorite() {
+        func favorite(showToast: (() -> ())? = nil) {
             guard let account = authService.account, let sessionId = authService.getSessionId() else { return }
             
             Task {
@@ -160,17 +167,29 @@ extension MovieDetailView {
                     clearToast()
                     let favoriteText = isFavorited ? "Remove this from your favorite list successfully" : "Mark as favorite successfully."
                     try await favoriteService.markFavorite(for: currentMovie, as: !isFavorited, from: account.id, sessionId: sessionId)
-                    toastMsg = favoriteText
+                    
+                    showToast?()
+                    setToastMsg(favoriteText)
+                    
                     getFavoriteStatus()
                 } catch {
-                    toastMsg = error.localizedDescription
+                    setToastMsg(error.localizedDescription)
                 }
             }
-            showToast = true
+        }
+        
+        private func setToastMsg(_ toastMsg: String) {
+            DispatchQueue.main.async {
+                self.toastMsg = toastMsg
+                self.showToast = true
+            }
         }
         
         private func clearToast() {
-            toastMsg = nil
+            DispatchQueue.main.async {
+                self.toastMsg = nil
+                self.showToast = false
+            }
         }
     }
 }

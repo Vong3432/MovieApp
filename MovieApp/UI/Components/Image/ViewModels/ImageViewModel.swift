@@ -19,8 +19,8 @@ extension ImageView {
         private var cancellables = Set<AnyCancellable>()
         
         init(url: String) {
-            fetchImage(from: url)
             subscribe()
+            fetchImage(from: url)
         }
         
         private func fetchImage(from url: String) {

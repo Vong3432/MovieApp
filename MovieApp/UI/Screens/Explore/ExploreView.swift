@@ -134,12 +134,12 @@ extension ExploreView {
                     }
                     
                 }
-                
-                if vm.isFetchingMore {
-                    Text("loading")
-                        .opacity(0.75)
-                        .multilineTextAlignment(.center)
-                }
+            }
+            
+            if vm.isFetchingMore {
+                Text("loading")
+                    .opacity(0.75)
+                    .multilineTextAlignment(.center)
             }
         }
     }

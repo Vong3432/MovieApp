@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AlertToast
+//import AlertToast
 
 struct MovieDetailView: View {
     
@@ -38,11 +38,12 @@ struct MovieDetailView: View {
             
             GeometryReader { geometry in
                 VStack {
-                    if vm.isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                    } else {
-                        ScrollView {
+                    ScrollView {
+                        
+                        if vm.isLoading {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                        } else {
                             ZStack(alignment: .top) {
                                 ImageView(url: vm.currentMovie.wrappedBackdropPath)
                                     .scaledToFill()
@@ -52,10 +53,11 @@ struct MovieDetailView: View {
                                 
                                 linearGradient
                                 
-                                LazyVStack(alignment: .leading, spacing: 20) {
+                                VStack(alignment: .leading, spacing: 20) {
                                     movieHeader
                                     movieOverview
-                                    gallery
+                                    // TODO: Too many WKWebViews would result to large memory usage
+                                    // gallery
                                     cast
                                     similarMovies
                                     reviews
@@ -64,8 +66,8 @@ struct MovieDetailView: View {
                                 .padding(.top, geometry.size.height * 0.15)
                                 .padding(.bottom, geometry.size.height * 0.2)
                             }
-                        }.ignoresSafeArea()
-                    }
+                        }
+                    }.ignoresSafeArea()
                 }
                 .onAppear {
                     size = geometry.size
@@ -77,14 +79,23 @@ struct MovieDetailView: View {
                 vm.getFavoriteStatus()
             }
         })
+        .alert(vm.toastMsg ?? "", isPresented: $appState.showingToast, actions: {
+            Button("OK", role: .cancel) {
+            }
+        })
         // TODO: Another leaks again
-        .toast(isPresenting: $vm.showToast, tapToDismiss: true) {
-            AlertToast(displayMode: .banner(.slide), type: .regular, title: vm.toastMsg)
-        }
+//        .toast(isPresenting: $vm.showToast, tapToDismiss: false) {
+//            AlertToast(displayMode: .banner(.slide), type: .regular, title: vm.toastMsg)
+//        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    markFavorite()
+                Button { [weak appState, weak vm] in
+                    if vm?.authService.isAuthenticated == true {
+                        vm?.favorite(showToast: appState?.showToast)
+                    } else {
+                        // else show guest
+                        appState?.showSignInScreen()
+                    }
                 } label: {
                     if vm.isFavorited {
                         Image(systemName: "heart.fill")
@@ -101,21 +112,13 @@ struct MovieDetailView: View {
         }
     }
     
-    private func markFavorite() {
-        if vm.authService.isAuthenticated {
-            vm.favorite()
-        } else {
-            // else show guest
-            appState.showSignInScreen()
-        }
-    }
 }
 
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService(),            
-                favoriteService: FavoritedDataService()
+            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService(),
+                            favoriteService: FavoritedDataService()
             )
             //                .navigationBarHidden(true)
                 .preferredColorScheme(.dark)
@@ -181,10 +184,10 @@ extension MovieDetailView {
             Text("movie_reviews")
                 .font(.headline)
             
-            ScrollView {
-                LazyVStack(spacing: 18) {
-                    if vm.reviews.isNotEmpty {
-                        ForEach(vm.reviews) { review in
+            LazyVStack(spacing: 18) {
+                if vm.reviews.isNotEmpty {
+                    ForEach(vm.reviews) { review in
+                        autoreleasepool {
                             ReviewView(review: review)
                                 .onAppear {
                                     // Continue fetch next pages after reaching to bottom.
@@ -193,12 +196,13 @@ extension MovieDetailView {
                                     }
                                 }
                         }
-                    } else {
-                        Text("movie_reviews_empty")
-                            .opacity(0.65)
                     }
+                } else {
+                    Text("movie_reviews_empty")
+                        .opacity(0.65)
                 }
             }
+            
         }
         .padding(.horizontal)
         .foregroundColor(.white)
@@ -212,8 +216,10 @@ extension MovieDetailView {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(vm.videos) { video in
-                        YoutubeView(videoID: video.key ?? "")
-                            .frame(width: size.width / 1.25, height: size.height * 0.2)
+                        autoreleasepool {
+                            YoutubeView(videoID: video.key ?? "")
+                                .frame(width: size.width / 1.25, height: size.height * 0.2)
+                        }
                     }
                 }
             }
@@ -245,7 +251,9 @@ extension MovieDetailView {
                 HStack(spacing: 18) {
                     if vm.top10Cast.isNotEmpty {
                         ForEach(vm.top10Cast) { cast in
-                            CrewView(person: cast)
+                            autoreleasepool {
+                                CrewView(person: cast)
+                            }
                         }
                     } else {
                         Text("no_result")
@@ -265,7 +273,7 @@ extension MovieDetailView {
                 .fontWeight(.bold)
                 .padding(.horizontal)
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 28) {
+                HStack(spacing: 28) {
                     ForEach(vm.similarMovies) { movie in
                         Button {
                             vm.changeMovie(movie)

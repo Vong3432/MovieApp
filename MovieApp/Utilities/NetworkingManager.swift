@@ -14,6 +14,7 @@ class NetworkingManager {
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 30
+        config.multipathServiceType = .handover
         
         let cacheDirectoryUrl = FileManager.getCachesDirectory()
         let cacheUrl = cacheDirectoryUrl.appendingPathComponent("NetworkingCache")
