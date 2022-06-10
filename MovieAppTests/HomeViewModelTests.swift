@@ -15,14 +15,29 @@ class HomeViewModelTests: XCTestCase {
     
     typealias HomeViewModel = HomeView.HomeViewModel
 
-    override func setUp() {
+    override class func setUp() {
         super.setUp()
+    }
+    
+    weak var weakSut: AnyObject?
+    
+    func makeSUT(dataService: MovieDataServiceProtocol) -> HomeViewModel {
+        let vm = HomeViewModel(dataService: dataService)
+        
+        self.weakSut = vm
+        
+        return vm
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        XCTAssertNil(weakSut)
     }
 
     func test_HomeViewModel_loadData_success() {
         // Given
         let mockMovieDataService = MockMovieDataService()
-        let vm = HomeViewModel(dataService: mockMovieDataService)
+        let vm = makeSUT(dataService: mockMovieDataService)
         
         // When
         vm.loadData()
@@ -35,7 +50,7 @@ class HomeViewModelTests: XCTestCase {
     func test_HomeViewModel_loadData_fail() {
         // Given
         let mockMovieDataService = MockMovieDataServiceFail()
-        let vm = HomeViewModel(dataService: mockMovieDataService)
+        let vm = makeSUT(dataService: mockMovieDataService)
         
         // When
         vm.loadData()

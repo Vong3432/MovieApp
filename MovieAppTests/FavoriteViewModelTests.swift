@@ -18,13 +18,29 @@ class FavoriteViewModelTests: XCTestCase {
     override class func setUp() {
         super.setUp()
     }
+    
+    weak var weakSut: AnyObject?
+    
+    func makeSUT(authService: MovieDBAuthProtocol, dataService: FavoritedDataServiceProtocol) -> FavoriteViewModel {
+        let vm = FavoriteViewModel(authService: authService, dataService: dataService)
+        
+        self.weakSut = vm
+        
+        return vm
+    }
+    
+    override func tearDown() async throws {
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        try await super.tearDown()
+        XCTAssertNil(weakSut)
+    }
 
     // Named forOnce because the param ``nextPage`` is for continuos loading for more data.
     func test_FavoriteViewModel_loadFavorite_shouldSuccess_forOnce() async {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataService()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
         
         // When
         // mock login
@@ -44,7 +60,7 @@ class FavoriteViewModelTests: XCTestCase {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataServiceFail()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
         
         // When
         // mock login
@@ -63,7 +79,7 @@ class FavoriteViewModelTests: XCTestCase {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataService()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
 
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
@@ -87,7 +103,7 @@ class FavoriteViewModelTests: XCTestCase {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataServiceFail()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
 
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
@@ -111,7 +127,7 @@ class FavoriteViewModelTests: XCTestCase {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataService()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
 
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")
@@ -142,7 +158,7 @@ class FavoriteViewModelTests: XCTestCase {
         // Given
         let mockedDBAuthService = MockMovieDBAuthService()
         let mockedFavoriteDataService = MockFavoritedDataServiceFail()
-        let vm = FavoriteViewModel(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
+        let vm = makeSUT(authService: mockedDBAuthService, dataService: mockedFavoriteDataService)
 
         // mock login
         try? await mockedDBAuthService.login(username: "asd", password: "ad")

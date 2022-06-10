@@ -17,13 +17,29 @@ class MovieDetailViewModelTests: XCTestCase {
     override class func setUp() {
         super.setUp()
     }
+    
+    weak var weakSut: AnyObject?
+    
+    func makeSUT(movie: Movie, dataService: MovieDataServiceProtocol, authService: MovieDBAuthProtocol, favoriteService: FavoritedDataServiceProtocol) -> MovieDetailViewModel {
+        let vm = MovieDetailViewModel(movie: movie, dataService: dataService, authService: authService, favoriteService: favoriteService)
+        
+        self.weakSut = vm
+        
+        return vm
+    }
+    
+    override func tearDown() async throws {
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        try await super.tearDown()
+        XCTAssertNil(weakSut)
+    }
 
     func test_MovieDetailViewModel_fetchMovieInfo_shouldSuccess() async {
         // Given
         let mockMovieDataService = MockMovieDataService()
         let mockMovieAuthService = MockMovieDBAuthService()
         let mockFavoriteDataService = MockFavoritedDataService()
-        let vm = MovieDetailViewModel(movie: .fakedMovie, dataService: mockMovieDataService, authService: mockMovieAuthService, favoriteService: mockFavoriteDataService)
+        let vm = makeSUT(movie: .fakedMovie, dataService: mockMovieDataService, authService: mockMovieAuthService, favoriteService: mockFavoriteDataService)
         
         // When
         // user is logged in
@@ -50,7 +66,7 @@ class MovieDetailViewModelTests: XCTestCase {
         let mockMovieDataService = MockMovieDataServiceFail()
         let mockMovieAuthService = MockMovieDBAuthService()
         let mockFavoriteDataService = MockFavoritedDataServiceFail()
-        let vm = MovieDetailViewModel(movie: .fakedMovie, dataService: mockMovieDataService, authService: mockMovieAuthService, favoriteService: mockFavoriteDataService)
+        let vm = makeSUT(movie: .fakedMovie, dataService: mockMovieDataService, authService: mockMovieAuthService, favoriteService: mockFavoriteDataService)
         
         // When
         // user is logged in

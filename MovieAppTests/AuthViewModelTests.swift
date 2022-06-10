@@ -18,11 +18,27 @@ class AuthViewModelTests: XCTestCase {
     override class func setUp() {
         super.setUp()
     }
+    
+    weak var weakSut: AnyObject?
+    
+    func makeSUT(authService: MovieDBAuthProtocol) -> AuthViewModel {
+        let vm = AuthViewModel(authService: authService)
+        
+        self.weakSut = vm
+        
+        return vm
+    }
+    
+    override func tearDown() async throws {
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        try await super.tearDown()
+        XCTAssertNil(weakSut)
+    }
 
     func test_AuthViewModel_handleSignIn_success() async {
         // Given
         let mockAuthService = MockMovieDBAuthService()
-        let vm = AuthViewModel(authService: mockAuthService)
+        let vm = makeSUT(authService: mockAuthService)
         
         // When
         await vm.handleSignIn()
@@ -34,7 +50,7 @@ class AuthViewModelTests: XCTestCase {
     func test_AuthViewModel_handleSignIn_fail_shouldSetErrorMsg() async {
         // Given
         let mockAuthService = MockMovieDBAuthServiceFail()
-        let vm = AuthViewModel(authService: mockAuthService)
+        let vm = makeSUT(authService: mockAuthService)
         
         // When
         await vm.handleSignIn()
