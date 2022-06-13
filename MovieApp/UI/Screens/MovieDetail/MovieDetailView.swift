@@ -275,14 +275,27 @@ extension MovieDetailView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 28) {
                     ForEach(vm.similarMovies) { movie in
-                        Button {
-                            vm.changeMovie(movie)
+                        NavigationLink {
+                            MovieDetailView(
+                                movie: movie,
+                                authService: appState.authService,
+                                favoriteService: appState.favoriteService
+                            )
                         } label: {
                             MovieCardView(movie: movie)
                                 .frame(height: 400)
                                 .frame(maxWidth: .infinity)
                                 .clipped()
                         }.buttonStyle(PlainButtonStyle())
+
+//                        Button {
+//                            vm.changeMovie(movie)
+//                        } label: {
+//                            MovieCardView(movie: movie)
+//                                .frame(height: 400)
+//                                .frame(maxWidth: .infinity)
+//                                .clipped()
+//                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding()
