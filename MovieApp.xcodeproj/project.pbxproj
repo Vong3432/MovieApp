@@ -44,6 +44,10 @@
 		3B2EBFDA27DCAC6B009848C5 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBFD927DCAC6B009848C5 /* String.swift */; };
 		3B2EBFDC27DCC74E009848C5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBFDB27DCC74E009848C5 /* RatingView.swift */; };
 		3B2EBFDE27DCC88F009848C5 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBFDD27DCC88F009848C5 /* Double.swift */; };
+		3B4569682859F94C002D5647 /* StatsInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4569672859F94C002D5647 /* StatsInfoView.swift */; };
+		3B45696B285A24CC002D5647 /* Plurals.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 3B45696D285A24CC002D5647 /* Plurals.stringsdict */; };
+		3B4A7CC228547BEE00D594E4 /* ScrollWithSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4A7CC128547BEE00D594E4 /* ScrollWithSnap.swift */; };
+		3B4A7CC52854BA2F00D594E4 /* SnapToScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 3B4A7CC42854BA2F00D594E4 /* SnapToScroll */; };
 		3B5235692844D9C600B53D36 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3B52356B2844D9C600B53D36 /* Localizable.strings */; };
 		3B59945A2842065C000532AC /* HomeViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5994592842065C000532AC /* HomeViewUITests.swift */; };
 		3B59945C28420723000532AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59945B28420723000532AC /* AppDelegate.swift */; };
@@ -97,6 +101,7 @@
 		3BE72896283F97B600FC1BAA /* MovieDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE72895283F97B600FC1BAA /* MovieDetailViewModelTests.swift */; };
 		3BE72898283F97DA00FC1BAA /* MockFavoritedDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE72897283F97DA00FC1BAA /* MockFavoritedDataService.swift */; };
 		3BE7289A283F9A2900FC1BAA /* MockMovieDBAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE72899283F9A2900FC1BAA /* MockMovieDBAuthService.swift */; };
+		3BE89083285907B800712494 /* CountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE89082285907B700712494 /* CountryView.swift */; };
 		3BE9C7D527E4BC1D007B2F5B /* Crew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7D427E4BC1D007B2F5B /* Crew.swift */; };
 		3BE9C7D927E4C2EC007B2F5B /* CrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7D827E4C2EC007B2F5B /* CrewView.swift */; };
 		3BE9C7DB27E4C8F1007B2F5B /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9C7DA27E4C8F1007B2F5B /* Collection.swift */; };
@@ -187,6 +192,10 @@
 		3B2EBFD927DCAC6B009848C5 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3B2EBFDB27DCC74E009848C5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		3B2EBFDD27DCC88F009848C5 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		3B4569672859F94C002D5647 /* StatsInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInfoView.swift; sourceTree = "<group>"; };
+		3B45696C285A24CC002D5647 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Plurals.stringsdict; sourceTree = "<group>"; };
+		3B45696E285A2503002D5647 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "zh-Hans.lproj/Plurals.stringsdict"; sourceTree = "<group>"; };
+		3B4A7CC128547BEE00D594E4 /* ScrollWithSnap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollWithSnap.swift; sourceTree = "<group>"; };
 		3B52356A2844D9C600B53D36 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3B5235752844E0AB00B53D36 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3B5994592842065C000532AC /* HomeViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewUITests.swift; sourceTree = "<group>"; };
@@ -230,6 +239,7 @@
 		3BE72895283F97B600FC1BAA /* MovieDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModelTests.swift; sourceTree = "<group>"; };
 		3BE72897283F97DA00FC1BAA /* MockFavoritedDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFavoritedDataService.swift; sourceTree = "<group>"; };
 		3BE72899283F9A2900FC1BAA /* MockMovieDBAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDBAuthService.swift; sourceTree = "<group>"; };
+		3BE89082285907B700712494 /* CountryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryView.swift; sourceTree = "<group>"; };
 		3BE9C7D427E4BC1D007B2F5B /* Crew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crew.swift; sourceTree = "<group>"; };
 		3BE9C7D827E4C2EC007B2F5B /* CrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewView.swift; sourceTree = "<group>"; };
 		3BE9C7DA27E4C8F1007B2F5B /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -246,6 +256,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B4A7CC52854BA2F00D594E4 /* SnapToScroll in Frameworks */,
 				3B9F9640283BB802002C8F70 /* Algorithms in Frameworks */,
 				3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */,
 			);
@@ -346,6 +357,7 @@
 		3B2EBF7B27DC76AA009848C5 /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
+				3B45696D285A24CC002D5647 /* Plurals.stringsdict */,
 				3B2EBFA627DC78D1009848C5 /* Extensions */,
 				3B2EBFC027DC9272009848C5 /* Models */,
 				3B2EBFCA27DC9ACE009848C5 /* Services */,
@@ -460,6 +472,9 @@
 		3B2EBFBC27DC8978009848C5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3B4569662859F931002D5647 /* Stats */,
+				3BE89081285907B100712494 /* Country */,
+				3B4A7CC028547BE100D594E4 /* ScrollView */,
 				3BAA0D4728379FDC00981FC7 /* Youtube */,
 				3B91492C2834D5AB0001C191 /* Navigation */,
 				3B2CD30928338CD300F61696 /* Pages */,
@@ -537,6 +552,22 @@
 				3B2EBFCF27DC9C98009848C5 /* ImageViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3B4569662859F931002D5647 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				3B4569672859F94C002D5647 /* StatsInfoView.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		3B4A7CC028547BE100D594E4 /* ScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				3B4A7CC128547BEE00D594E4 /* ScrollWithSnap.swift */,
+			);
+			path = ScrollView;
 			sourceTree = "<group>";
 		};
 		3B9149212834C7CF0001C191 /* Auth */ = {
@@ -620,6 +651,14 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		3BE89081285907B100712494 /* Country */ = {
+			isa = PBXGroup;
+			children = (
+				3BE89082285907B700712494 /* CountryView.swift */,
+			);
+			path = Country;
+			sourceTree = "<group>";
+		};
 		3BE9C7D627E4C001007B2F5B /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +722,7 @@
 			packageProductDependencies = (
 				3BAA0D4D2837AC8900981FC7 /* AlertToast */,
 				3B9F963F283BB802002C8F70 /* Algorithms */,
+				3B4A7CC42854BA2F00D594E4 /* SnapToScroll */,
 			);
 			productName = MovieApp;
 			productReference = 3B2EBF7927DC76AA009848C5 /* MovieApp.app */;
@@ -780,6 +820,7 @@
 			packageReferences = (
 				3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				3B4A7CC32854BA2F00D594E4 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
 			);
 			productRefGroup = 3B2EBF7A27DC76AA009848C5 /* Products */;
 			projectDirPath = "";
@@ -800,6 +841,7 @@
 			files = (
 				3B2EBF8427DC76AA009848C5 /* Preview Assets.xcassets in Resources */,
 				3B5235692844D9C600B53D36 /* Localizable.strings in Resources */,
+				3B45696B285A24CC002D5647 /* Plurals.stringsdict in Resources */,
 				3B2EBF8127DC76AA009848C5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -838,12 +880,14 @@
 				3B9149302834D5D10001C191 /* CloseFullScreenButton.swift in Sources */,
 				3B2EBFB627DC7BA8009848C5 /* View.swift in Sources */,
 				3B2EBFD627DCA811009848C5 /* MovieDataService.swift in Sources */,
+				3BE89083285907B800712494 /* CountryView.swift in Sources */,
 				3B2EBFD427DCA771009848C5 /* HomeViewModel.swift in Sources */,
 				3B2EBFC627DC9A14009848C5 /* ImageView.swift in Sources */,
 				3BEC59D327DE4655005FA58A /* Video.swift in Sources */,
 				3B9308D12848A8A000A42D35 /* Region.swift in Sources */,
 				3B2CD31128339F6500F61696 /* AuthService.swift in Sources */,
 				3B9308CF2848A68C00A42D35 /* TextFieldViewModifier.swift in Sources */,
+				3B4569682859F94C002D5647 /* StatsInfoView.swift in Sources */,
 				3B2EBFD227DCA27E009848C5 /* ImageCache.swift in Sources */,
 				3B2EBFBF27DC8986009848C5 /* MovieCardView.swift in Sources */,
 				3B857061283A203A00F1A93C /* FavoriteMovieRowView.swift in Sources */,
@@ -865,6 +909,7 @@
 				3B9149252834C7E80001C191 /* AuthView.swift in Sources */,
 				3B2EBF7D27DC76AA009848C5 /* MovieApp.swift in Sources */,
 				3B2EBFDE27DCC88F009848C5 /* Double.swift in Sources */,
+				3B4A7CC228547BEE00D594E4 /* ScrollWithSnap.swift in Sources */,
 				3B2EBFDC27DCC74E009848C5 /* RatingView.swift in Sources */,
 				3BE9C7E327E4CD9F007B2F5B /* Author.swift in Sources */,
 				3B2CD3152833A03300F61696 /* MovieDBAuthService.swift in Sources */,
@@ -968,6 +1013,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3B45696D285A24CC002D5647 /* Plurals.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3B45696C285A24CC002D5647 /* en */,
+				3B45696E285A2503002D5647 /* zh-Hans */,
+			);
+			name = Plurals.stringsdict;
+			sourceTree = "<group>";
+		};
 		3B52356B2844D9C600B53D36 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1343,6 +1397,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B4A7CC32854BA2F00D594E4 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftui-library/hstack-snap-to-scroll.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.2;
+			};
+		};
 		3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -1362,6 +1424,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B4A7CC42854BA2F00D594E4 /* SnapToScroll */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B4A7CC32854BA2F00D594E4 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */;
+			productName = SnapToScroll;
+		};
 		3B9F963F283BB802002C8F70 /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */;

@@ -80,14 +80,16 @@ class FavoriteViewUITests: XCTestCase {
         // Given
         app.tabBars["Tab Bar"].buttons["Favorite"].tap()
         let list = app.tables["FavoriteList"]
-        let firstCell = list.cells.firstMatch
-
+        let firstCell = list.cells.buttons.firstMatch
+        let delayExpectation = XCTestExpectation()
+        
         // When
         firstCell.tap()
-
+        
         // wait for 3s
-        sleep(3)
-
+        delayExpectation.isInverted = true
+        wait(for: [delayExpectation], timeout: 3)
+        
         // Then
         let title = app.staticTexts["MovieTitle"]
         XCTAssertTrue(title.exists)

@@ -37,12 +37,12 @@ final class MovieDBAPIResponseParser {
     
     /// Encode any **Encodable** model with pre-config json encoder for TheMovieDB API request body/parameters.
     static func encode<T: Encodable>(_ model: T) throws -> Data {
-        return try self.jsonEncoder.encode(model)
+        return try jsonEncoder.encode(model)
     }
     
     /// Decode **Data** with pre-config json decoder for TheMovieDB API responses.
     static func decode<T: Decodable>(_ data: Data) throws -> T {
-        return try self.jsonDecoder.decode(T.self, from: data)
+        return try jsonDecoder.decode(T.self, from: data)
     }
     
     

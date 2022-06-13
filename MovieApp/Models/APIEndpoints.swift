@@ -10,7 +10,7 @@ import Foundation
 enum APIEndpoints {
     /// URL: https://api.themoviedb.org/3
     static let apiBaseUrl = "https://api.themoviedb.org/3"
-    static let imageBaseUrl = "https://image.tmdb.org/t/p/w154"
+    static let imageBaseUrl = "https://image.tmdb.org/t/p/"
     
     case getAvailableRegions
     case searchMovies
@@ -22,6 +22,7 @@ enum APIEndpoints {
     case createSessionIDUrl
     case logoutUrl
     case getFavoriteMovies(accountId: String)
+    case checkAccountStates(movieId: Int)
     case markFavorite(id: String)
     case getAccount
     case popularMoviesUrl
@@ -54,6 +55,8 @@ enum APIEndpoints {
             return "\(APIEndpoints.apiBaseUrl)/watch/providers/regions"
         case .searchMovies:
             return "\(APIEndpoints.apiBaseUrl)/search/movie"
+        case .checkAccountStates(let movieId):
+            return "\(APIEndpoints.apiBaseUrl)/movie/\(movieId)/account_states"
         }
     }
 }

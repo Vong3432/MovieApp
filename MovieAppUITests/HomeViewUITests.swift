@@ -33,6 +33,24 @@ class HomeViewUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         app.terminate()
     }
+    
+    func test_HomeView_list_shoudLoadData() {
+        
+        measure {
+            // Given
+            let homeList = app.tables["HomeList"]
+            let ratedMovieList = homeList.scrollViews["TopRatedMovieList"]
+            let upcomingMovieList = homeList.scrollViews["TopRatedMovieList"]
+            
+            // When
+//            sleep(1)
+            
+            // Then
+            XCTAssertTrue(ratedMovieList.exists)
+            XCTAssertTrue(upcomingMovieList.exists)
+        }
+        
+    }
 
     func test_HomeView_list_shouldRefreshWhenPull() {
         // Given

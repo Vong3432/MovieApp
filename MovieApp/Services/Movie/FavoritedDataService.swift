@@ -37,16 +37,23 @@ class FavoritedDataService: FavoritedDataServiceProtocol, Paginable {
     @Published var favoritedMovies = [Movie]()
     var favoritedMoviesPublished: Published<[Movie]> { _favoritedMovies }
     var favoritedMoviesPublisher: Published<[Movie]>.Publisher { $favoritedMovies }
+
     
     func getFavoriteStatus(for movie: Movie, from accountId: Int, sessionId: String) async throws -> Bool {
-        let _ = try await getFavoritedMovies(from: accountId, sessionId: sessionId)
-        let idx = favoritedMovies.firstIndex(where: { $0 == movie })
         
-        if idx == nil {
-            return false
-        } else {
-            return true
+        // Prepares neccessary queries
+        let apiUrl = APIEndpoints.checkAccountStates(movieId: movie.id).url
+        guard let url = URL(string: apiUrl) else {
+            throw MovieDataServiceError.apiError("URL Error")
         }
+        let queryItems = [
+            URLQueryItem(name: "session_id", value: sessionId)
+        ]
+        
+        let data = try await NetworkingManager.download(url: url, query: queryItems)
+        let response: MovieState = try MovieDBAPIResponseParser.decode(data)
+        
+        return response.favorite ?? false
     }
     
     func getFavoritedMovies(from accountId: Int, sessionId: String, nextPage: Bool? = false) async throws -> [Movie] {
@@ -73,7 +80,10 @@ class FavoritedDataService: FavoritedDataServiceProtocol, Paginable {
         
         currentPage = response.page ?? PaginableValues.defaultCurrentPage
         totalPages = response.totalPages ?? PaginableValues.defaultTotalPages
-        favoritedMovies = movies
+        
+        DispatchQueue.main.async {
+            self.favoritedMovies = movies
+        }
         
         return movies
     }

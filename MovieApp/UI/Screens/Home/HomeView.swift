@@ -11,6 +11,9 @@ struct HomeView: View {
     @EnvironmentObject private var appState: AppState
     @StateObject private var vm = HomeViewModel(dataService: MovieDataService())
     @State private var size: CGSize = .zero
+    @State private var currentPage = 0
+    @State private var showDetail = false
+    @State private var selectedMovie: Movie? = nil
     
     init() {
         UITableView.appearance().backgroundColor = UIColor(Color.theme.background)
@@ -22,8 +25,20 @@ struct HomeView: View {
                 initial
                     .onAppear {
                         size = geo.size
-                        vm.loadData()
                     }
+                    .background(
+                        NavigationLink(isActive: $showDetail, destination: {
+                            if let selectedMovie = selectedMovie {
+                                MovieDetailView(
+                                    movie: selectedMovie,
+                                    authService: appState.authService,
+                                    favoriteService: appState.favoriteService
+                                )
+                            }
+                        }, label: {
+                            EmptyView()
+                        }).isDetailLink(false)
+                    )
             }
         }
     }
@@ -65,27 +80,32 @@ extension HomeView {
     }
     
     private var topRatedMoviesList: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 28) {
-                ForEach(vm.topRatedMovies) { movie in
-                    NavigationLink {
-                        MovieDetailView(
-                            movie: movie,
-                            authService: appState.authService,
-                            favoriteService: appState.favoriteService
-                        )
-                    } label: {
-                        MovieCardView(movie: movie, isHighlighted: true)
-                            .frame(height: 400)
-                            .frame(maxWidth: .infinity)
-                            .clipped()
+        VStack(alignment: .leading) {
+            Text("top_rated")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            ScrollWithSnap(
+                widthOfEachItem: size.width * 0.75,
+                heightOfEachItem: 150,
+                spacing: 18,
+                items: vm.topRatedMovies.count) {
+                    ForEach(vm.topRatedMovies) { movie in
+                        Button {
+                            showDetail = true
+                            selectedMovie = movie
+                        } label: {
+                            ImageView(url: "\(APIEndpoints.imageBaseUrl)/w185/\(movie.wrappedBackdropPath)")
+                                .frame(width: size.width * 0.75, height: 150)
+                                .cornerRadius(10)
+                        }
                     }
-                    .accessibilityIdentifier(movie.wrappedTitle)
                     .buttonStyle(.plain)
-                }
-            }
-            .padding(.vertical)
+                }.frame(width: size.width * 0.75, height: 150)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 200)
+        .padding(.vertical)
     }
     
     private var upcomingMoviesList: some View {
@@ -97,22 +117,19 @@ extension HomeView {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 28) {
                     ForEach(vm.upcomingMovies) { movie in
-                        NavigationLink {
-                            MovieDetailView(
-                                movie: movie,
-                                authService: appState.authService,
-                                favoriteService: appState.favoriteService
-                            )
+                        Button {
+                            showDetail = true
+                            selectedMovie = movie
                         } label: {
                             MovieCardView(movie: movie)
                                 .frame(width: size.width * 0.4 , height: 300)
-                                .clipped()
-                        }
-                        .buttonStyle(.plain)
+                                .cornerRadius(12)
+                        }.buttonStyle(.plain)
                     }
                 }
-                .padding(.vertical)
             }
+            .accessibilityIdentifier("UpcomingMovieList")
+            .padding(.vertical)
         }
     }
 }

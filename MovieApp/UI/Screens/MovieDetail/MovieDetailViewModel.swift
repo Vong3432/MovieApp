@@ -20,7 +20,6 @@ extension MovieDetailView {
         @Published private(set) var isFavorited = false
         
         @Published private(set) var toastMsg: String? = nil
-        @Published var showToast: Bool = false
         
         private var currentReviewPage = 1
         private var totalReviewPages = 0
@@ -28,6 +27,7 @@ extension MovieDetailView {
         private(set) var crewUrl: String
         private(set) var reviewUrl: String
         private(set) var similarMovieUrl: String
+        private(set) var detailUrl: String
         
         private var dataService: MovieDataServiceProtocol? = nil
         private var favoriteService: FavoritedDataServiceProtocol
@@ -44,6 +44,7 @@ extension MovieDetailView {
             crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/credits"
             reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/reviews"
             similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/similar"
+            detailUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)"
             
             clearToast()
             fetchMovieInfo(movie)
@@ -65,20 +66,34 @@ extension MovieDetailView {
             crewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/credits"
             reviewUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/reviews"
             similarMovieUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)/similar"
+            detailUrl = APIEndpoints.apiBaseUrl + "/movie/\(movie.id)"
             
             getFavoriteStatus()
+            loadDetail()
             loadVideos()
             loadCrew()
             loadReviews()
             loadSimilarMovies()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            // hide loading after 1.5s to ensure most of the things are loaded on-time rather than
+            // making the detail page show "sudden-appear" contents
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.isLoading = false
             }
         }
         
+        func loadDetail() {
+            dataService?.downloadData(from: detailUrl, as: Movie.self)
+                .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
+                    DispatchQueue.main.async {
+                        self?.currentMovie = returnedData
+                    }
+                }
+                .store(in: &cancellables)
+        }
+        
         func loadVideos() {
-            dataService?.downloadData(from: videosUrl, as: MovieDBResponse.self)
+            dataService?.downloadData(from: videosUrl, as: MovieDBResponse<Video>.self)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] returnedData in
                     DispatchQueue.main.async {
                         self?.videos = returnedData.results ?? []
@@ -165,13 +180,16 @@ extension MovieDetailView {
                     // then, we will assume user want to "unfavourite"
                     // else, we assume user want to "favorite" currentMovie.
                     clearToast()
-                    let favoriteText = isFavorited ? "Remove this from your favorite list successfully" : "Mark as favorite successfully."
+                    let favoriteText = isFavorited ? "Remove this from your favorite list successfully" : "mark_favorite_success"
                     try await favoriteService.markFavorite(for: currentMovie, as: !isFavorited, from: account.id, sessionId: sessionId)
                     
-                    showToast?()
                     setToastMsg(favoriteText)
+                    showToast?()
                     
-                    getFavoriteStatus()
+                    DispatchQueue.main.async {
+                        self.isFavorited = !self.isFavorited
+                    }
+//                    getFavoriteStatus()
                 } catch {
                     setToastMsg(error.localizedDescription)
                 }
@@ -181,14 +199,12 @@ extension MovieDetailView {
         private func setToastMsg(_ toastMsg: String) {
             DispatchQueue.main.async {
                 self.toastMsg = toastMsg
-                self.showToast = true
             }
         }
         
         private func clearToast() {
             DispatchQueue.main.async {
                 self.toastMsg = nil
-                self.showToast = false
             }
         }
     }

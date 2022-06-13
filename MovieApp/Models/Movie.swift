@@ -47,27 +47,43 @@ struct Movie: Codable, Identifiable, Equatable {
     let voteCount: Int?
     let video: Bool?
     let voteAverage: Double?
+    let status: String?
+    let tagline: String?
+    let productionCountries: [ProductionCountry]?
+    let productionCompanies: [ProductionCompany]?
+    let revenue: Int?
+    let runtime: Int?
     
     static func == (lhs: Movie, rhs: Movie) -> Bool {
         lhs.id == rhs.id
     }
     
-//    enum CodingKeys: String, CodingKey {
-//        case posterPath = "poster_path"
-//        case adult, overview
-//        case releaseDate = "release_date"
-//        case genreIDS = "genre_ids"
-//        case id
-//        case originalTitle = "original_title"
-//        case originalLanguage = "original_language"
-//        case title
-//        case backdropPath = "backdrop_path"
-//        case popularity
-//        case voteCount = "vote_count"
-//        case video
-//        case voteAverage = "vote_average"
-//    }
+    // MARK: - Production countries
+    struct ProductionCountry: Codable, Identifiable, Equatable {
+        static func ==(lhs: ProductionCountry, rhs: ProductionCountry) -> Bool {
+            lhs.id == rhs.id
+        }
+        
+        var id: String {
+            wrappediso31661
+        }
+        let name, iso31661: String?
+        
+        var wrappedName: String {
+            name ?? "Unknown country"
+        }
+        
+        var wrappediso31661: String {
+            iso31661 ?? ""
+        }
+
+    }
     
+    // MARK: - Production companies
+    struct ProductionCompany: Codable, Identifiable, Equatable {
+        let id: Int?
+        let name, logoPath, originCountry: String?
+    }
     
     // MARK: - Movie.Review
     struct Review: Codable, Identifiable, Equatable {
@@ -75,16 +91,6 @@ struct Movie: Codable, Identifiable, Equatable {
         let authorDetails: AuthorDetail
         let content, createdAt, id, updatedAt: String
         let url: String
-
-//        enum CodingKeys: String, CodingKey {
-//            case author
-//            case authorDetails = "author_details"
-//            case content
-//            case createdAt = "created_at"
-//            case id
-//            case updatedAt = "updated_at"
-//            case url
-//        }
         
         static func == (lhs: Movie.Review, rhs: Movie.Review) -> Bool {
             lhs.id == rhs.id
@@ -136,18 +142,28 @@ struct Movie: Codable, Identifiable, Equatable {
     }
     
     var wrappedPosterPath: String {
-        APIEndpoints.imageBaseUrl + (posterPath ?? backdropPath ?? "")
+         posterPath ?? backdropPath ?? ""
     }
     
     var wrappedBackdropPath: String {
-        APIEndpoints.imageBaseUrl + (backdropPath ?? "")
+        backdropPath ?? ""
+    }
+    
+    var wrappedRevenue: Int {
+        revenue ?? 0
+    }
+    
+    var wrappedRuntime: Int {
+        runtime ?? 0
     }
     
 }
 
 extension Movie {
+    static let fakedList = [fakedMovie, fakedMovie2]
+    static let fakedMovie2 = Movie(posterPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", adult: true, overview: "Framed in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.", releaseDate: "1994-09-10", genreIDS: [18, 80], id: 279, originalTitle: "Sample movie", originalLanguage: "en", title: "Sample movie", backdropPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", popularity: 6.741296, voteCount: 5238, video: false, voteAverage: 8.32, status: "Released", tagline: "How much can you know about yourself if you've never been in a fight?", productionCountries: [ProductionCountry(name: "United of States", iso31661: "US"), ProductionCountry(name: "United of Kingdom", iso31661: "GBR")], productionCompanies: [ProductionCompany(id: 508, name: "Regency Enterprises", logoPath: "/7PzJdsLGlR7oW4J0J5Xcd0pHGRg.png", originCountry: "US")], revenue: 10000, runtime: 100)
     
-    static let fakedMovie = Movie(posterPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", adult: false, overview: "Framed in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.", releaseDate: "1994-09-10", genreIDS: [18, 80], id: 278, originalTitle: "The Shawshank Redemption", originalLanguage: "en", title: "The Shawshank Redemption", backdropPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", popularity: 6.741296, voteCount: 5238, video: false, voteAverage: 8.32)
+    static let fakedMovie = Movie(posterPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", adult: false, overview: "Framed in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.", releaseDate: "1994-09-10", genreIDS: [18, 80], id: 278, originalTitle: "The Shawshank Redemption", originalLanguage: "en", title: "The Shawshank Redemption", backdropPath: "/5hNcsnMkwU2LknLoru73c76el3z.jpg", popularity: 6.741296, voteCount: 5238, video: false, voteAverage: 8.32, status: "Released", tagline: "How much can you know about yourself if you've never been in a fight?", productionCountries: [ProductionCountry(name: "United of States", iso31661: "US")], productionCompanies: [ProductionCompany(id: 508, name: "Regency Enterprises", logoPath: "/7PzJdsLGlR7oW4J0J5Xcd0pHGRg.png", originCountry: "US")], revenue: 10000, runtime: 100)
     
 }
 
@@ -163,4 +179,12 @@ struct MovieFilters: Codable {
     let includeAdult: Bool?
     let year: Int?
     let primaryReleaseYear: Bool?
+}
+
+// MARK: - Movie states
+struct MovieState: Codable, Identifiable {
+    let id: Int?
+    let favorite: Bool?
+    let rated: Bool?
+    let watchlist: Bool?
 }

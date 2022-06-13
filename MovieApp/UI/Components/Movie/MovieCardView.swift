@@ -10,19 +10,17 @@ import SwiftUI
 struct MovieCardView: View {
     
     let movie: Movie
-    let isHighlighted: Bool
     
-    init(movie: Movie, isHighlighted: Bool = false) {
+    init(movie: Movie) {
         self.movie = movie
-        self.isHighlighted = isHighlighted
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            ImageView(url: movie.wrappedPosterPath)
+            ImageView(url: "\(APIEndpoints.imageBaseUrl)/w154/\(movie.wrappedPosterPath)")
+                .scaledToFit()
                 .cornerRadius(18)
             
-            if isHighlighted == false {
             VStack(alignment: .leading, spacing: 8) {
                 Text(movie.wrappedTitle)
                     .font(.headline)
@@ -39,19 +37,17 @@ struct MovieCardView: View {
                 }
             }
             .padding(.vertical)
-            }
             
             Spacer()
         }.accessibilityIdentifier("MovieCard")
     }
-    
 }
 
 
 struct MovieCardView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieCardView(movie: DeveloperPreview.mockMovie, isHighlighted: false)
-        //            .frame(width: 200, height: 400)
-//                    .previewLayout(.sizeThatFits)
+        MovieCardView(movie: DeveloperPreview.mockMovie)
+            .frame(width:100, height: 150)
+                    .previewLayout(.sizeThatFits)
     }
 }

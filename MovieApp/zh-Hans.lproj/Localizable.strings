@@ -26,6 +26,7 @@
 "profile_preference_label" = "偏好";
 "language" = "语言";
 
+"top_rated" = "好评";
 "upcoming" = "即将到来";
 
 "movie_storyline" = "故事简介";
@@ -34,6 +35,15 @@
 "movie_reviews" = "评论";
 "movie_reviews_empty" = "尚未有评论";
 "movie_similar" = "更多类似";
+"movie_production_countries" = "电影制作国家";
+"movie_stat_revenue_label" = "收入";
+"movie_stat_adult_label" = "成人";
+"movie_stat_adult_text" = "含有成人内容";
+"movie_stat_runtime_label" = "时长";
+"movie_stat_voting_label" = "投票数";
+"movie_stat_people_voted %lld" = "%lld 票";
+
+"mark_favorite_success" = "收藏成功";
 
 "favorite_no_result" = "你目前暂时还未收藏任何电影/电视剧.";
 "no_result" = "未找到相关信息";

@@ -16,6 +16,10 @@ struct MovieDetailView: View {
     @StateObject private var vm: MovieDetailViewModel
     @State private var size: CGSize = .zero
     
+    private let gridItems = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     private let linearGradient = LinearGradient(stops: [
         Gradient.Stop(color: Color.theme.background.opacity(0.1), location: 0),
         Gradient.Stop(color: Color.theme.background, location: 0.6)
@@ -37,38 +41,41 @@ struct MovieDetailView: View {
                 .ignoresSafeArea()
             
             GeometryReader { geometry in
-                VStack {
-                    ScrollView {
-                        
-                        if vm.isLoading {
-                            ProgressView()
-                                .frame(maxWidth: .infinity)
-                        } else {
-                            ZStack(alignment: .top) {
-                                ImageView(url: vm.currentMovie.wrappedBackdropPath)
-                                    .scaledToFill()
-                                    .frame(width: geometry.size.width, height: geometry.size.height / 3)
-                                    .opacity(0.75)
-                                    .blur(radius: 10)
-                                
-                                linearGradient
-                                
-                                VStack(alignment: .leading, spacing: 20) {
-                                    movieHeader
-                                    movieOverview
+                ScrollView {
+                    if vm.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        ZStack(alignment: .top) {
+                            ImageView(url: "\(APIEndpoints.imageBaseUrl)/w154/\(vm.currentMovie.wrappedBackdropPath)")
+                                .scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.height / 3)
+                                .opacity(0.75)
+                                .blur(radius: 10)
+                            
+                            linearGradient
+                            
+                            VStack(alignment: .leading, spacing: 20) {
+                                movieHeader
+                                movieOverview
+                                movieStats
+                                productionCountries
+                                if vm.videos.isNotEmpty {
                                     // TODO: Too many WKWebViews would result to large memory usage
-                                    // gallery
-                                    cast
-                                    similarMovies
-                                    reviews
+                                    gallery
                                 }
-                                .frame(maxHeight: .infinity)
-                                .padding(.top, geometry.size.height * 0.15)
-                                .padding(.bottom, geometry.size.height * 0.2)
+                                cast
+                                similarMovies
+                                reviews
                             }
+                            .frame(maxHeight: .infinity)
+                            .padding(.top, geometry.size.height * 0.15)
+                            .padding(.bottom, geometry.size.height * 0.2)
                         }
-                    }.ignoresSafeArea()
+                        
+                    }
                 }
+                .ignoresSafeArea()
                 .onAppear {
                     size = geometry.size
                 }
@@ -79,14 +86,14 @@ struct MovieDetailView: View {
                 vm.getFavoriteStatus()
             }
         })
-        .alert(vm.toastMsg ?? "", isPresented: $appState.showingToast, actions: {
+        .alert(LocalizedStringKey(vm.toastMsg ?? ""), isPresented: $appState.showingToast, actions: {
             Button("OK", role: .cancel) {
             }
         })
         // TODO: Another leaks again
-//        .toast(isPresenting: $vm.showToast, tapToDismiss: false) {
-//            AlertToast(displayMode: .banner(.slide), type: .regular, title: vm.toastMsg)
-//        }
+        //        .toast(isPresenting: $appState.showingToast, tapToDismiss: false) {
+        //            AlertToast(displayMode: .banner(.slide), type: .regular, title: vm.toastMsg)
+        //        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button { [weak appState, weak vm] in
@@ -116,15 +123,31 @@ struct MovieDetailView: View {
 
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            MovieDetailView(movie: DeveloperPreview.mockMovie, authService: MovieDBAuthService(),
-                            favoriteService: FavoritedDataService()
-            )
-            //                .navigationBarHidden(true)
-                .preferredColorScheme(.dark)
-                .navigationBarTitleDisplayMode(.inline)
-        }.environmentObject(AppState())
+        Group {
+            NavigationView {
+                MovieDetailView(movie: Movie.fakedMovie2, authService: MovieDBAuthService(),
+                                favoriteService: FavoritedDataService()
+                )
+                    .preferredColorScheme(.dark)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .environmentObject(AppState())
             .foregroundColor(.white)
+            .environment(\.locale, .init(identifier: "en"))
+            .previewDisplayName("eng")
+            
+            NavigationView {
+                MovieDetailView(movie: Movie.fakedMovie2, authService: MovieDBAuthService(),
+                                favoriteService: FavoritedDataService()
+                )
+                    .preferredColorScheme(.dark)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .environmentObject(AppState())
+            .foregroundColor(.white)
+            .environment(\.locale, .init(identifier: "zh-Hans"))
+            .previewDisplayName("cn")
+        }
     }
 }
 
@@ -132,7 +155,7 @@ extension MovieDetailView {
     
     private var movieHeader: some View {
         HStack(spacing: 20) {
-            ImageView(url: vm.currentMovie.wrappedPosterPath)
+            ImageView(url: "\(APIEndpoints.imageBaseUrl)/w300/\(vm.currentMovie.wrappedPosterPath)")
                 .scaledToFill()
                 .frame(width: size.width * 0.35, height: size.height / 3.5)
                 .cornerRadius(10)
@@ -144,6 +167,7 @@ extension MovieDetailView {
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("MovieTitle")
+                    .textSelection(.enabled)
                 
                 RatingView(rating: vm.currentMovie.wrappedVoteAverage)
                     .font(.caption)
@@ -166,6 +190,60 @@ extension MovieDetailView {
         .padding()
     }
     
+    private var movieStats: some View {
+        LazyVGrid(columns: gridItems) {
+            StatsInfoView(
+                icon: "dollarsign.circle.fill",
+                title: "movie_stat_revenue_label",
+                value: "$ \(vm.currentMovie.wrappedRevenue)")
+                .overlay(RoundedRectangle(cornerRadius: 12.0).stroke(.gray.opacity(0.2), lineWidth: 2.5))
+            StatsInfoView(
+                icon: "play.circle.fill",
+                title: "movie_stat_runtime_label",
+                value: LocalizedStringKey("movie_stat_runtime_minutes \(vm.currentMovie.wrappedRuntime)"),
+                valueWithPlurals: true)
+                .overlay(RoundedRectangle(cornerRadius: 12.0).stroke(.gray.opacity(0.2), lineWidth: 2.5))
+            StatsInfoView(
+                icon: "list.star",
+                title: "movie_stat_voting_label",
+                value: LocalizedStringKey("movie_stat_people_voted \(vm.currentMovie.wrappedVoteCount)"))
+                .overlay(RoundedRectangle(cornerRadius: 12.0).stroke(.gray.opacity(0.2), lineWidth: 2.5))
+            
+            if vm.currentMovie.wrappedAdult {
+                StatsInfoView(
+                    icon: "18.circle.fill",
+                    title: "movie_stat_adult_label",
+                    value: LocalizedStringKey("movie_stat_adult_text"))
+                    .overlay(RoundedRectangle(cornerRadius: 12.0).stroke(.gray.opacity(0.2), lineWidth: 2.5))
+            }
+        }
+        .padding([.top, .horizontal])
+    }
+    
+    private var productionCountries: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("movie_production_countries")
+                    .font(.headline)
+                Spacer()
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 18) {
+                    if let countries = vm.currentMovie.productionCountries, countries.isNotEmpty {
+                        ForEach(countries) { country in
+                            CountryView(country: country)
+                        }
+                    } else {
+                        Text("no_result")
+                            .foregroundColor(.white)
+                            .opacity(0.65)
+                    }
+                }
+            }
+        }.padding([.top, .horizontal])
+    }
+    
     private var movieOverview: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("movie_storyline")
@@ -174,6 +252,7 @@ extension MovieDetailView {
             Text(vm.currentMovie.wrappedOverview)
                 .font(.callout)
                 .opacity(0.65)
+                .textSelection(.enabled)
         }
         .padding(.horizontal)
         .foregroundColor(.white)
@@ -216,10 +295,8 @@ extension MovieDetailView {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(vm.videos) { video in
-                        autoreleasepool {
-                            YoutubeView(videoID: video.key ?? "")
-                                .frame(width: size.width / 1.25, height: size.height * 0.2)
-                        }
+                        YoutubeView(videoID: video.key ?? "")
+                            .frame(width: size.width / 1.25, height: size.height * 0.2)
                     }
                 }
             }
@@ -251,9 +328,7 @@ extension MovieDetailView {
                 HStack(spacing: 18) {
                     if vm.top10Cast.isNotEmpty {
                         ForEach(vm.top10Cast) { cast in
-                            autoreleasepool {
-                                CrewView(person: cast)
-                            }
+                            CrewView(person: cast)
                         }
                     } else {
                         Text("no_result")
@@ -272,8 +347,9 @@ extension MovieDetailView {
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.horizontal)
+            
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 28) {
+                LazyHStack(spacing: 28) {
                     ForEach(vm.similarMovies) { movie in
                         NavigationLink {
                             MovieDetailView(
@@ -283,22 +359,13 @@ extension MovieDetailView {
                             )
                         } label: {
                             MovieCardView(movie: movie)
-                                .frame(height: 400)
-                                .frame(maxWidth: .infinity)
-                                .clipped()
-                        }.buttonStyle(PlainButtonStyle())
-
-//                        Button {
-//                            vm.changeMovie(movie)
-//                        } label: {
-//                            MovieCardView(movie: movie)
-//                                .frame(height: 400)
-//                                .frame(maxWidth: .infinity)
-//                                .clipped()
-//                        }.buttonStyle(PlainButtonStyle())
+                                .frame(width: 150, height: 200)
+                                .cornerRadius(12)
+                        }
+                        .isDetailLink(false)
+                        .buttonStyle(PlainButtonStyle())
                     }
-                }
-                .padding()
+                }.padding()
             }
         }
     }

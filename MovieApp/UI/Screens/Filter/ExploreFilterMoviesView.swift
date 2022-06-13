@@ -94,11 +94,12 @@ extension ExploreFilterMoviesView {
                                         .opacity(0.6)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            }
+                            }.buttonStyle(.plain)
                         }
                     }.padding(.vertical)
                 }
                 .padding()
+                .foregroundColor(.white)
                 .background(.gray.opacity(0.1))
                 .cornerRadius(12)
         } header: {

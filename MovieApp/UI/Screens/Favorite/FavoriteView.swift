@@ -31,11 +31,6 @@ struct FavoriteView: View {
                 EmptyView()
             }).isDetailLink(false)
         )
-        .task {
-            vm.clear()
-            try? await Task.sleep(nanoseconds: 1_000_000)
-            await vm.loadFavorites()
-        }
     }
     
     private func shouldFetchMore(_ favoritedMovie: Movie) async {

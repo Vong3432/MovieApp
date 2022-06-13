@@ -24,6 +24,7 @@ extension FavoriteView {
             self.dataService = dataService
             
             subscribe()
+            Task { await loadFavorites()}
         }
         
         private func subscribe() {

@@ -22,7 +22,7 @@ struct MovieRowView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 20) {
-            ImageView(url: movie.wrappedPosterPath)
+            ImageView(url: "\(APIEndpoints.imageBaseUrl)/w92/\(movie.wrappedPosterPath)")
                 .scaledToFill()
                 .frame(width: 100, height: 120)
                 .cornerRadius(18)

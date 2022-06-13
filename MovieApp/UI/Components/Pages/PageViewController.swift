@@ -11,10 +11,12 @@ import SwiftUI
 struct PageViewController<Page: View>: UIViewControllerRepresentable {
     
     let pages: [Page]
+    let spacing: Double?
     @Binding var currentPage: Int
     
     func makeUIViewController(context: Context) -> UIPageViewController {
-        let controller = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let optionsDict = [UIPageViewController.OptionsKey.interPageSpacing: spacing ?? 0.0]
+        let controller = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: optionsDict)
         controller.dataSource = context.coordinator
         controller.delegate = context.coordinator
         return controller

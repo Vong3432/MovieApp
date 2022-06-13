@@ -26,6 +26,7 @@
 "profile_preference_label" = "Preferences";
 "language" = "Languages";
 
+"top_rated" = "Top rated";
 "upcoming" = "Upcoming";
 
 "movie_storyline" = "Storyline";
@@ -34,7 +35,15 @@
 "movie_reviews" = "Reviews";
 "movie_reviews_empty" = "No reviews yet";
 "movie_similar" = "Similar movies";
+"movie_production_countries" = "Production countries";
+"movie_stat_revenue_label" = "Revenue";
+"movie_stat_adult_label" = "Adult";
+"movie_stat_adult_text" = "Includes adult content";
+"movie_stat_runtime_label" = "Runtime";
+"movie_stat_voting_label" = "Voting";
+"movie_stat_people_voted %lld" = "%lld voted";
 
+"mark_favorite_success" = "Mark as favorite successfully.";
 "favorite_no_result" = "You have not mark any movie/tv as favorite currently.";
 "no_result" = "No result";
 
