@@ -37,6 +37,7 @@ Movie app built with SwiftUI
 
 ## Setup guide (if you are interested)
 - Create a swift file (eg: APIKeys.swift) in the ``Models/`` directory, and add the following code:
+- Create and start your own backend server (for testing Stripe payment feature) [Backend source code](https://github.com/Vong3432/movieapp-backend). 
 
 ```swift
 
@@ -45,7 +46,7 @@ import Foundation
 struct Keys {
     static let apiToken = "API_TOKEN_FROM_MOVIEDB_API"
     static let username = "USERNAME_FROM_MOVIEDB_API"
-    static let pw = "PASSWORD_FROM_MOVIEDB_API-dykqu1"
+    static let pw = "PASSWORD_FROM_MOVIEDB_API"
     static var stripePublishToken: String {
         #if DEBUG
         "STRIPE_PUBLISH_KEY_FOR_TESTING"
