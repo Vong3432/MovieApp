@@ -14,6 +14,7 @@ Movie app built with SwiftUI
 
 ### Widget
  <p float="left">
+     <img src="https://user-images.githubusercontent.com/36991424/175325634-efa3981d-ae75-4302-8fe7-ff2feeb59a83.gif" width="200" />
      <img src="https://user-images.githubusercontent.com/36991424/172134362-0b15e38f-da4f-4f55-a551-72a480bed6f0.gif" width="200" />
      <img src="https://user-images.githubusercontent.com/36991424/172131959-acb9b4ab-78d9-4b02-8a6b-1ccb9bf9c38f.png" width="200" />
      <img src="https://user-images.githubusercontent.com/36991424/172132000-6a47c40e-f00a-4e6b-b99a-22b5c167734a.png" width="200" />
