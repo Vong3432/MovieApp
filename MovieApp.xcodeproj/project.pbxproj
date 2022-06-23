@@ -89,6 +89,9 @@
 		3BAA0D4B2837A7BC00981FC7 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */; };
 		3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAA0D4D2837AC8900981FC7 /* AlertToast */; };
 		3BAA0D502837F43E00981FC7 /* ButtonViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */; };
+		3BC8CB70285DA5DC00DFA497 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC8CB6F285DA5DC00DFA497 /* Stripe */; };
+		3BC8CB73285DABE400DFA497 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8CB72285DABE400DFA497 /* CheckoutView.swift */; };
+		3BC8CB76285DAC0900DFA497 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8CB75285DAC0900DFA497 /* PaymentService.swift */; };
 		3BE47945284D176700FF1491 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BE47944284D176700FF1491 /* WidgetKit.framework */; };
 		3BE47947284D176700FF1491 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BE47946284D176700FF1491 /* SwiftUI.framework */; };
 		3BE4794A284D176700FF1491 /* MovieWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE47949284D176700FF1491 /* MovieWidget.swift */; };
@@ -228,6 +231,9 @@
 		3BAA0D4828379FE800981FC7 /* YoutubeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideo.swift; sourceTree = "<group>"; };
 		3BAA0D4A2837A7BC00981FC7 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		3BAA0D4F2837F43E00981FC7 /* ButtonViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModifier.swift; sourceTree = "<group>"; };
+		3BC8CB72285DABE400DFA497 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
+		3BC8CB75285DAC0900DFA497 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
+		3BC8CB77285DAEBC00DFA497 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3BE47942284D176700FF1491 /* MovieWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MovieWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BE47944284D176700FF1491 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3BE47946284D176700FF1491 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -257,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B4A7CC52854BA2F00D594E4 /* SnapToScroll in Frameworks */,
+				3BC8CB70285DA5DC00DFA497 /* Stripe in Frameworks */,
 				3B9F9640283BB802002C8F70 /* Algorithms in Frameworks */,
 				3BAA0D4E2837AC8900981FC7 /* AlertToast in Frameworks */,
 			);
@@ -357,6 +364,7 @@
 		3B2EBF7B27DC76AA009848C5 /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
+				3BC8CB77285DAEBC00DFA497 /* Info.plist */,
 				3B45696D285A24CC002D5647 /* Plurals.stringsdict */,
 				3B2EBFA627DC78D1009848C5 /* Extensions */,
 				3B2EBFC027DC9272009848C5 /* Models */,
@@ -472,6 +480,7 @@
 		3B2EBFBC27DC8978009848C5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3BC8CB71285DABDC00DFA497 /* Payment */,
 				3B4569662859F931002D5647 /* Stats */,
 				3BE89081285907B100712494 /* Country */,
 				3B4A7CC028547BE100D594E4 /* ScrollView */,
@@ -529,6 +538,7 @@
 		3B2EBFCA27DC9ACE009848C5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3BC8CB74285DABFA00DFA497 /* Payment */,
 				3B2CD2FF28338A2100F61696 /* App */,
 				3BA3471D2832CA6000A4400C /* Auth */,
 				3B2EBFCB27DC9ADD009848C5 /* Movie */,
@@ -619,6 +629,22 @@
 				3BAA0D4828379FE800981FC7 /* YoutubeVideo.swift */,
 			);
 			path = Youtube;
+			sourceTree = "<group>";
+		};
+		3BC8CB71285DABDC00DFA497 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				3BC8CB72285DABE400DFA497 /* CheckoutView.swift */,
+			);
+			path = Payment;
+			sourceTree = "<group>";
+		};
+		3BC8CB74285DABFA00DFA497 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				3BC8CB75285DAC0900DFA497 /* PaymentService.swift */,
+			);
+			path = Payment;
 			sourceTree = "<group>";
 		};
 		3BE47943284D176700FF1491 /* Frameworks */ = {
@@ -723,6 +749,7 @@
 				3BAA0D4D2837AC8900981FC7 /* AlertToast */,
 				3B9F963F283BB802002C8F70 /* Algorithms */,
 				3B4A7CC42854BA2F00D594E4 /* SnapToScroll */,
+				3BC8CB6F285DA5DC00DFA497 /* Stripe */,
 			);
 			productName = MovieApp;
 			productReference = 3B2EBF7927DC76AA009848C5 /* MovieApp.app */;
@@ -821,6 +848,7 @@
 				3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				3B9F963E283BB802002C8F70 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 				3B4A7CC32854BA2F00D594E4 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
+				3BC8CB6E285DA5DC00DFA497 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 			);
 			productRefGroup = 3B2EBF7A27DC76AA009848C5 /* Products */;
 			projectDirPath = "";
@@ -889,6 +917,7 @@
 				3B9308CF2848A68C00A42D35 /* TextFieldViewModifier.swift in Sources */,
 				3B4569682859F94C002D5647 /* StatsInfoView.swift in Sources */,
 				3B2EBFD227DCA27E009848C5 /* ImageCache.swift in Sources */,
+				3BC8CB73285DABE400DFA497 /* CheckoutView.swift in Sources */,
 				3B2EBFBF27DC8986009848C5 /* MovieCardView.swift in Sources */,
 				3B857061283A203A00F1A93C /* FavoriteMovieRowView.swift in Sources */,
 				3B7319F927DD17BB004CC840 /* APIKeys.swift in Sources */,
@@ -928,6 +957,7 @@
 				3B9308D42848A9A800A42D35 /* ExploreFilterMoviesView.swift in Sources */,
 				3BAA0D4928379FE800981FC7 /* YoutubeVideo.swift in Sources */,
 				3BE9C7E127E4CCC5007B2F5B /* ReviewView.swift in Sources */,
+				3BC8CB76285DAC0900DFA497 /* PaymentService.swift in Sources */,
 				3B9CF8AF284777AA00C2A3AA /* AppFeatureInfoView.swift in Sources */,
 				3B85705D283A157300F1A93C /* FavoriteViewModel.swift in Sources */,
 				3B2EBFB227DC7B30009848C5 /* FavoriteView.swift in Sources */,
@@ -1164,6 +1194,7 @@
 				DEVELOPMENT_TEAM = FNHC5UHDLA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1195,6 +1226,7 @@
 				DEVELOPMENT_TEAM = FNHC5UHDLA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1421,6 +1453,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		3BC8CB6E285DA5DC00DFA497 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 22.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1438,6 +1478,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3BAA0D4C2837AC8900981FC7 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		3BC8CB6F285DA5DC00DFA497 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BC8CB6E285DA5DC00DFA497 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			productName = Stripe;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
