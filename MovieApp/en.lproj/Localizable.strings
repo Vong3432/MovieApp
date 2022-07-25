@@ -8,14 +8,14 @@
 
 "preference_success" = "Preference language is set successfully!";
 
-"walkthrough_title" = "What's about the Movie APP";
+"walkthrough_title" = "What's about the MovieCat";
 "walkthrough_feat1" = "Explore the latest movies";
 "walkthrough_feat2" = "Bookmark movies anytime";
-"walkthrough_feat3" = "Enjoy online movie streaming services";
+//"walkthrough_feat3" = "Enjoy online movie streaming services";
 
 "walkthrough_feat1_desc" = "A variety of movies are waiting for you to explore";
 "walkthrough_feat2_desc" = "Bookmark movies anytime, anywhere you want";
-"walkthrough_feat3_desc" = "Watch movies via streaming service is no longer a problem";
+//"walkthrough_feat3_desc" = "Watch movies via streaming service is no longer a problem";
 
 "explore_tab_title" = "Explore";
 "home_tab_title" = "Home";
@@ -24,6 +24,7 @@
 "all_casts_title" = "All casts";
 
 "profile_preference_label" = "Preferences";
+"profile_disclaimer_label" = "Copyright & Disclaimer";
 "language" = "Languages";
 
 "top_rated" = "Top rated";
@@ -44,6 +45,7 @@
 "movie_stat_people_voted %lld" = "%lld voted";
 
 "mark_favorite_success" = "Mark as favorite successfully.";
+
 "favorite_no_result" = "You have not mark any movie/tv as favorite currently.";
 "no_result" = "No result";
 
@@ -52,6 +54,7 @@
 "view_all" = "View all";
 "continue" = "Continue";
 "done" = "Done";
+"other" = "Other";
 
 "explore_no_result" = "No matched movies are found.";
 "explore_result_label" = "Results";
@@ -61,3 +64,7 @@
 
 "sign_out" = "Sign out";
 "sign_in" = "Sign in";
+"sign_up" = "Create an account now on TMDB";
+
+"learn_more_at_TMDB_API" = "Learn more at TMDB";
+

@@ -35,9 +35,9 @@ extension ExploreView {
         private func subscribe() {
             $searchText
                 .debounce(for: 1.0, scheduler: RunLoop.main)
-                .sink { text in
-                    self.clear()
-                    self.fetchMovies()
+                .sink { [weak self] text in
+                    self?.clear()
+                    self?.fetchMovies()
                 }
                 .store(in: &cancellables)
         }

@@ -11,8 +11,8 @@ extension AuthView {
     class AuthViewModel: ObservableObject {
         @Published var errorMsg: String? = nil
         @Published var isLoading = false
-        @Published var username: String = Keys.username
-        @Published var password: String = Keys.pw
+        @Published var username: String = ""
+        @Published var password: String = ""
         private let authService: MovieDBAuthProtocol
         
         init(authService: MovieDBAuthProtocol) {

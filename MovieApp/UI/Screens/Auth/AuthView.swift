@@ -15,6 +15,7 @@ struct AuthView: View {
     
     @StateObject private var vm: AuthViewModel
     @FocusState private var focusedField: Field?
+    @State var showSafari = false
     
     init(authService: MovieDBAuthProtocol) {
         _vm = StateObject(wrappedValue: AuthViewModel(authService: authService))
@@ -35,12 +36,23 @@ struct AuthView: View {
                     formContent
                     Spacer()
                     signInBtn
+                    
+                    Button {
+                        showSafari = true
+                    } label: {
+                        Text("sign_up")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    
                 }
                 .padding()
                 .padding(.bottom)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .customTint(Color.theme.primary)
             }
+        }
+        .sheet(isPresented: $showSafari) {
+            SafariView(url: URL(string: "https://www.themoviedb.org/signup")!)
         }
         .onAppear {
             // Delay for 0.5 otherwise focusField won't work.
@@ -66,13 +78,13 @@ struct AuthView_Previews: PreviewProvider {
         ZStack {
             AuthView(authService: AppState().authService)
                 .environmentObject(AppState())
-            .preferredColorScheme(.dark)
+                .preferredColorScheme(.dark)
         }
     }
 }
 
 extension AuthView {
-       
+    
     private var decorate: some View {
         ZStack {
             GeometryReader { geo in

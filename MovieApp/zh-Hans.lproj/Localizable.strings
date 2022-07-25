@@ -8,14 +8,14 @@
 
 "preference_success" = "语言设置成功!";
 
-"walkthrough_title" = "关于Movie App";
+"walkthrough_title" = "关于MovieCat";
 "walkthrough_feat1" = "探索最新的电影";
 "walkthrough_feat2" = "收藏电影";
-"walkthrough_feat3" = "享受在线电影流媒体服务";
+//"walkthrough_feat3" = "享受在线电影流媒体服务";
 
 "walkthrough_feat1_desc" = "各种各样的电影等着你来探索";
 "walkthrough_feat2_desc" = "随时随地把喜欢的电影给收藏起来";
-"walkthrough_feat3_desc" = "在线播放电影不再是个难题";
+//"walkthrough_feat3_desc" = "在线播放电影不再是个难题";
 
 "explore_tab_title" = "探索";
 "home_tab_title" = "首页";
@@ -24,6 +24,7 @@
 "all_casts_title" = "所有演员表";
 
 "profile_preference_label" = "偏好";
+"profile_disclaimer_label" = "版权和免责声明";
 "language" = "语言";
 
 "top_rated" = "好评";
@@ -53,6 +54,7 @@
 "view_all" = "查看";
 "continue" = "继续";
 "done" = "确认";
+"other" = "其他";
 
 "explore_no_result" = "未有搜索到任何电影";
 "explore_result_label" = "结果";
@@ -62,3 +64,6 @@
 
 "sign_out" = "登出";
 "sign_in" = "登入";
+"sign_up" = "前往TMDB注册账号";
+
+"learn_more_at_TMDB_API" = "前往TMDB了解更多";

@@ -32,14 +32,14 @@ class WebService {
             .decode(type: MovieDBResponse<Movie>.self, decoder: MovieDBAPIResponseParser.jsonDecoder)
             .sink(receiveCompletion: handleCompletion(completion:)) { returnedMovies in
                 guard let movie = returnedMovies.results?.first else {
-                    print("ERR")
+                    print("ERR movie: \(newUrl)")
                     completion(nil)
                     return
                 }
                 
                 URLSession.shared.dataTask(with: URL(string: movie.wrappedPosterPath)!) { imgdata, imgresponse, imgerror in
                     guard let imgdata = imgdata else {
-                        print("ERR")
+                        print("ERR img: \(URL(string: movie.wrappedPosterPath)!)")
                         completion(nil)
                         return
                     }

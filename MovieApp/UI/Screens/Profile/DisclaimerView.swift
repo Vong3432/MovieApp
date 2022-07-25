@@ -9,12 +9,35 @@ import SwiftUI
 
 struct DisclaimerView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color.theme.background.ignoresSafeArea()
+            
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Disclaimer")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+                Text("This product uses the TMDB API but is not endorsed or certified by TMDB.")
+                
+                Spacer()
+                
+                Link("learn_more_at_TMDB_API", destination: URL(string: "https://www.themoviedb.org/documentation/api")!)
+                    .frame(maxWidth: .infinity)
+                    .buttonFilled()
+                    .padding(.bottom)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .preferredColorScheme(.dark)
     }
 }
 
 struct DisclaimerView_Previews: PreviewProvider {
     static var previews: some View {
-        DisclaimerView()
+        NavigationView {
+            DisclaimerView()
+        }
     }
 }
