@@ -176,11 +176,11 @@ extension MovieDetailView {
                     .padding(.bottom)
                     .opacity(0.65)
                 
-                Button("Book now") { }
-                .padding()
-                .font(.callout.bold())
-                .background(Color.theme.primary)
-                .cornerRadius(6)
+//                Button("Book now") { }
+//                .padding()
+//                .font(.callout.bold())
+//                .background(Color.theme.primary)
+//                .cornerRadius(6)
             }
             .foregroundColor(.white)
             

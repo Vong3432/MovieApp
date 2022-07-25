@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Stripe
+//import Stripe
 
 struct ProfileView: View {
     @EnvironmentObject private var appState: AppState
@@ -32,23 +32,31 @@ struct ProfileView: View {
                     Text("profile_preference_label")
                 }
                 
-                if isAuthenticated {
-                    Section {
-                        if let paymentSheet = appState.paymentService.paymentSheet {
-                            PaymentSheet.PaymentButton(
-                                paymentSheet: paymentSheet,
-                                onCompletion: appState.paymentService.onPaymentCompletion
-                            ) {
-                                Text("Subscribe to Movie App")
-                                    .tint(.white)
-                            }.disabled(purchased)
-                        } else {
-                            ProgressView()
-                        }
-
-                    } header: {
-                        Text("Purchases")
+                Section {
+                    NavigationLink("profile_disclaimer_label") {
+                        DisclaimerView()
                     }
+                } header: {
+                    Text("other")
+                }
+                
+                if isAuthenticated {
+//                    Section {
+//                        if let paymentSheet = appState.paymentService.paymentSheet {
+//                            PaymentSheet.PaymentButton(
+//                                paymentSheet: paymentSheet,
+//                                onCompletion: appState.paymentService.onPaymentCompletion
+//                            ) {
+//                                Text("Subscribe to Movie App")
+//                                    .tint(.white)
+//                            }.disabled(purchased)
+//                        } else {
+//                            ProgressView()
+//                        }
+//
+//                    } header: {
+//                        Text("Purchases")
+//                    }
 
                     
                     Button("sign_out") {
@@ -69,29 +77,29 @@ struct ProfileView: View {
         .alert(msg, isPresented: $showAlert) {
             Button("OK", role: .cancel, action: {})
         }
-        .onAppear {
-            appState.paymentService.preparePaymentSheet()
-        }
-        .onReceive(appState.paymentService.$paymentResult) { result in
-            msg = ""
-            purchased = false
-            
-            switch result {
-            case .completed:
-                msg = "Payment completed"
-                purchased = true
-            case .failed(let error):
-                msg = "Payment failed: \(error.localizedDescription)"
-            case .canceled:
-                msg = "Payment canceled."
-            case .none:
-                break;
-            }
-            
-            if msg.isNotEmpty {
-                showAlert = true
-            }
-        }
+//        .onAppear {
+//            appState.paymentService.preparePaymentSheet()
+//        }
+//        .onReceive(appState.paymentService.$paymentResult) { result in
+//            msg = ""
+//            purchased = false
+//            
+//            switch result {
+//            case .completed:
+//                msg = "Payment completed"
+//                purchased = true
+//            case .failed(let error):
+//                msg = "Payment failed: \(error.localizedDescription)"
+//            case .canceled:
+//                msg = "Payment canceled."
+//            case .none:
+//                break;
+//            }
+//            
+//            if msg.isNotEmpty {
+//                showAlert = true
+//            }
+//        }
         .onReceive(appState.authService.isAuthenticatedPublisher, perform: { isAuthenticated in
             self.isAuthenticated = isAuthenticated
         })

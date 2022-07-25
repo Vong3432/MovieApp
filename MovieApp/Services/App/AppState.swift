@@ -13,7 +13,7 @@ final class AppState: ObservableObject {
     let availableIdentifiers = ["en", "zh-Hans"]
     
     @Published var favoriteService: FavoritedDataServiceProtocol = FavoritedDataService()
-    @Published var paymentService = PaymentService()
+//    @Published var paymentService = PaymentService()
     @Published var authService: MovieDBAuthProtocol = MovieDBAuthService()
     @Published var showingSignInScreen: Bool = false
     @Published var showingSearchScreen: Bool = false
@@ -31,9 +31,9 @@ final class AppState: ObservableObject {
             self.currentLocale = availableIdentifiers[0]
         }
         
-        anyCancellable = paymentService.objectWillChange.sink { [weak self] (_) in
-            self?.objectWillChange.send()
-        }
+//        anyCancellable = paymentService.objectWillChange.sink { [weak self] (_) in
+//            self?.objectWillChange.send()
+//        }
     }
     
     func showSignInScreen() {

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Stripe
+//import Stripe
 
 //struct CheckoutView: View {
 //    @StateObject private var paymentService = PaymentService()
